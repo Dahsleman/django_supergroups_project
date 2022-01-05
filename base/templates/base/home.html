@@ -1,0 +1,43 @@
+{% extends 'main.html' %}
+
+
+{% block content %}
+
+<style>
+  .home-container{
+    display: grid;
+    grid-template-columns: 3fr 1fr;
+
+  }
+</style>
+
+<div class="home-container">
+
+  <div>
+    <h3><a href="/">Groups</a> | <a href="{% url 'apps' %}">Apps</a> </h3>
+    <div>
+      <div>
+        <a href="{% url 'create-group' %}">Create Group</a>
+        <h5>{{group_count}} groups avaiable</h5>
+        <hr>
+      </div>
+
+      <div>
+        {% for group in groups %}  
+          <div>
+            <span>admin: @{{group.admin.username}}</span>
+            <h5>Group: <a href="{% url 'group' group.id %}">{{group.name}}</a></h5>
+            <small> Created: {{group.created.date}}</small>
+            <hr>          
+          </div>      
+        {% endfor %}
+      </div>
+    </div>    
+  </div>
+  <div>
+    <h3>Upcoming</h3>
+    <hr>
+  </div> 
+</div>
+
+{% endblock %}

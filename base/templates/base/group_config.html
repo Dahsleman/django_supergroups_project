@@ -1,0 +1,16 @@
+{% extends 'main.html' %}
+
+{% block content %}
+<div>
+    <a href="{% url 'group' group.id %}">Go Back</a>
+</div>
+
+<div>
+    <a href="{% url 'delete-group' group.id %}">Delete</a>
+</div>
+<div>
+    <a href="{% url 'update-group' group.id %}">Edit</a>
+</div>
+<a>Integrations</a>
+
+{% endblock content %}

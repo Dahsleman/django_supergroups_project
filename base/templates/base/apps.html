@@ -1,0 +1,14 @@
+{% extends 'main.html' %}
+
+{% block content %}
+
+<div>
+<h3><a href="/">Groups</a> | <a href="">Apps</a> </h3>
+</div>
+<div>
+    <form method="POST" action="{% url 'token' %}">
+        {% csrf_token %}
+        <button>Telegram Token</button>
+    </form>  
+</div>
+{% endblock content %}

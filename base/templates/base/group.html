@@ -1,0 +1,74 @@
+{% extends 'main.html' %}
+
+
+{% block content %}
+
+<style>
+  .group-container{
+    display: grid;
+    grid-template-columns: 3fr 1fr;
+
+  }
+</style>
+<div class="group-container">
+
+  <div>
+
+    <div>
+      {% if request.user == group.admin %}
+      <a href="{% url 'group-config' group.id %}">Config</a>
+      {% endif %}
+    </div>
+    <div>
+      {% if request.user == group.admin %}
+      <a href="{% url 'create-event_type' group.id %}">Create event type</a>
+      {% endif %}
+    </div>
+
+    <h1>{{group.name}}</h1>
+    <p>{{group.description}}</p>
+
+    <div class="availability-wrapper">
+      
+      <h3><a href="">Availabilities</a> | <a href="{% url 'events' %}">Events</a> | <a href="">Tasks</a> | <a href="">Files</a> | <a href="">Notifications</a> | <a href="">Apps</a> </h3>
+      <h4><a href="">Group Availability</a></h4>
+      <h5>Unavailable</h5>
+      <hr>
+      
+      {% for event_type in event_types %}
+      <div>
+        <h4><a href="{% url 'event_type_availabilities' event_type.id %}">{{event_type.name}}</a></h4>
+      </div>
+      {% if request.user == group.admin %}
+        <h5><a href="{% url 'delete-event_type' event_type.id %}">Delete</a></h5> 
+      {% endif %}
+      
+      <hr>
+      {% endfor %}
+
+    </div>
+
+
+  </div>
+  <div>
+    <h3>Group Integrants 
+      {% if request.user == group.admin %}
+      (<a href="{% url 'create-participants' group.id %}">add/remove</a>)
+      {% endif %}
+    </h3>
+    <hr>
+    <p>@{{group.admin}}[admin]</p>
+    {% for user in participants %}
+      <div>
+        
+        <p>@{{user.username}}</p>
+        
+      </div>
+    {% endfor %}
+
+  </div>
+
+
+</div>
+
+{% endblock %}
