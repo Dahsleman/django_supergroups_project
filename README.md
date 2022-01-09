@@ -1,1 +1,1 @@
-# django_supergroups_project using functions based views.
+# django_supergroups_project using function-based views.
