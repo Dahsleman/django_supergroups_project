@@ -14,11 +14,11 @@
 <div class="home-container">
 
   <div>
-    <h3><a href="/">Groups</a> | <a href="{% url 'apps' %}">Apps</a> </h3>
+    <h3><a href="/">Rooms</a> | <a href="{% url 'apps' %}">Bot</a>  </h3>
     <div>
       <div>
-        <a href="{% url 'create-group' %}">Create Group</a>
-        <h5>{{group_count}} groups avaiable</h5>
+        <a href="{% url 'create-group' %}">Create Room</a>
+        <h5>{{group_count}} Rooms avaiable</h5>
         <hr>
       </div>
 
@@ -26,7 +26,7 @@
         {% for group in groups %}  
           <div>
             <span>admin: @{{group.admin.username}}</span>
-            <h5>Group: <a href="{% url 'group' group.id %}">{{group.name}}</a></h5>
+            <h5>Room: <a href="{% url 'group' group.id %}">{{group.name}}</a></h5>
             <small> Created: {{group.created.date}}</small>
             <hr>          
           </div>      
@@ -35,7 +35,7 @@
     </div>    
   </div>
   <div>
-    <h3>Upcoming</h3>
+    <h3>Roomates (<a href="">add</a>)</h3>
     <hr>
   </div> 
 </div>
