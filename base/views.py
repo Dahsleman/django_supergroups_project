@@ -9,6 +9,8 @@ from .models import Availabilities, Group
 from .forms import GroupForm, AvailabilitiesForm, ParticipantsForm  
 from django.contrib.auth.forms import UserCreationForm
 
+"""LOGIN-LOGOUT-REGISTER"""
+
 def loginPage(request):
     page = 'login'
     if request.user.is_authenticated:
@@ -57,7 +59,9 @@ def registerPage(request):
 
     return render(request, 'base/login_register.html', {'form': form})
 
-    return render(request, 'base/login_register.html', {'form': form})
+    # return render(request, 'base/login_register.html', {'form': form})
+
+
 
 def home(request):
     current_user = request.user
@@ -84,6 +88,8 @@ def token(request):
         save_token(token_id, request)
         context = {'tokens': tokens}
     return render(request, 'base/token.html', context)
+
+"""GROUP"""    
 
 def group(request, pk):
     group = Group.objects.get(id=pk)
@@ -140,12 +146,15 @@ def deleteGroup(request, pk):
     
     return render(request, 'base/delete.html',{'obj':group})
 
+
+
 def event_type_availabilities(request, pk):
     event_type = Availabilities.objects.get(id=pk)
 
     context = {'event_type': event_type}
     return render(request, 'base/event_type_availabilities.html', context)
 
+"""Event Type"""
 
 def createEvent_type(request, pk):
     form = AvailabilitiesForm()
@@ -190,6 +199,8 @@ def deleteEvent_type(request, pk):
     
     return render(request, 'base/delete.html',{'obj':availability_name})
 
+"""Participants"""
+
 def createParticipants(request, pk):
     form = ParticipantsForm()
     group = Group.objects.get(id=pk)
@@ -205,6 +216,9 @@ def createParticipants(request, pk):
 
     context = {'form':form}
     return render(request, 'base/participant_form.html', context)
+
+
+"""Events"""
 
 def Events(request):
     context = {}
