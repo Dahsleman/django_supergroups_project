@@ -64,14 +64,17 @@ def registerPage(request):
 
 
 def home(request):
-    current_user = request.user
-    groups = Group.objects.filter(participants = current_user)
+    if request.user.is_authenticated: 
+        current_user = request.user
+        groups = Group.objects.filter(participants = current_user)
 
-    group_participants = Group.objects.filter(participants = current_user)
+        group_participants = Group.objects.filter(participants = current_user)
 
-    group_count = groups.count()
-    context = {'groups': groups, 'group_count':group_count, 'group:participants':group_participants}
-    return render(request, 'base/home.html', context)
+        group_count = groups.count()
+        context = {'groups': groups, 'group_count':group_count, 'group:participants':group_participants}
+        return render(request, 'base/home.html', context)
+    else:
+        return redirect('register')
 
 def apps(request):
     context = {}
