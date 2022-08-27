@@ -2,13 +2,25 @@
 
 {% block content %}
 
-<div>
-    <a href="{{request.META.HTTP_REFERER}}">Go Back</a>
-    <form method="POST" action="">
-        {% csrf_token %}
-        {{form.as_p}}
-        <input type="Submit" value="Submit" />
-    </form>
+<style>
+    .home-container{
+    display: grid;
+    grid-template-columns: 1fr 1fr 5fr 1fr;
+
+  }
+</style>
+<div class="home-container">
+    <div>
+
+    </div>
+    <div>
+        <a href="{{request.META.HTTP_REFERER}}">Go Back</a>
+        <form method="POST" action="">
+            {% csrf_token %}
+            {{form.as_p}}
+            <input type="Submit" value="Submit" />
+        </form>
+    </div>
 </div>
 
 {% endblock content %}

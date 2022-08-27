@@ -2,44 +2,78 @@
 
 {% block content %}
 
+<style>
+    .login-container{
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr;
+  
+    }
+  </style>
+
 {% if page == 'login' %}
+<div class="login-container">
+    <div>
+
+    </div>
 
     <div>
         <form method="POST" action="">
             {% csrf_token %}
+            <center>
+                <h1>Welcome back</h1>          
+                <p>
+                    <label>Username</label>
+                    <input type="username" name="username" placeholder="enter username"/>
+                </p>
+                <p>
+                    <label>Password</label>
+                    <input type="password" name="password" placeholder="enter password"/>
+                </p>
 
-            <h1>Welcome back</h1>
+                <input type="submit" value="Login" />
 
-            <label>Username</label>
-            <input type="username" name="username" placeholder="enter username"/>
+                </form>
+                <p>Havent signed up yet?</p>
+                <a href="{% url 'register' %}">Sign up</a>
+            </center>         
 
-            <label>Password</label>
-            <input type="password" name="password" placeholder="enter password"/>
-
-            <input type="submit" value="Login" />
-
-        </form>
-        <p>Havent signed up yet?</p>
-        <a href="{% url 'register' %}">Sign up</a>
     </div>
+
+    <div>
+
+    </div>
+</div>
 
 {% else %}
 
+<div class="login-container">
+    <div>
+
+    </div>
     <div>
         <form method="POST" action="">
             {% csrf_token %}
-            
-            <h1>Welcome to Supergroups</h1>
-
+            <center>
+                <h1>Welcome</h1>
+            </center>
             {{form.as_p}}
 
             <input type="submit" value="Register" />
 
         </form>
-        <p>Already signed up?</p>
-        <a href="{% url 'login' %}">Login</a>
+        <center>
+            <p>Already signed up?</p>
+            <a href="{% url 'login' %}">Login</a>            
+        </center>
+        
+    </div>
+    <div>
 
     </div>
+
+</div>
+
+
 
 {% endif %}
 

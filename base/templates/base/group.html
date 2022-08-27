@@ -16,13 +16,13 @@
 
     <div>
       {% if request.user == group.admin %}
-      <a href="{% url 'group-config' group.id %}">Config</a>
+      <a href="{% url 'group-config' group.id %}">Edit</a>
       {% endif %}
     </div>
     <div>
-      {% if request.user == group.admin %}
+      <!-- {% if request.user == group.admin %}
       <a href="{% url 'create-event_type' group.id %}">Create event type</a>
-      {% endif %}
+      {% endif %} -->
     </div>
 
     <h1>{{group.name}}</h1>
