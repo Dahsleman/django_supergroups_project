@@ -98,14 +98,14 @@ def group(request, pk):
 
     context = {'group':group, 'event_types':event_types, 'participants':participants}
 
-    return render(request, 'base/group.html', context)
+    return render(request, 'base/group_settings.html', context)
 
 def groupConfig(request, pk):
     group = Group.objects.get(id=pk)
     if request.method == 'POST':
         return render('group', pk=pk)
     context = {'group': group}
-    return render(request, 'base/group_config.html', context)
+    return render(request, 'base/group_guest_list.html', context)
 
 @login_required(login_url='/login')
 def createGroup(request):

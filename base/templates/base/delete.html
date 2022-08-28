@@ -2,14 +2,30 @@
 
 {% block content %}
 
-<form method="POST" action="">
-    {% csrf_token %}
-    <p>Are you sure you want to dele "{{obj}}"?</p>
+<style>
+    .group-container{
+      display: grid;
+      grid-template-columns: 1fr 6fr 1fr;
+  
+    }
+</style>
 
-    <a href="{{request.META.HTTP_REFERER}}">Go Back</a>
-    <input type="submit" value="Confirm" />
+<div class="group-container">
+    <div></div>
 
+    <div>
+        <hr>
+        <form method="POST" action="">
+            {% csrf_token %}
+            <p>Are you sure you want to dele "{{obj}}"?</p>
+        
+            <h4><a href="{{request.META.HTTP_REFERER}}">Go Back</a></h4>
+            <input type="submit" value="Confirm" />
+        </form>
+    </div>
 
-</form>
+    <div></div>
+
+</div>
 
 {% endblock content %}
