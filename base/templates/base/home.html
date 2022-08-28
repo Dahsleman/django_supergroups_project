@@ -62,7 +62,11 @@
       {% for group in groups %}  
       <div class="home3-container">
         <div>
-          <h5><a href="{% url 'group' group.id %}">{{group.name}}</a></h5>
+          {% if request.user == group.admin %}
+            <h5><a href="{% url 'group' group.id %}">{{group.name}}</a></h5>
+          {% else %}
+            <h5>{{group.name}}</h5>
+          {% endif %}
         </div>
         <div>
           <h5>@{{group.admin.username}}</h5>

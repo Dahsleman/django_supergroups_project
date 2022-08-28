@@ -2,10 +2,27 @@
 
 {% block content %}
 
-{% for token in tokens %}
+<style>
+    .group-container{
+      display: grid;
+      grid-template-columns: 1fr 6fr 1fr;
+  
+    }
+</style>
 
-    <h1>{{token.number}}</h1>
+<div class="group-container">
+    <div></div>
 
-{% endfor %}
+    <div>
+        {% for token in tokens %}
+
+            <h1>{{token.number}}</h1>
+
+        {% endfor %}
+    </div>
+
+    <div></div>
+
+</div>
 
 {% endblock content %}

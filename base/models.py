@@ -31,7 +31,6 @@ class Duration(models.Model):
     minuts = models.CharField(max_length=2, null=True, blank=True)
     created = models.DateTimeField(auto_now_add=True)
 
-
     class Meta:
         ordering = ['created']
 
@@ -59,22 +58,15 @@ class Availabilities(models.Model):
     name = models.CharField(max_length=100)
     duration = models.ForeignKey(Duration, on_delete=SET_NULL, null=True)
     start_interval = models.ForeignKey(StartInterval, on_delete=SET_NULL, null=True)
-    #min_start_time = 
-    #max_end_date = 
     description = models.TextField(max_length=200, null=True, blank=True)
-    
     created = models.DateTimeField(auto_now_add=True)
-    # participants =
 
     class Meta:
         ordering = ['-created']
         
-
-
     def __str__(self):
         return f"Name: {self.name} -- Group: {self.group}"  
         
-
 class Event(models.Model):
     name = models.CharField(max_length=100)
     duration = models.ForeignKey(Duration, on_delete=SET_NULL, null=True)

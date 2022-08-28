@@ -64,25 +64,25 @@
     </div>
     
     <div>
-        <div class="group4-container">
-            <div>
-                <h2>Guest list</h2>
-            </div>
-            <div>
-                {% if request.user == group.admin %}
-                <h3 style="float:right"><a href="{% url 'create-participants' group.id %}">add/remove</a></h3>
-                {% endif %}
-            </div>         
-        </div>  
-        
-        <p>@{{group.admin}}[Creator]</p>
-        <hr>
+      <div class="group4-container">
+        <div>
+            <h2>Guest list</h2>
+        </div>
+        <div>
+            {% if request.user == group.admin %}
+            <h3 style="float:right"><a href="{% url 'create-participants' group.id %}">add/remove</a></h3>
+            {% endif %}
+        </div>         
+      </div>  
+      
+      <p>@{{group.admin}}[Creator]</p>
+      <hr>
 
-        {% for user in participants %}
-            <div> 
-            <p>@{{user.username}}</p>
-            </div>
-        {% endfor %}
+      {% for user in participants %}
+        <div> 
+          <p>@{{user.username}}</p>
+        </div>
+      {% endfor %}
     </div>
 
     <div></div>
