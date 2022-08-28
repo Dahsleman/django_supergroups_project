@@ -3,17 +3,19 @@
 {% block content %}
 
 <style>
-    .home-container{
-    display: grid;
-    grid-template-columns: 1fr 1fr 5fr 1fr;
-
-  }
+    .group-container{
+      display: grid;
+      grid-template-columns: 1fr 6fr 1fr;
+  
+    }
 </style>
-<div class="home-container">
-    <div>
 
-    </div>
+<div class="group-container">
+
+    <div></div>
+  
     <div>
+        <hr>
         <a href="{{request.META.HTTP_REFERER}}">Go Back</a>
         <form method="POST" action="">
             {% csrf_token %}
@@ -21,6 +23,10 @@
             <input type="Submit" value="Submit" />
         </form>
     </div>
+  
+    <div></div>
+  
 </div>
+
 
 {% endblock content %}

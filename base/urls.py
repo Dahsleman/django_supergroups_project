@@ -8,7 +8,7 @@ urlpatterns = [
     path('register/', views.registerPage, name="register"),
 
     path('', views.home, name="home"),
-    path('apps/', views.apps, name="apps"),
+    path('bot/', views.apps, name="bot"),
     path('token/', views.token, name="token"),
 
     path('group/<str:pk>/', views.group, name="group"),

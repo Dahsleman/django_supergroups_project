@@ -1,16 +1,92 @@
 {% extends 'main.html' %}
 
 {% block content %}
-<div>
-    <a href="{% url 'group' group.id %}">Go Back</a>
+<style>
+    .group-container{
+      display: grid;
+      grid-template-columns: 1fr 6fr 1fr;
+  
+    }
+    .group2-container{
+      display: grid;
+      grid-template-columns: 3fr 3fr;
+  
+    }
+    .group3-container{
+      display: grid;
+      grid-template-columns: 1fr 1fr 5fr 1fr;
+  
+    }
+    .group4-container{
+      display: grid;
+      grid-template-columns: 4fr 1fr;
+  
+    }
+    .group5-container{
+      display: grid;
+      grid-template-columns: 1fr 6fr;
+      
+    }
+</style>
+
+<div class="group-container">
+
+    <div></div>
+  
+    <div>
+      {% if request.user == group.admin %}
+        <div class="group2-container">
+          <div>
+            <h1>{{group.name}}</h1>
+          </div>
+          <div>
+            <h3 style="float:right"><a href="{% url 'delete-group' group.id %}">Delete</a></h3>
+          </div>
+        </div>
+      {% else %}
+        <h1>{{group.name}}</h1>
+      {% endif %}
+      <hr>
+    </div>
+  
+    <div></div>
+  
 </div>
 
-<div>
-    <a href="{% url 'delete-group' group.id %}">Delete</a>
+<div class="group3-container">
+
+    <div></div>
+  
+    <div>
+      <h3><a href="{% url 'group' group.id %}">Settings</a></h3> 
+      <h3><a href="">Guest list</a></h3>
+      <h3><input type="Submit" value="Enter" /></h3>
+    </div>
+    
+    <div>
+        <div class="group4-container">
+            <div>
+                <h2>Guest list</h2>
+            </div>
+            <div>
+                {% if request.user == group.admin %}
+                <h3 style="float:right"><a href="{% url 'create-participants' group.id %}">add/remove</a></h3>
+                {% endif %}
+            </div>         
+        </div>  
+        
+        <p>@{{group.admin}}[Creator]</p>
+        <hr>
+
+        {% for user in participants %}
+            <div> 
+            <p>@{{user.username}}</p>
+            </div>
+        {% endfor %}
+    </div>
+
+    <div></div>
+  
 </div>
-<div>
-    <a href="{% url 'update-group' group.id %}">Edit</a>
-</div>
-<a>Integrations</a>
 
 {% endblock content %}

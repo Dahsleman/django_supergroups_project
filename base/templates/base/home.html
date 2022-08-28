@@ -17,86 +17,72 @@
     display: grid;
     grid-template-columns: 1fr 1fr 1fr 1fr;
   }
+  .home4-container{
+    display: grid;
+    grid-template-columns: 2fr;
+  }
 </style>
 
 <div class="home-container">
 
-  <div>
-
-  </div>
+  <div></div>
 
   <div>
       <h3><a href="/">Rooms</a></h3> 
-      <h3><a href="{% url 'apps' %}">Bot</a></h3>
-      <h3><a href="">Members</a></h3>
+      <h3><a href="">Roomies</a></h3>
       <h3><a href="">Invitations</a></h3>
+      <h3><a href="{% url 'bot' %}">Bot</a></h3>
       <h3><a href="">Profile</a></h3>   
   </div>
 
   <div>
-
-      <div>
-        <h1>Rooms</h1>
-        <p>
-          <span style="float:right"><a href="{% url 'create-group' %}">Create Room</a></span>
-          <span style="float:left"><h4>{{group_count}} avaiable</h4></span>
-        </p>
-        <div class="home2-container">
-          <div>
-            <h3>Title</h3>
-            <hr>
-          </div>
-          <div>
-            <h3>Creator</h3>
-            <hr>
-          </div>
-          <div>
-            <h3>Type</h3>
-            <hr>
-          </div>
-          <!-- <div>
-            <h3></h3>
-            <hr>
-          </div> -->
-        </div>     
-      </div>
-
-      <div>
-        {% for group in groups %}  
-        <div class="home3-container">
-          <div>
-            <h5><a href="{% url 'group' group.id %}">{{group.name}}</a></h5>
-            <hr>
-          </div>
-          <div>
-            <h5>@{{group.admin.username}}</h5>
-            <hr>
-          </div>
-          <div>
-            <h5>Public</h5>
-            <hr>
-          </div>
-          <div>
-            <!-- <h5> Created: {{group.created.date}}</h5> -->
-            <h5><a href="">Enter</a></h5>
-            <hr>
-          </div>              
-        </div>      
-        {% endfor %}
-      </div>
-
-    </div> 
     <div>
-
+      <h1>Rooms</h1>
+      <p>
+        <span style="float:right"><a href="{% url 'create-group' %}">Create Room</a></span>
+        <span style="float:left"><h4>{{group_count}} avaiable</h4></span>
+      </p>
+      <div class="home2-container">
+        <div>
+          <h3>Title</h3>
+          <hr>
+        </div>
+        <div>
+          <h3>Creator</h3>
+          <hr>
+        </div>
+        <div>
+          <h3>Type</h3>
+          <hr>
+        </div>
+      </div>     
     </div>
 
-  </div>
-
-  <!-- <div>
-    <h3>Roomates (<a href="">add</a>)</h3>
+    <div>
+      {% for group in groups %}  
+      <div class="home3-container">
+        <div>
+          <h5><a href="{% url 'group' group.id %}">{{group.name}}</a></h5>
+        </div>
+        <div>
+          <h5>@{{group.admin.username}}</h5>
+        </div>
+        <div>
+          <h5>Public</h5>
+        </div>
+        <div>
+          <h3 style="float:right"><input type="Submit" value="Enter" /></h3>
+        </div>               
+      </div>      
+      {% endfor %}
+    </div>
     <hr>
-  </div> -->
+
+  </div> 
+  
+  <div></div>
+
+</div>
  
-</>
 
 {% endblock %}

@@ -59,9 +59,6 @@ def registerPage(request):
 
     return render(request, 'base/login_register.html', {'form': form})
 
-    # return render(request, 'base/login_register.html', {'form': form})
-
-
 
 def home(request):
     if request.user.is_authenticated: 
@@ -78,7 +75,7 @@ def home(request):
 
 def apps(request):
     context = {}
-    return render(request, 'base/apps.html', context)
+    return render(request, 'base/bot.html', context)
 
 
 @login_required(login_url='/login')

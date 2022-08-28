@@ -6,68 +6,112 @@
 <style>
   .group-container{
     display: grid;
-    grid-template-columns: 3fr 1fr;
+    grid-template-columns: 1fr 6fr 1fr;
 
   }
+  .group2-container{
+    display: grid;
+    grid-template-columns: 3fr 3fr;
+
+  }
+  .group3-container{
+    display: grid;
+    grid-template-columns: 1fr 1fr 5fr 1fr;
+
+  }
+  .group4-container{
+    display: grid;
+    grid-template-columns: 4fr 1fr;
+
+  }
+  .group5-container{
+    display: grid;
+    grid-template-columns: 1fr 6fr;
+    
+  }
 </style>
+
 <div class="group-container">
 
+  <div></div>
+
   <div>
-
-    <div>
-      {% if request.user == group.admin %}
-      <a href="{% url 'group-config' group.id %}">Edit</a>
-      {% endif %}
-    </div>
-    <div>
-      <!-- {% if request.user == group.admin %}
-      <a href="{% url 'create-event_type' group.id %}">Create event type</a>
-      {% endif %} -->
-    </div>
-
-    <h1>{{group.name}}</h1>
-    <p>{{group.description}}</p>
-
-    <div class="availability-wrapper">
-      
-      <h3><a href="">Availabilities</a> | <a href="{% url 'events' %}">Events</a> | <a href="">Tasks</a> | <a href="">Files</a> | <a href="">Notifications</a> | <a href="">Apps</a> </h3>
-      <h4><a href="">Group Availability</a></h4>
-      <h5>Unavailable</h5>
-      <hr>
-      
-      {% for event_type in event_types %}
-      <div>
-        <h4><a href="{% url 'event_type_availabilities' event_type.id %}">{{event_type.name}}</a></h4>
+    {% if request.user == group.admin %}
+      <div class="group2-container">
+        <div>
+          <h1>{{group.name}}</h1>
+        </div>
+        <div>
+          <h3 style="float:right"><a href="{% url 'delete-group' group.id %}">Delete</a></h3>
+        </div>
       </div>
-      {% if request.user == group.admin %}
-        <h5><a href="{% url 'delete-event_type' event_type.id %}">Delete</a></h5> 
-      {% endif %}
-      
-      <hr>
-      {% endfor %}
-
-    </div>
-
-
-  </div>
-  <div>
-    <h3>Integrants 
-      {% if request.user == group.admin %}
-      (<a href="{% url 'create-participants' group.id %}">add/remove</a>)
-      {% endif %}
-    </h3>
+    {% else %}
+      <h1>{{group.name}}</h1>
+    {% endif %}
     <hr>
-    <p>@{{group.admin}}[admin]</p>
-    {% for user in participants %}
-      <div>
-        
-        <p>@{{user.username}}</p>
-        
-      </div>
-    {% endfor %}
-
   </div>
 
+  <div></div>
+
+</div>
+
+<div class="group3-container">
+
+  <div></div>
+
+  <div>
+    <h3><a href="">Settings</a></h3> 
+    <h3><a href="{% url 'group-config' group.id %}">Guest list</a></h3>
+    <h3><input type="Submit" value="Enter" /></h3>
+  </div>
+
+  <div>
+    <div class="group4-container">
+      <div>
+        <h2>Settings</h2>
+      </div>
+      <div>
+        <h3 style="float:right"><a href="{% url 'update-group' group.id %}">Edit</a></h3>
+      </div>    
+    </div>
+    <div class="group5-container">
+      <div>
+        <h3>Title:</h3>
+      </div>
+      <div>
+        <h4>{{group.name}}</h4>
+      </div>
+    </div>
+    <hr>
+    <div class="group5-container">
+      <div>
+        <h3>Description:</h3>
+      </div>
+      <div>
+        <h5>{{group.description}}</h5>
+      </div>
+    </div>
+    <hr>
+    <div class="group5-container">
+      <div>
+        <h3>Type:</h3>
+      </div>
+      <div>
+        <h5>Public</h5>
+      </div>
+    </div>
+    <hr>
+    <div class="group5-container">
+      <div>
+        <h3>Creation:</h3>
+      </div>
+      <div>
+        <h5>{{group.created}}</h5>
+      </div>
+    </div>
+
+  </div>
+  <div></div>
 
 </div>
 

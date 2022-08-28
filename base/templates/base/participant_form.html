@@ -2,20 +2,33 @@
 
 {% block content %}
 
-<div>
-    <a href="{{request.META.HTTP_REFERER}}">Go Back</a>
+<style>
+    .group-container{
+      display: grid;
+      grid-template-columns: 1fr 6fr 1fr;
+  
+    }
+</style>
+
+<div class="group-container">
+    <div></div>
+
     <div>
-        <p>
-            Select all group participants at once.
-        </p>
-        <p>Hold down “Control”, or “Command” on a Mac, to select more than one.</p>
+        <a href="{{request.META.HTTP_REFERER}}">Go Back</a>
+        <div>
+            <p>
+                Select all group participants at once.
+            </p>
+            <p>Hold down “Control”, or “Command” on a Mac, to select more than one.</p>
+        </div>
+        <form method="POST" action="">
+            {% csrf_token %}
+            {{form.as_p}}
+            <input type="Submit" value="Submit" />
+        </form>        
     </div>
-    <form method="POST" action="">
-        {% csrf_token %}
-        {{form.as_p}}
-        <input type="Submit" value="Submit" />
-    </form>
-    
+    <div></div>
 </div>
+
 
 {% endblock content %}
