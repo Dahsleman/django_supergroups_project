@@ -25,6 +25,7 @@ class Group(models.Model):
     participants = models.ManyToManyField(User, related_name='participants', blank=True)
     updated = models.DateTimeField(auto_now=True)
     created = models.DateTimeField(auto_now_add=True)
+    type = models.ForeignKey(Group_type, on_delete=models.CASCADE, null=True)
 
     class Meta:
         ordering = ['-created']
