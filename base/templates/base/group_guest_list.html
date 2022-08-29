@@ -58,7 +58,7 @@
     <div></div>
   
     <div>
-      <h3><a href="{% url 'group' group.id %}">Settings</a></h3> 
+      <h3><a href="{% url 'group-settings' group.id %}">Settings</a></h3> 
       <h3><a href="">Guest list</a></h3>
       <h3><input type="Submit" value="Enter" /></h3>
     </div>
@@ -69,9 +69,12 @@
             <h2>Guest list</h2>
         </div>
         <div>
-            {% if request.user == group.admin %}
-            <h3 style="float:right"><a href="{% url 'create-participants' group.id %}">add/remove</a></h3>
-            {% endif %}
+            <!-- {% if request.user == group.admin %} -->
+            {% if group.type == Private %}
+              <h3 style="float:right"><a href="{% url 'create-participants' group.id %}">add/remove</a></h3>
+            {% else %}
+              <h3 style="float:right">add/remove</h3>
+            <!-- {% endif %} -->
         </div>         
       </div>  
       
@@ -88,5 +91,5 @@
     <div></div>
   
 </div>
-
+{% endif %}
 {% endblock content %}

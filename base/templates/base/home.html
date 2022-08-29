@@ -40,7 +40,7 @@
       <h1>Rooms</h1>
       <p>
         <span style="float:right"><a href="{% url 'create-group' %}">Create Room</a></span>
-        <span style="float:left"><h4>{{group_count}} avaiable</h4></span>
+        <span style="float:left"><h4>{{group_count}} available</h4></span>
       </p>
       <div class="home2-container">
         <div>
@@ -63,7 +63,7 @@
       <div class="home3-container">
         <div>
           {% if request.user == group.admin %}
-            <h5><a href="{% url 'group' group.id %}">{{group.name}}</a></h5>
+            <h5><a href="{% url 'group-settings' group.id %}">{{group.name}}</a></h5>
           {% else %}
             <h5>{{group.name}}</h5>
           {% endif %}
@@ -77,10 +77,11 @@
         <div>
           <h3 style="float:right"><input type="Submit" value="Enter" /></h3>
         </div>               
-      </div>      
+      </div> 
+      <hr>     
       {% endfor %}
     </div>
-    <hr>
+    
 
   </div> 
   

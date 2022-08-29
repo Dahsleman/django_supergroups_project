@@ -91,7 +91,7 @@ def token(request):
 
 """GROUP"""    
 
-def group(request, pk):
+def groupSettings(request, pk):
     group = Group.objects.get(id=pk)
     event_types = group.availabilities_set.all().order_by('-created')
     participants = group.participants.all().exclude(username=group.admin)
@@ -100,12 +100,12 @@ def group(request, pk):
 
     return render(request, 'base/group_settings.html', context)
 
-def groupConfig(request, pk):
+def groupGuest_list(request, pk):
     group = Group.objects.get(id=pk)
     participants = group.participants.all().exclude(username=group.admin)
     
     if request.method == 'POST':
-        return render('group', pk=pk)
+        return render('group-settings', pk=pk)
 
     context = {'group': group, 'participants':participants}
     return render(request, 'base/group_guest_list.html', context)

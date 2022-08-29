@@ -11,11 +11,11 @@ urlpatterns = [
     path('bot/', views.apps, name="bot"),
     path('token/', views.token, name="token"),
 
-    path('group/<str:pk>/', views.group, name="group"),
+    path('group-settings/<str:pk>/', views.groupSettings, name="group-settings"),
     path('create-group/', views.createGroup, name="create-group"),
     path('update-group/<str:pk>/', views.updateGroup, name="update-group"),
     path('delete-group/<str:pk>/', views.deleteGroup, name="delete-group"),
-    path('group-config/<str:pk>/', views.groupConfig, name="group-config"),
+    path('group-guest-list/<str:pk>/', views.groupGuest_list, name="group-guest-list"),
 
     path('event_type_availabilities/<str:pk>/', views.event_type_availabilities, name="event_type_availabilities"),
     path('create-event_type/<str:pk>/', views.createEvent_type, name="create-event_type"),
