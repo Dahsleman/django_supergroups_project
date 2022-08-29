@@ -102,9 +102,12 @@ def group(request, pk):
 
 def groupConfig(request, pk):
     group = Group.objects.get(id=pk)
+    participants = group.participants.all().exclude(username=group.admin)
+    
     if request.method == 'POST':
         return render('group', pk=pk)
-    context = {'group': group}
+
+    context = {'group': group, 'participants':participants}
     return render(request, 'base/group_guest_list.html', context)
 
 @login_required(login_url='/login')
