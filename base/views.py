@@ -5,7 +5,7 @@ from django.shortcuts import render, redirect
 from django.contrib import messages
 from base.scripts import save_token
 from random import randint
-from .models import Availabilities, Group
+from .models import Availabilities, Group, Group_type
 from .forms import GroupForm, AvailabilitiesForm, ParticipantsForm  
 from django.contrib.auth.forms import UserCreationForm
 
@@ -103,11 +103,14 @@ def groupSettings(request, pk):
 def groupGuest_list(request, pk):
     group = Group.objects.get(id=pk)
     participants = group.participants.all().exclude(username=group.admin)
+    group_type = 'Private'
+    private_type = Group_type.objects.get(id='2')
+
     
     if request.method == 'POST':
         return render('group-settings', pk=pk)
 
-    context = {'group': group, 'participants':participants}
+    context = {'group': group, 'participants':participants, 'group_type':group_type, 'private_type':private_type}
     return render(request, 'base/group_guest_list.html', context)
 
 @login_required(login_url='/login')
