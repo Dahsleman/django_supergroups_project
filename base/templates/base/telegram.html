@@ -1,0 +1,93 @@
+{% extends 'main.html' %}
+
+{% block content %}
+
+<style>
+    .bot-container{
+      display: grid;
+      grid-template-columns: 1fr 1fr 5fr 1fr;
+  
+    }
+    .bot-container2{
+      display: grid;
+      grid-template-columns: 5fr;
+  
+    }
+</style>
+
+<div class="bot-container">
+
+    <div>
+  
+    </div>
+
+    <div>
+        <h3><a href="/">Rooms</a></h3>
+        <h3><a href="">Roomies</a></h3> 
+        <h3><a href="">Telegram</a></h3>
+    </div>
+
+    <div>        
+        <h1>Telegram</h1>
+        <div class="bot-container2">
+            <div>
+                <spam style="float:left">
+                    <h3>OAuth</h3>
+                </spam>
+                <spam style="float:right">
+                    <form method="POST" action="{% url 'token' %}">
+                        {% csrf_token %}
+                        <h3><button>Token</button></h3>    
+                    </form>
+                </spam>
+            </div>
+        </div>
+        <hr>
+        <div class="bot-container2">
+            <div>
+                <spam style="float:left">
+                    <h3>/Settings</h3>
+                </spam>
+                <spam style="float:right">
+                    <form method="POST" action="{% url 'telegram-settings-OH' %}">
+                        {% csrf_token %}
+                        <h3><button>Edit</button></h3>    
+                    </form>
+                </spam>
+            </div>
+        </div>
+        <hr>
+        <div class="bot-container2">
+            <div>
+                <spam style="float:left">
+                    <h3>/Agenda</h3>
+                </spam>
+                <spam style="float:right">
+                    <form method="POST" action="{% url 'telegram-agenda' %}">
+                        {% csrf_token %}
+                        <h3><button>Edit</button></h3>    
+                    </form>
+                </spam>
+            </div>
+        </div>
+        <hr>
+        <div class="bot-container2">
+            <div>
+                <spam style="float:left">
+                    <h3>/Files</h3>
+                </spam>
+                <spam style="float:right">
+                    <form method="POST" action="{% url 'telegram-agenda' %}">
+                        {% csrf_token %}
+                        <h3><button>Edit</button></h3>    
+                    </form>
+                </spam>
+            </div>
+        </div>
+        <hr>
+    </div>
+    <div></div>
+        
+</div>
+
+{% endblock content %}

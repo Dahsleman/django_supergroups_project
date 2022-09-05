@@ -73,9 +73,9 @@ def home(request):
     else:
         return redirect('register')
 
-def apps(request):
+def telegram(request):
     context = {}
-    return render(request, 'base/bot.html', context)
+    return render(request, 'base/telegram.html', context)
 
 
 @login_required(login_url='/login')
@@ -89,6 +89,22 @@ def token(request):
         context = {'tokens': tokens}
     return render(request, 'base/token.html', context)
 
+def telegramSettingsOH(request):
+    context = {}
+    return render(request, 'base/telegram-settings-OH.html', context)
+
+def telegramSettingsVM(request):
+    context = {}
+    return render(request, 'base/telegram-settings-VM.html', context)
+
+def telegramSettingsTZ(request):
+    context = {}
+    return render(request, 'base/telegram-settings-TZ.html', context)
+
+def telegramAgenda(request):
+    context = {}
+    return render(request, 'base/telegram-agenda.html', context)
+
 """GROUP"""    
 
 def groupSettings(request, pk):
@@ -100,7 +116,7 @@ def groupSettings(request, pk):
 
     return render(request, 'base/group_settings.html', context)
 
-def groupGuest_list(request, pk):
+def groupMembers(request, pk):
     group = Group.objects.get(id=pk)
     participants = group.participants.all().exclude(username=group.admin)
     group_type = 'Private'
@@ -111,7 +127,7 @@ def groupGuest_list(request, pk):
         return render('group-settings', pk=pk)
 
     context = {'group': group, 'participants':participants, 'group_type':group_type, 'private_type':private_type}
-    return render(request, 'base/group_guest_list.html', context)
+    return render(request, 'base/group_members.html', context)
 
 @login_required(login_url='/login')
 def createGroup(request):
@@ -150,60 +166,65 @@ def deleteGroup(request, pk):
         group.delete()
         return redirect('home')
     
-    return render(request, 'base/delete.html',{'obj':group})
+    return render(request, 'base/group_delete.html',{'obj':group})
+
+def userProfile(request, pk):
+    users = User.objects.get(id=pk)
+
+    context = {'users':users}
+    return render(request, 'base/user_profile.html', context)
 
 
+# def event_type_availabilities(request, pk):
+#     event_type = Availabilities.objects.get(id=pk)
 
-def event_type_availabilities(request, pk):
-    event_type = Availabilities.objects.get(id=pk)
+#     context = {'event_type': event_type}
+#     return render(request, 'base/event_type_availabilities.html', context)
 
-    context = {'event_type': event_type}
-    return render(request, 'base/event_type_availabilities.html', context)
+# """Event Type"""
 
-"""Event Type"""
+# def createEvent_type(request, pk):
+#     form = AvailabilitiesForm()
+#     group_instance = Group.objects.get(id=pk)
 
-def createEvent_type(request, pk):
-    form = AvailabilitiesForm()
-    group_instance = Group.objects.get(id=pk)
-
-    if request.method == 'POST':
-        form = AvailabilitiesForm(request.POST)
-        if form.is_valid():
-            availability_form = form.save(commit=False)
-            availability_form.host = request.user
-            availability_form.group = group_instance
-            availability_form.save()
-            return redirect('group', pk=group_instance.id)
-
-
-    context = {'form':form}
-    return render(request, 'base/group_form.html', context)
-
-def updateEvent_type(request, pk):
-    availability = Availabilities.objects.get(id=pk)
-    form = AvailabilitiesForm(instance=availability)
-    group_id = availability.group.id
-    if request.method == 'POST':
-        form = AvailabilitiesForm(request.POST, instance=availability)
-        if form.is_valid():
-            form.save()
-            return redirect('group', pk=group_id)
+#     if request.method == 'POST':
+#         form = AvailabilitiesForm(request.POST)
+#         if form.is_valid():
+#             availability_form = form.save(commit=False)
+#             availability_form.host = request.user
+#             availability_form.group = group_instance
+#             availability_form.save()
+#             return redirect('group', pk=group_instance.id)
 
 
-    context = {'form': form}
-    return render(request, 'base/group_form.html',context)
+#     context = {'form':form}
+#     return render(request, 'base/group_form.html', context)
 
-def deleteEvent_type(request, pk):
+# def updateEvent_type(request, pk):
+#     availability = Availabilities.objects.get(id=pk)
+#     form = AvailabilitiesForm(instance=availability)
+#     group_id = availability.group.id
+#     if request.method == 'POST':
+#         form = AvailabilitiesForm(request.POST, instance=availability)
+#         if form.is_valid():
+#             form.save()
+#             return redirect('group', pk=group_id)
 
-    availability = Availabilities.objects.get(id=pk)
-    group_id = availability.group.id
-    availability_name = availability.name
+
+#     context = {'form': form}
+#     return render(request, 'base/group_form.html',context)
+
+# def deleteEvent_type(request, pk):
+
+#     availability = Availabilities.objects.get(id=pk)
+#     group_id = availability.group.id
+#     availability_name = availability.name
     
-    if request.method == 'POST':
-        availability.delete()
-        return redirect('group', pk=group_id)
+#     if request.method == 'POST':
+#         availability.delete()
+#         return redirect('group', pk=group_id)
     
-    return render(request, 'base/delete.html',{'obj':availability_name})
+#     return render(request, 'base/delete.html',{'obj':availability_name})
 
 """Participants"""
 

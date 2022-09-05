@@ -8,19 +8,22 @@ urlpatterns = [
     path('register/', views.registerPage, name="register"),
 
     path('', views.home, name="home"),
-    path('bot/', views.apps, name="bot"),
+
+    
+    path('telegram/', views.telegram, name="telegram"),
     path('token/', views.token, name="token"),
+    path('telegram-settings-OH/', views.telegramSettingsOH, name="telegram-settings-OH"),
+    path('telegram-settings-VM/', views.telegramSettingsVM, name="telegram-settings-VM"),
+    path('telegram-settings-TZ/', views.telegramSettingsTZ, name="telegram-settings-TZ"),
+    path('telegram-agenda/', views.telegramAgenda, name="telegram-agenda"),
 
     path('group-settings/<str:pk>/', views.groupSettings, name="group-settings"),
     path('create-group/', views.createGroup, name="create-group"),
     path('update-group/<str:pk>/', views.updateGroup, name="update-group"),
     path('delete-group/<str:pk>/', views.deleteGroup, name="delete-group"),
-    path('group-guest-list/<str:pk>/', views.groupGuest_list, name="group-guest-list"),
+    path('group-members/<str:pk>/', views.groupMembers, name="group-members"),
 
-    path('event_type_availabilities/<str:pk>/', views.event_type_availabilities, name="event_type_availabilities"),
-    path('create-event_type/<str:pk>/', views.createEvent_type, name="create-event_type"),
-    path('update-event_type/<str:pk>/', views.updateEvent_type, name="update-event_type"),
-    path('delete-event_type/<str:pk>/', views.deleteEvent_type, name="delete-event_type"),
+    path('user-profile/<str:pk>/', views.userProfile, name="user-profile"),
 
     path('create-participants/<str:pk>/', views.createParticipants, name="create-participants"),
 

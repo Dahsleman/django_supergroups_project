@@ -33,10 +33,10 @@
         <div class="telegram-settings-container2">
             <div>
                 <spam style="float:left">
-                    <h1>OAuth</h1>
+                    <h1>/Agenda</h1>
                 </spam>
                 <spam style="float:right">
-                    <h3><a href="{% url 'telegram' %}">Go Back</a></h3>
+                    <h3><a href="{% url 'telegram' %}">Go Back</a>|Create</h3>
                 </spam>
             </div>
         </div> 
@@ -44,28 +44,24 @@
         <div class="telegram-settings-container3">
 
             <div>
-                <h3>OAuth</h3>
+                <h3>1 - Main</h3>
             </div>
 
             <div>
                 <div class="telegram-settings-container4">
                     <div>
-                        <h2>Token</h2>
+                        <h2>Main</h2>
                     </div>
                     <div>
-                        <spam style="float:right">
-                            {% for token in tokens %}
-                        
-                                <h3>{{token.number}}</h3>
-                        
-                            {% endfor %}
-                        </spam>
+                        <h3 style="float:right"><a href="">Edit</a></h3>
                     </div>                    
                 </div>
                 <div class="telegram-settings-container4">
                     <div>
+                        <!-- <h3>Current</h3> -->
                     </div>
                     <div>
+                        <!-- <h3 style="float:right">America/BR</h3> -->
                     </div>                    
                 </div>
             </div>  

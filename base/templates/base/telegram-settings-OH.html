@@ -1,0 +1,109 @@
+{% extends 'main.html' %}
+
+{% block content %}
+
+<style>
+    .telegram-settings-container{
+      display: grid;
+      grid-template-columns: 1fr 6fr 1fr;
+  
+    }
+    .telegram-settings-container2{
+      display: grid;
+      grid-template-columns: 6fr;
+  
+    }
+    .telegram-settings-container3{
+    display: grid;
+    grid-template-columns: 1fr 5fr;
+
+  }
+  .telegram-settings-container4{
+    display: grid;
+    grid-template-columns: 1fr 4fr;
+
+  }
+</style>
+
+<div class="telegram-settings-container">
+
+    <div></div>
+
+    <div>
+        <div class="telegram-settings-container2">
+            <div>
+                <spam style="float:left">
+                    <h1>/Settings</h1>
+                </spam>
+                <spam style="float:right">
+                    <h3><a href="{% url 'telegram' %}">Go Back</a></h3>
+                </spam>
+            </div>
+        </div> 
+        <hr>
+        <div class="telegram-settings-container3">
+
+            <div>
+                <h3>Opening hours</h3>
+                <h3><a href="{% url 'telegram-settings-VM' %}">Voice messages</a></h3>
+                <h3><a href="{% url 'telegram-settings-TZ' %}">Time zone</a></h3>
+            </div>
+
+            <div>
+                <div class="telegram-settings-container4">
+                    <div>
+                        <h2>Opening hours</h2>
+                    </div>
+                    <div>
+                        <h3 style="float:right"><a href="">Edit</a></h3>
+                    </div>                    
+                </div>
+                <div class="telegram-settings-container4">
+                    <div>
+                        <h3>Status</h3>
+                    </div>
+                    <div>
+                        <h3 style="float:right">Open</h3>
+                    </div>                    
+                </div>
+                <hr>
+                <div class="telegram-settings-container4">
+                    <div>
+                        <h3>Time</h3>
+                    </div>
+                    <div>
+                        <h3 style="float:right">24h</h3>
+                    </div>                    
+                </div>
+                <hr>
+                <div class="telegram-settings-container4">
+                    <div>
+                        <h3>Days</h3>
+                    </div>
+                    <div>
+                        <h3 style="float:right">Everyday</h3>
+                    </div>                    
+                </div>
+                <hr>
+                <div class="telegram-settings-container4">
+                    <div>
+                        <h3>Notifications</h3>
+                    </div>
+                    <div>
+                        <h3 style="float:right">On</h3>
+                    </div>                    
+                </div>
+                <hr>                            
+
+            </div>  
+
+        </div>
+        
+    </div>
+
+    <div></div>
+        
+</div>
+
+
+{% endblock content %}

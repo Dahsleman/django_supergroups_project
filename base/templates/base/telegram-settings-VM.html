@@ -33,7 +33,7 @@
         <div class="telegram-settings-container2">
             <div>
                 <spam style="float:left">
-                    <h1>OAuth</h1>
+                    <h1>/Settings</h1>
                 </spam>
                 <spam style="float:right">
                     <h3><a href="{% url 'telegram' %}">Go Back</a></h3>
@@ -44,30 +44,30 @@
         <div class="telegram-settings-container3">
 
             <div>
-                <h3>OAuth</h3>
+                <h3><a href="{% url 'telegram-settings-OH' %}"> Opening hours</a></h3>
+                <h3>Voice messages</h3>
+                <h3><a href="{% url 'telegram-settings-TZ' %}">Time zone</a></h3>
             </div>
 
             <div>
                 <div class="telegram-settings-container4">
                     <div>
-                        <h2>Token</h2>
+                        <h2>Voice messages:</h2>
                     </div>
                     <div>
-                        <spam style="float:right">
-                            {% for token in tokens %}
-                        
-                                <h3>{{token.number}}</h3>
-                        
-                            {% endfor %}
-                        </spam>
+                        <h3 style="float:left">Delete voice messages when sent</h3>
+                        <h3 style="float:right"><a href="">Edit</a></h3>
                     </div>                    
                 </div>
                 <div class="telegram-settings-container4">
                     <div>
+                        <h3>Status</h3>
                     </div>
                     <div>
+                        <h3 style="float:right">Inactived</h3>
                     </div>                    
                 </div>
+                <hr>
             </div>  
 
         </div>

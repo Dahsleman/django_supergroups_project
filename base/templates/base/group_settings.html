@@ -42,11 +42,11 @@
           <h1>{{group.name}}</h1>
         </div>
         <div>
-          <h3 style="float:right"><a href="{% url 'delete-group' group.id %}">Delete</a></h3>
+          <h3 style="float:right"><button>Ativar</button>|<a href="{% url 'delete-group' group.id %}">Delete</a></h3>
         </div>
       </div>
     {% else %}
-      <h1>{{group.name}}</h1>
+      <!-- <h1>{{group.name}}</h1> -->
     {% endif %}
     <hr>
   </div>
@@ -61,7 +61,7 @@
 
   <div>
     <h3><a href="">Settings</a></h3> 
-    <h3><a href="{% url 'group-guest-list' group.id %}">Guest list</a></h3>
+    <h3><a href="{% url 'group-members' group.id %}">Members</a></h3>
     <h3><input type="Submit" value="Enter" /></h3>
   </div>
 

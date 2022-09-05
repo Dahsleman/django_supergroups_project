@@ -1,0 +1,71 @@
+{% extends 'main.html' %}
+
+
+
+{% block content %}
+
+    <style>
+      .group-container{
+        display: grid;
+        grid-template-columns: 1fr 6fr 1fr;
+    
+      }
+      .group2-container{
+        display: grid;
+        grid-template-columns: 3fr 3fr;
+    
+      }
+      .group3-container{
+        display: grid;
+        grid-template-columns: 1fr 1fr 5fr 1fr;
+    
+      }
+      .group4-container{
+        display: grid;
+        grid-template-columns: 4fr 1fr;
+    
+      }
+      .group5-container{
+        display: grid;
+        grid-template-columns: 1fr 6fr;
+        
+      }
+    </style>
+
+    <div class="group-container">
+
+        <div></div>
+    
+        <div>
+            <div class="group2-container">
+                <div>
+                    <h1>Profile</h1>
+                </div>
+                <div></div>
+            </div>
+        
+        <hr>
+        </div>
+    
+        <div></div>
+    
+    </div>
+
+    <div class="group3-container">
+
+        <div></div>
+    
+        <div>
+            <h3><a href="">Settings</a></h3> 
+            <h3><a href="">Group_list</a></h3>
+        </div>
+      
+        <div>
+        
+        </div>  
+    
+
+        <div> </div>
+    </div>
+
+{% endblock content %}
