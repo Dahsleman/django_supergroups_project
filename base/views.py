@@ -6,8 +6,8 @@ from django.shortcuts import render, redirect
 from django.contrib import messages
 from base.scripts import save_token
 from random import randint
-from .models import Availabilities, Group, Group_type, Opening_hours
-from .forms import GroupForm, AvailabilitiesForm, ParticipantsForm, Opening_hours_Form  
+from .models import Group, Group_type, Opening_hours
+from .forms import GroupForm, ParticipantsForm, Opening_hours_Form  
 from django.contrib.auth.forms import UserCreationForm
 
 """LOGIN-LOGOUT-REGISTER"""
@@ -126,10 +126,9 @@ def telegramAgenda(request):
 
 def groupSettings(request, pk):
     group = Group.objects.get(id=pk)
-    event_types = group.availabilities_set.all().order_by('-created')
     participants = group.participants.all().exclude(username=group.admin)
 
-    context = {'group':group, 'event_types':event_types, 'participants':participants}
+    context = {'group':group, 'participants':participants}
 
     return render(request, 'base/group_settings.html', context)
 
