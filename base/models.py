@@ -33,6 +33,41 @@ class Group(models.Model):
     def __str__(self):
         return self.name
 
+class Opening_hours_status(models.Model):
+    status = models.CharField(max_length=50, null=True, blank=True)
+
+    def __str__(self):
+        return self.status
+
+class Opening_hours_time(models.Model):
+    time = models.CharField(max_length=50, null=True, blank=True)
+
+    def __str__(self):
+        return self.time
+
+class Opening_hours_days(models.Model):
+    days = models.CharField(max_length=50, null=True, blank=True)
+
+    def __str__(self):
+        return self.days
+
+class Opening_hours_notification(models.Model):
+    notification = models.CharField(max_length=50, null=True, blank=True)
+
+    def __str__(self):
+        return self.notification
+
+class Opening_hours(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE, null=True, blank=True)
+    status = models.ForeignKey(Opening_hours_status, on_delete=models.CASCADE, null=True) 
+    time = models.ForeignKey(Opening_hours_time, on_delete=models.CASCADE, null=True)
+    days = models.ForeignKey(Opening_hours_days, on_delete=models.CASCADE, null=True)
+    notification = models.ForeignKey(Opening_hours_notification, on_delete=models.CASCADE, null=True)
+
+    def __str__(self):
+        return f'Opening_hours: {self.user}'
+
+
 class Duration(models.Model):
     hours = models.CharField(max_length=2, null=True, blank=True)
     minuts = models.CharField(max_length=2, null=True, blank=True)

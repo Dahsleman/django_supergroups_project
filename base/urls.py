@@ -9,10 +9,11 @@ urlpatterns = [
 
     path('', views.home, name="home"),
 
-    
     path('telegram/', views.telegram, name="telegram"),
     path('token/', views.token, name="token"),
     path('telegram-settings-OH/', views.telegramSettingsOH, name="telegram-settings-OH"),
+    path('telegram-settings-OH-update/', views.telegramSettingsOH_update, name="telegram-settings-OH-update"),
+
     path('telegram-settings-VM/', views.telegramSettingsVM, name="telegram-settings-VM"),
     path('telegram-settings-TZ/', views.telegramSettingsTZ, name="telegram-settings-TZ"),
     path('telegram-agenda/', views.telegramAgenda, name="telegram-agenda"),
@@ -27,6 +28,5 @@ urlpatterns = [
 
     path('create-participants/<str:pk>/', views.createParticipants, name="create-participants"),
 
-    path('events/', views.Events, name="events"),
 
 ]

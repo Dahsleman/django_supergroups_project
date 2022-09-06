@@ -50,20 +50,22 @@
             </div>
 
             <div>
+                {% for set in settings %}
                 <div class="telegram-settings-container4">
                     <div>
                         <h2>Opening hours</h2>
                     </div>
                     <div>
-                        <h3 style="float:right"><a href="">Edit</a></h3>
+                        <h3 style="float:right"><a href="{% url 'telegram-settings-OH-update' %}">Edit</a></h3>
                     </div>                    
                 </div>
+
                 <div class="telegram-settings-container4">
                     <div>
                         <h3>Status</h3>
                     </div>
                     <div>
-                        <h3 style="float:right">Open</h3>
+                        <h3 style="float:right">{{set.status}}</h3>
                     </div>                    
                 </div>
                 <hr>
@@ -72,7 +74,7 @@
                         <h3>Time</h3>
                     </div>
                     <div>
-                        <h3 style="float:right">24h</h3>
+                        <h3 style="float:right">{{set.time}}</h3>
                     </div>                    
                 </div>
                 <hr>
@@ -81,7 +83,7 @@
                         <h3>Days</h3>
                     </div>
                     <div>
-                        <h3 style="float:right">Everyday</h3>
+                        <h3 style="float:right">{{set.days}}</h3>
                     </div>                    
                 </div>
                 <hr>
@@ -90,11 +92,11 @@
                         <h3>Notifications</h3>
                     </div>
                     <div>
-                        <h3 style="float:right">On</h3>
+                        <h3 style="float:right">{{set.notification}}</h3>
                     </div>                    
                 </div>
                 <hr>                            
-
+                {% endfor %}
             </div>  
 
         </div>

@@ -1,5 +1,5 @@
 from django.forms import ModelForm
-from .models import Availabilities, Group
+from .models import Availabilities, Group, Opening_hours
 
 class GroupForm(ModelForm):
     class Meta:
@@ -17,4 +17,10 @@ class ParticipantsForm(ModelForm):
     class Meta:
         model = Group
         fields = ['participants']
+
+class Opening_hours_Form(ModelForm):
+    class Meta:
+        model = Opening_hours
+        fields = '__all__'
+        exclude = ['user']
 

@@ -1,0 +1,73 @@
+{% extends 'main.html' %}
+
+{% block content %}
+
+<style>
+    .telegram-settings-container{
+      display: grid;
+      grid-template-columns: 1fr 6fr 1fr;
+  
+    }
+    .telegram-settings-container2{
+      display: grid;
+      grid-template-columns: 6fr;
+  
+    }
+    .telegram-settings-container3{
+    display: grid;
+    grid-template-columns: 1fr 5fr;
+
+  }
+  .telegram-settings-container4{
+    display: grid;
+    grid-template-columns: 1fr 4fr;
+
+  }
+</style>
+
+<div class="telegram-settings-container">
+
+    <div></div>
+
+    <div>
+        <div class="telegram-settings-container2">
+            <div>
+                <spam style="float:left">
+                    <h1>Opening Hours</h1>
+                </spam>
+                <spam style="float:right">
+                    <h3><a href="{{request.META.HTTP_REFERER}}">Go Back</a></h3>
+                </spam>
+            </div>
+        </div> 
+        <hr>
+        <div class="telegram-settings-container3">
+
+            <div>
+                <h3>Edit form</h3>
+            </div>
+
+            <div>
+                <div class="telegram-settings-container4">
+                    <div>
+                        <form method="POST" action="">
+                            {% csrf_token %}
+                            {{form.as_p}}
+                            <input type="Submit" value="Submit" />
+                        </form>
+                    </div>
+                    <div>
+                    </div>                    
+                </div>
+            </div>  
+
+        </div>
+        
+    </div>
+
+    <div></div>
+        
+</div>
+
+
+{% endblock content %}

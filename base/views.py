@@ -1,3 +1,4 @@
+from email.policy import default
 from django.contrib.auth.models import User
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
@@ -5,8 +6,8 @@ from django.shortcuts import render, redirect
 from django.contrib import messages
 from base.scripts import save_token
 from random import randint
-from .models import Availabilities, Group, Group_type
-from .forms import GroupForm, AvailabilitiesForm, ParticipantsForm  
+from .models import Availabilities, Group, Group_type, Opening_hours
+from .forms import GroupForm, AvailabilitiesForm, ParticipantsForm, Opening_hours_Form  
 from django.contrib.auth.forms import UserCreationForm
 
 """LOGIN-LOGOUT-REGISTER"""
@@ -90,8 +91,24 @@ def token(request):
     return render(request, 'base/token.html', context)
 
 def telegramSettingsOH(request):
-    context = {}
+    current_user = request.user
+    settings = Opening_hours.objects.filter(user = current_user)
+
+    context = {'settings':settings}
     return render(request, 'base/telegram-settings-OH.html', context)
+
+def telegramSettingsOH_update(request):
+    current_user = request.user
+    default = Opening_hours.objects.get(user=current_user)
+    form = Opening_hours_Form(instance=default)
+    if request.method == 'POST':
+        form = Opening_hours_Form(request.POST, instance=default)
+        if form.is_valid():
+            form.save()
+            return redirect('telegram-settings-OH')
+
+    context = {'form':form}
+    return render(request, 'base/telegram-settings-OH_form.html', context)
 
 def telegramSettingsVM(request):
     context = {}
@@ -160,7 +177,6 @@ def updateGroup(request, pk):
     return render(request, 'base/group_form.html',context)
 
 def deleteGroup(request, pk):
-
     group = Group.objects.get(id=pk)
     if request.method == 'POST':
         group.delete()
@@ -173,58 +189,6 @@ def userProfile(request, pk):
 
     context = {'users':users}
     return render(request, 'base/user_profile.html', context)
-
-
-# def event_type_availabilities(request, pk):
-#     event_type = Availabilities.objects.get(id=pk)
-
-#     context = {'event_type': event_type}
-#     return render(request, 'base/event_type_availabilities.html', context)
-
-# """Event Type"""
-
-# def createEvent_type(request, pk):
-#     form = AvailabilitiesForm()
-#     group_instance = Group.objects.get(id=pk)
-
-#     if request.method == 'POST':
-#         form = AvailabilitiesForm(request.POST)
-#         if form.is_valid():
-#             availability_form = form.save(commit=False)
-#             availability_form.host = request.user
-#             availability_form.group = group_instance
-#             availability_form.save()
-#             return redirect('group', pk=group_instance.id)
-
-
-#     context = {'form':form}
-#     return render(request, 'base/group_form.html', context)
-
-# def updateEvent_type(request, pk):
-#     availability = Availabilities.objects.get(id=pk)
-#     form = AvailabilitiesForm(instance=availability)
-#     group_id = availability.group.id
-#     if request.method == 'POST':
-#         form = AvailabilitiesForm(request.POST, instance=availability)
-#         if form.is_valid():
-#             form.save()
-#             return redirect('group', pk=group_id)
-
-
-#     context = {'form': form}
-#     return render(request, 'base/group_form.html',context)
-
-# def deleteEvent_type(request, pk):
-
-#     availability = Availabilities.objects.get(id=pk)
-#     group_id = availability.group.id
-#     availability_name = availability.name
-    
-#     if request.method == 'POST':
-#         availability.delete()
-#         return redirect('group', pk=group_id)
-    
-#     return render(request, 'base/delete.html',{'obj':availability_name})
 
 """Participants"""
 
@@ -244,12 +208,6 @@ def createParticipants(request, pk):
     context = {'form':form}
     return render(request, 'base/participant_form.html', context)
 
-
-"""Events"""
-
-def Events(request):
-    context = {}
-    return render(request, 'base/events.html', context)
 
 
 
