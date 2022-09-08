@@ -1,0 +1,88 @@
+{% extends 'main.html' %}
+{% load static %}
+
+{% block content %}
+
+<style>
+    .group-container{
+      display: grid;
+      grid-template-columns: 1fr 6fr 1fr;
+  
+    }
+</style>
+
+<div class="group-container">
+
+    <div></div>
+    
+    <!-- <div class="content-section">
+        <form method="POST">
+          {% csrf_token %}
+          <fieldset class="form-group">
+                <div id="event_name">
+                    {{ form.event_name }}
+                </div>
+                <div id="recurring_event">
+                    <select id="id_recurring_event">
+                        <option value="Yes">Yes</option>
+                        <option value="No" selected="true">No</option>
+                    </select>
+                </div>
+                <div id="recurrence_pattern">
+                    Deu certo
+                </div>
+          </fieldset>
+        </form>
+    </div> -->
+    <div class="content-section">
+        <form method="POST">
+          {% csrf_token %}
+          <fieldset class="form-group">
+                <div id="event_name">
+                    {{ form.as_p }}
+                </div>
+                <div id="recurring_event">
+                    
+                </div>
+                <div id="recurrence_pattern">
+                
+                </div>
+          </fieldset>
+        </form>
+    </div>
+  
+    <div></div>
+  
+</div>
+
+{% endblock content %}
+
+{% block javascript %}
+<script>
+// $(document).ready(function() {
+//   $("#id_recurring_event").change(function() {
+//     if ($(this).val() === "No") {
+//       $('#recurrence_pattern').hide();
+//     } else {
+//       $('#recurrence_pattern').show();
+//     }
+//   });
+
+//   $("#id_recurring_event").trigger("change")
+
+// })
+
+$(document).ready(function() {
+  $("#id_recurring_event").change(function() {
+    if ($(this).val() === "No") {
+      $('#id_recurrence_pattern').hide();
+    } else {
+      $('#id_recurrence_pattern').show();
+    }
+  });
+
+  $("#id_recurring_event").trigger("change")
+
+})
+</script>
+{% endblock %}

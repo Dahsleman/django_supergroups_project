@@ -1,7 +1,6 @@
 from django.contrib import admin
 
-from .models import (Group_type, Opening_hours, Opening_hours_days, Opening_hours_notification, 
-Opening_hours_status, Opening_hours_time, Telegram, Group)
+from .models import *
 
 admin.site.register(Telegram)
 admin.site.register(Group)
@@ -11,3 +10,4 @@ admin.site.register(Opening_hours_time)
 admin.site.register(Opening_hours_days)
 admin.site.register(Opening_hours_notification)
 admin.site.register(Opening_hours)
+admin.site.register(Event)

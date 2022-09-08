@@ -1,6 +1,9 @@
+from pickle import TRUE
 from django.db import models
 from django.contrib.auth.models import User
 from django.db.models.deletion import SET_NULL
+
+
 
 class Telegram(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE, null=True, blank=True)
@@ -67,6 +70,39 @@ class Opening_hours(models.Model):
     def __str__(self):
         return f'Opening_hours: {self.user}'
 
+
+class Event(models.Model):
+    YES_NO_CHOICES = [
+    ('No', 'No'),
+    ('Yes', 'Yes'),
+    ]
+    
+    RECURRENCE_PATTERN_CHOICES = [
+    ('---', '---'),
+    ('Daily', 'Daily'),
+    ('Weekly', 'Weekly'),
+    ('Monthly', 'Monthly'),
+    ('Yearly', 'Yearly'),
+    ]
+
+    event_name = models.CharField(
+        max_length=70,
+        help_text='''Enter a name for the event. This is a required field and is limited to 70 characters.'''
+    )
+
+    recurring_event = models.CharField(
+        max_length=5,
+        choices=YES_NO_CHOICES,
+        default='No',
+        help_text='''Is this a one off event or will it recur? Selecting Yes will open up additional fields.'''
+    )
+    
+    recurrence_pattern = models.CharField(
+        max_length=10,
+        choices=RECURRENCE_PATTERN_CHOICES,
+        default='---',
+        help_text='''Select the recurrence pattern for this event.'''
+    )
 
 
 

@@ -7,7 +7,7 @@ from django.contrib import messages
 from base.scripts import save_token
 from random import randint
 from .models import Group, Group_type, Opening_hours
-from .forms import GroupForm, ParticipantsForm, Opening_hours_Form  
+from .forms import *
 from django.contrib.auth.forms import UserCreationForm
 
 """LOGIN-LOGOUT-REGISTER"""
@@ -206,6 +206,22 @@ def createParticipants(request, pk):
 
     context = {'form':form}
     return render(request, 'base/participant_form.html', context)
+
+"""Form Test"""
+
+def test(request):
+    form = EventForm()
+    if request.method == 'POST':
+        form = EventForm(request.POST)
+        if form.is_valid():
+            form.save()
+            return redirect('home')
+
+    context = {'form':form}
+
+    return render(request, 'base/test.html', context)
+
+
 
 
 
