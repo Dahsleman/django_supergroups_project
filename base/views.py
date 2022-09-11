@@ -210,9 +210,9 @@ def createParticipants(request, pk):
 """Form Test"""
 
 def test(request):
-    form = EventForm()
+    form = Opening_hours_Form()
     if request.method == 'POST':
-        form = EventForm(request.POST)
+        form = Opening_hours_Form(request.POST)
         if form.is_valid():
             form.save()
             return redirect('home')

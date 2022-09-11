@@ -14,41 +14,31 @@
 <div class="group-container">
 
     <div></div>
-    
+  
     <!-- <div class="content-section">
         <form method="POST">
           {% csrf_token %}
           <fieldset class="form-group">
                 <div id="event_name">
-                    {{ form.event_name }}
-                </div>
-                <div id="recurring_event">
-                    <select id="id_recurring_event">
-                        <option value="Yes">Yes</option>
-                        <option value="No" selected="true">No</option>
-                    </select>
-                </div>
-                <div id="recurrence_pattern">
-                    Deu certo
-                </div>
-          </fieldset>
-        </form>
-    </div> -->
-    <div class="content-section">
-        <form method="POST">
-          {% csrf_token %}
-          <fieldset class="form-group">
-                <div id="event_name">
                     {{ form.as_p }}
+                    <input type="Submit" value="Submit" />
                 </div>
                 <div id="recurring_event">
                     
                 </div>
-                <div id="recurrence_pattern">
+                <div id="recurrence_pattern" style="display:block">
                 
                 </div>
           </fieldset>
         </form>
+    </div> -->
+
+    <div>
+      <form method='POST'> 
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type='submit'>Save</button>
+    </form>
     </div>
   
     <div></div>
@@ -58,21 +48,9 @@
 {% endblock content %}
 
 {% block javascript %}
-<script>
-// $(document).ready(function() {
-//   $("#id_recurring_event").change(function() {
-//     if ($(this).val() === "No") {
-//       $('#recurrence_pattern').hide();
-//     } else {
-//       $('#recurrence_pattern').show();
-//     }
-//   });
+<!-- <script>
 
-//   $("#id_recurring_event").trigger("change")
-
-// })
-
-$(document).ready(function() {
+$(document).ready(function(){
   $("#id_recurring_event").change(function() {
     if ($(this).val() === "No") {
       $('#id_recurrence_pattern').hide();
@@ -84,5 +62,35 @@ $(document).ready(function() {
   $("#id_recurring_event").trigger("change")
 
 })
+</script> -->
+
+
+<script>
+  // Call hideShow when page is loaded
+  $(document).ready(function(){
+      hideShow()
+  })
+
+  // call hideShow when the user clicks on the time dropdownlist
+  $('#id_time').click(function(){
+      hideShow()
+  });
+  
+  // The jquery function below hides/shows the open_time and close_time fields depending on the selected time list 
+  function hideShow(){
+      if(document.getElementById('id_time').options[document.getElementById('id_time').selectedIndex].value == "1")
+      {
+          $('#id_open_time').parents('p:first').hide();
+          $('#id_close_time').parents('p:first').hide();
+      }else
+      {
+          $('#id_open_time').parents('p:first').show();
+          $('#id_close_time').parents('p:first').show();
+      }
+  }
 </script>
+
+
+
+
 {% endblock %}

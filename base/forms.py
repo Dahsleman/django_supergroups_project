@@ -54,3 +54,14 @@ class EventForm(ModelForm):
         ]
         context_object_name = 'event'
 
+class ComponentForm(forms.ModelForm):
+    class Meta:
+        model = Component
+        fields = [
+            'component_type',
+            'component_name',
+            'branch_number_collectors',
+            'k_v',
+            'DI',
+            'length'
+        ]
