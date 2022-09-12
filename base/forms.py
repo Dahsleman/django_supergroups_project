@@ -45,7 +45,7 @@ class Opening_hours_Form(ModelForm):
         time = self.cleaned_data.get('time')
         open_time = self.cleaned_data.get('open_time')
         close_time = self.cleaned_data.get('close_time')
-        if time == 2:
+        if time == 'set open and close time':
             if open_time:
                 self.fields_required_open(['open_time'])
             if close_time and open_time != 'invalid':

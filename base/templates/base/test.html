@@ -15,30 +15,16 @@
 
     <div></div>
   
-    <!-- <div class="content-section">
-        <form method="POST">
-          {% csrf_token %}
-          <fieldset class="form-group">
-                <div id="event_name">
-                    {{ form.as_p }}
-                    <input type="Submit" value="Submit" />
-                </div>
-                <div id="recurring_event">
-                    
-                </div>
-                <div id="recurrence_pattern" style="display:block">
-                
-                </div>
-          </fieldset>
-        </form>
-    </div> -->
-
-    <div>
-      <form method='POST'> 
+    <div class="content-section">
+      <form method="POST">
         {% csrf_token %}
-        {{ form.as_p }}
-        <button type='submit'>Save</button>
-    </form>
+        <fieldset class="form-group">
+          <div id="event_name">
+            {{ form.as_p }}
+            <input type="Submit" value="Submit" />
+          </div>
+        </fieldset>
+      </form>
     </div>
   
     <div></div>
@@ -75,10 +61,15 @@ $(document).ready(function(){
   $('#id_time').click(function(){
       hideShow()
   });
+
+  // call hideShow when the user clicks on the status dropdownlist
+  $('#id_status').click(function(){
+      hideShow2()
+  });
   
   // The jquery function below hides/shows the open_time and close_time fields depending on the selected time list 
   function hideShow(){
-      if(document.getElementById('id_time').options[document.getElementById('id_time').selectedIndex].value == "1")
+      if(document.getElementById('id_time').options[document.getElementById('id_time').selectedIndex].value == "24 hours")
       {
           $('#id_open_time').parents('p:first').hide();
           $('#id_close_time').parents('p:first').hide();
@@ -88,6 +79,23 @@ $(document).ready(function(){
           $('#id_close_time').parents('p:first').show();
       }
   }
+
+  // The jquery function below hides/shows the open_time and close_time fields depending on the selected time list 
+  function hideShow2(){
+      if(document.getElementById('id_status').options[document.getElementById('id_status').selectedIndex].value == "permanently closed")
+      {
+          $('#id_time').parents('p:first').hide();
+          $('#id_days').parents('p:first').hide();
+          $('#id_notification').parents('p:first').hide();
+      }else
+      {
+          $('#id_time').parents('p:first').show();
+          $('#id_days').parents('p:first').show();
+          $('#id_notification').parents('p:first').show();
+      }
+  }
+
+
 </script>
 
 

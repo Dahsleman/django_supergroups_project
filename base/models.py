@@ -75,8 +75,8 @@ class Opening_hours(models.Model):
     ]
 
     TIME_CHOISES = [
-        (1, '24 Hours'),
-        (2, 'Set Open and Closed Time'),
+        ('24 hours', '24 Hours'),
+        ('set open and close time', 'Set Open and Close Time'),
     ]
 
     OPEN_TIME_CHOISES = [
@@ -96,18 +96,18 @@ class Opening_hours(models.Model):
             ('11', '11h'),
         )),
         ('PM', (
-            ('0', '0h'),
-            ('1', '1h'),
-            ('2', '2h'),
-            ('3', '3h'),
-            ('4', '4h'),
-            ('5', '5h'),
-            ('6', '6h'),
-            ('7', '7h'),
-            ('8', '8h'),
-            ('9', '9h'),
-            ('10', '10h'),
-            ('11', '11h'),
+            ('12', '12h'),
+            ('13', '13h'),
+            ('14', '14h'),
+            ('15', '15h'),
+            ('16', '16h'),
+            ('17', '17h'),
+            ('18', '18h'),
+            ('19', '19h'),
+            ('20', '20h'),
+            ('21', '21h'),
+            ('22', '22h'),
+            ('23', '23h'),
         ))
     ]
 
@@ -128,18 +128,18 @@ class Opening_hours(models.Model):
             ('11', '11h'),
         )),
         ('PM', (
-            ('0', '0h'),
-            ('1', '1h'),
-            ('2', '2h'),
-            ('3', '3h'),
-            ('4', '4h'),
-            ('5', '5h'),
-            ('6', '6h'),
-            ('7', '7h'),
-            ('8', '8h'),
-            ('9', '9h'),
-            ('10', '10h'),
-            ('11', '11h'),
+            ('12', '12h'),
+            ('13', '13h'),
+            ('14', '14h'),
+            ('15', '15h'),
+            ('16', '16h'),
+            ('17', '17h'),
+            ('18', '18h'),
+            ('19', '19h'),
+            ('20', '20h'),
+            ('21', '21h'),
+            ('22', '22h'),
+            ('23', '23h'),
         ))
     ]
 
@@ -157,30 +157,26 @@ class Opening_hours(models.Model):
         help_text='''Select the status'''
         ) 
         
-    time = models.FloatField(
+    time = models.CharField(
         max_length=50,
         choices=TIME_CHOISES,
         default='24 Hours',
         help_text='''Select the time'''
         ) 
 
-    # hide if time = 1
     open_time = models.CharField(
         max_length=50,
         choices=OPEN_TIME_CHOISES,
         default='invalid',
         help_text='''Select the open time''',
-        null = True,
         blank=True
         ) 
 
-    # hide if time = 1
     close_time = models.CharField(
         max_length=50,
         choices=CLOSE_TIME_CHOISES,
         default='invalid',
         help_text='''Select the close time''',
-        null = True,
         blank=True
         ) 
 
@@ -188,7 +184,7 @@ class Opening_hours(models.Model):
         max_length=50,
         choices=DAYS_CHOISES,
         default='Everyday',
-        help_text='''Select the days'''
+        help_text='''Select the days''',
         )
 
     notification = models.CharField(
