@@ -214,6 +214,8 @@ def test(request):
     if request.method == 'POST':
         form = Opening_hours_Form(request.POST)
         if form.is_valid():
+            Opening = form.save(commit=False)
+            Opening.user = request.user
             form.save()
             return redirect('home')
 
