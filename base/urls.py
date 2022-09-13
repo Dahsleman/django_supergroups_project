@@ -28,7 +28,7 @@ urlpatterns = [
 
     path('create-participants/<str:pk>/', views.createParticipants, name="create-participants"),
 
-    path('test/', views.test, name="test"),
+    path('test/', views.testUpdate, name="test"),
 
 
 ]

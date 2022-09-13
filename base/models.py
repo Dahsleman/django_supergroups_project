@@ -69,12 +69,14 @@ class Opening_hours(models.Model):
     ]
 
     DAYS_CHOISES = [
+        ('', ''),
         ('everyday', 'Everyday'),
         ('weekdays', 'Weekdays'),
         ('weekends', 'Weekends'),
     ]
 
     TIME_CHOISES = [
+        ('', ''),
         ('24 hours', '24 Hours'),
         ('set open and close time', 'Set Open and Close Time'),
     ]
@@ -144,6 +146,7 @@ class Opening_hours(models.Model):
     ]
 
     NOTIFICATION_CHOISES = [
+        ('', ''),
         ('on', 'On'),
         ('off', 'Off'),
     ]
@@ -161,7 +164,9 @@ class Opening_hours(models.Model):
         max_length=50,
         choices=TIME_CHOISES,
         default='24 Hours',
-        help_text='''Select the time'''
+        help_text='''Select the time''',
+        blank=True,
+        null=True
         ) 
 
     open_time = models.CharField(
@@ -169,7 +174,9 @@ class Opening_hours(models.Model):
         choices=OPEN_TIME_CHOISES,
         default='invalid',
         help_text='''Select the open time''',
-        blank=True
+        blank=True,
+        null=True
+
         ) 
 
     close_time = models.CharField(
@@ -177,7 +184,8 @@ class Opening_hours(models.Model):
         choices=CLOSE_TIME_CHOISES,
         default='invalid',
         help_text='''Select the close time''',
-        blank=True
+        blank=True,
+        null=True
         ) 
 
     days = models.CharField(
@@ -185,13 +193,17 @@ class Opening_hours(models.Model):
         choices=DAYS_CHOISES,
         default='Everyday',
         help_text='''Select the days''',
+        blank=True,
+        null=True
         )
 
     notification = models.CharField(
         max_length=50,
         choices=NOTIFICATION_CHOISES,
         default='Off',
-        help_text='''Select the notification'''
+        help_text='''Select the notification''',
+        blank=True,
+        null=True
         )
 
     def __str__(self):

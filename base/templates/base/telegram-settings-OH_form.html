@@ -1,9 +1,10 @@
 {% extends 'main.html' %}
+{% load static %}
 
 {% block content %}
 
 <style>
-    .telegram-settings-container{
+    .group-container{
       display: grid;
       grid-template-columns: 1fr 6fr 1fr;
   
@@ -13,61 +14,122 @@
       grid-template-columns: 6fr;
   
     }
-    .telegram-settings-container3{
-    display: grid;
-    grid-template-columns: 1fr 5fr;
 
-  }
-  .telegram-settings-container4{
-    display: grid;
-    grid-template-columns: 1fr 4fr;
-
-  }
 </style>
 
-<div class="telegram-settings-container">
+<div class="group-container">
 
     <div></div>
-
-    <div>
+  
+    <div class="content-section">
         <div class="telegram-settings-container2">
             <div>
                 <spam style="float:left">
-                    <h1>Opening Hours</h1>
+                    <h1>Opening hours</h1>
                 </spam>
                 <spam style="float:right">
-                    <h3><a href="{{request.META.HTTP_REFERER}}">Go Back</a></h3>
+                    <h3><a href="{% url 'telegram-settings-OH' %}">Go Back</a></h3>
                 </spam>
             </div>
         </div> 
-        <hr>
-        <div class="telegram-settings-container3">
-
-            <div>
-                <h3>Edit form</h3>
+        <form method="POST">
+            {% csrf_token %}
+            <fieldset class="form-group">
+            <div id="event_name">
+                {{ form.as_p }}
+                <input type="Submit" value="Submit" />
             </div>
-
-            <div>
-                <div class="telegram-settings-container4">
-                    <div>
-                        <form method="POST" action="">
-                            {% csrf_token %}
-                            {{form.as_p}}
-                            <input type="Submit" value="Submit" />
-                        </form>
-                    </div>
-                    <div>
-                    </div>                    
-                </div>
-            </div>  
-
-        </div>
-        
+            </fieldset>
+        </form>
     </div>
-
+  
     <div></div>
-        
+  
 </div>
 
-
 {% endblock content %}
+
+{% block javascript %}
+
+<script>
+  // Call hideShow when page is loaded
+  $(document).ready(function(){
+      hideShow3()
+  })
+
+  // call hideShow when the user clicks on the time dropdownlist
+  $('#id_time').click(function(){
+      hideShow()
+  });
+
+  // call hideShow when the user clicks on the status dropdownlist
+  $('#id_status').click(function(){
+      hideShow2()
+  });
+  
+  // The jquery function below hides/shows the open_time and close_time fields depending on the selected time list 
+  function hideShow(){
+      if(document.getElementById('id_time').options[document.getElementById('id_time').selectedIndex].value == "24 hours")
+      {
+          $('#id_open_time').parents('p:first').hide();
+          $('#id_close_time').parents('p:first').hide();
+      }else
+      {
+          $('#id_open_time').parents('p:first').show();
+          $('#id_close_time').parents('p:first').show();
+      }
+  }
+
+  // The jquery function below hides/shows the open_time and close_time fields depending on the selected time list 
+  function hideShow2(){
+      if(document.getElementById('id_status').options[document.getElementById('id_status').selectedIndex].value == "permanently closed")
+      {
+          $('#id_time').parents('p:first').hide();
+          $('#id_days').parents('p:first').hide();
+          $('#id_open_time').parents('p:first').hide();
+          $('#id_close_time').parents('p:first').hide();
+          $('#id_notification').parents('p:first').hide();
+      }else
+      {
+          $('#id_time').parents('p:first').show();
+          $('#id_days').parents('p:first').show();
+          $('#id_notification').parents('p:first').show();
+      }
+  }
+
+  function hideShow3(){
+      if(document.getElementById('id_status').options[document.getElementById('id_status').selectedIndex].value == "permanently closed")
+      {
+          $('#id_time').parents('p:first').hide();
+          $('#id_open_time').parents('p:first').hide();
+          $('#id_close_time').parents('p:first').hide();
+          $('#id_days').parents('p:first').hide();
+          $('#id_notification').parents('p:first').hide();
+      }
+      else if(document.getElementById('id_status').options[document.getElementById('id_status').selectedIndex].value == "open" 
+      && document.getElementById('id_time').options[document.getElementById('id_time').selectedIndex].value == "set open and close time") 
+      {
+          $('#id_time').parents('p:first').show();
+          $('#id_open_time').parents('p:first').show();
+          $('#id_close_time').parents('p:first').show();
+          $('#id_days').parents('p:first').show();
+          $('#id_notification').parents('p:first').show();
+      }
+      else if(document.getElementById('id_status').options[document.getElementById('id_status').selectedIndex].value == "open" 
+      && document.getElementById('id_time').options[document.getElementById('id_time').selectedIndex].value == "24 hours")
+      {
+          $('#id_time').parents('p:first').show();
+          $('#id_open_time').parents('p:first').hide();
+          $('#id_close_time').parents('p:first').hide();
+          $('#id_days').parents('p:first').show();
+          $('#id_notification').parents('p:first').show();
+      }
+  }
+
+
+</script>
+
+
+
+
+{% endblock %}

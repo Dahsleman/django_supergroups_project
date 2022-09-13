@@ -92,22 +92,50 @@ def token(request):
 
 def telegramSettingsOH(request):
     current_user = request.user
-    settings = Opening_hours.objects.filter(user = current_user)
+    objects = Opening_hours.objects.filter(user=current_user)
+    OH_objects = Opening_hours.objects.get(user=current_user)
+    status = OH_objects.status
+    time = OH_objects.time
+    permanently_closed = 'permanently closed'
+    set_open_and_close_time = 'set open and close time'
 
-    context = {'settings':settings}
+    context = {'objects':objects, 'status':status, 'permanently_closed':permanently_closed, 'set_open_and_close_time':set_open_and_close_time, 'time':time}
     return render(request, 'base/telegram-settings-OH.html', context)
 
 def telegramSettingsOH_update(request):
     current_user = request.user
-    default = Opening_hours.objects.get(user=current_user)
-    form = Opening_hours_Form(instance=default)
+    opening_hours_objects = Opening_hours.objects.get(user=current_user)
+    status = opening_hours_objects.status
+    time = opening_hours_objects.time
+    form = Opening_hours_Form(instance=opening_hours_objects)
     if request.method == 'POST':
-        form = Opening_hours_Form(request.POST, instance=default)
+        form = Opening_hours_Form(request.POST, instance=opening_hours_objects)
         if form.is_valid():
-            form.save()
-            return redirect('telegram-settings-OH')
+            if status == 'permanently closed':
+                Opening = form.save(commit=False)
+                Opening.user = current_user
+                Opening.time = ""
+                Opening.open_time = "invalid"
+                Opening.close_time = "invalid"
+                Opening.days = ""
+                Opening.notification = ""
+                form.save()
+                return redirect('telegram-settings-OH')
+            elif time == '24 hours':
+                Opening = form.save(commit=False)
+                Opening.user = current_user
+                Opening.open_time = "invalid"
+                Opening.close_time = "invalid"
+                form.save()
+                return redirect('telegram-settings-OH')
+            else:    
+                Opening = form.save(commit=False)
+                Opening.user = request.user
+                form.save()
+                return redirect('telegram-settings-OH')
 
     context = {'form':form}
+
     return render(request, 'base/telegram-settings-OH_form.html', context)
 
 def telegramSettingsVM(request):
@@ -223,6 +251,21 @@ def test(request):
 
     return render(request, 'base/test.html', context)
 
+def testUpdate(request):
+    user = request.user
+    opening_hours = Opening_hours.objects.get(user=user)
+    form = Opening_hours_Form(instance=opening_hours)
+    if request.method == 'POST':
+        form = Opening_hours_Form(request.POST, instance=opening_hours)
+        if form.is_valid():
+            Opening = form.save(commit=False)
+            Opening.user = request.user
+            form.save()
+            return redirect('telegram-settings-OH')
+
+    context = {'form':form}
+
+    return render(request, 'base/test.html', context)
 
 
 
