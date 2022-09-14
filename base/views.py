@@ -6,7 +6,7 @@ from django.shortcuts import render, redirect
 from django.contrib import messages
 from base.scripts import save_token
 from random import randint
-from .models import Group, Group_type, Opening_hours
+from .models import *
 from .forms import *
 from django.contrib.auth.forms import UserCreationForm
 
@@ -116,16 +116,16 @@ def telegramSettingsOH_update(request):
             if status == 'permanently closed':
                 Opening = form.save(commit=False)
                 Opening.time = ""
-                Opening.open_time = "invalid"
-                Opening.close_time = "invalid"
+                Opening.open_time = ""
+                Opening.close_time = ""
                 Opening.days = ""
                 Opening.notification = ""
                 form.save()
                 return redirect('telegram-settings-OH')
             elif status == 'open' and time == '24 hours':
                 Opening = form.save(commit=False)
-                Opening.open_time = "invalid"
-                Opening.close_time = "invalid"
+                Opening.open_time = ""
+                Opening.close_time = ""
                 form.save()
                 return redirect('telegram-settings-OH')
             else:   
@@ -140,8 +140,23 @@ def telegramSettingsVM(request):
     return render(request, 'base/telegram-settings-VM.html', context)
 
 def telegramSettingsTZ(request):
-    context = {}
+    current_user = request.user
+    objects = Opening_hours.objects.filter(user=current_user)
+    context = {'objects':objects}
     return render(request, 'base/telegram-settings-TZ.html', context)
+
+def telegramSettingsTZ_update(request):
+    current_user = request.user
+    opening_hours_objects = Opening_hours.objects.get(user=current_user)
+    form = TimezoneForm(instance=opening_hours_objects)
+    if request.method == 'POST':
+        form = TimezoneForm(request.POST, instance=opening_hours_objects)
+        if form.is_valid():
+            form.save()
+            return redirect('telegram-settings-TZ')
+
+    context = {'form':form}
+    return render(request, 'base/telegram-settings-TZ-update.html', context)
 
 def telegramAgenda(request):
     context = {}

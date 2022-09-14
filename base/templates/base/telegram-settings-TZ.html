@@ -55,7 +55,7 @@
                         <h2>Time Zone</h2>
                     </div>
                     <div>
-                        <h3 style="float:right"><a href="">Edit</a></h3>
+                        <h3 style="float:right"><a href="{% url 'telegram-settings-TZ-update' %}">Edit</a></h3>
                     </div>                    
                 </div>
                 <div class="telegram-settings-container4">
@@ -63,7 +63,9 @@
                         <h3>Current</h3>
                     </div>
                     <div>
-                        <h3 style="float:right">America/BR</h3>
+                        {% for object in objects %}
+                        <h3 style="float:right">{{object.timezone}}</h3>
+                        {% endfor %}
                     </div>                    
                 </div>
                 <hr>

@@ -1,10 +1,7 @@
-from pickle import TRUE
 from django.db import models
 from django.contrib.auth.models import User
-from django.db.models.deletion import SET_NULL
 from django.utils.translation import gettext_lazy as _
-
-
+import pytz
 
 class Telegram(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE, null=True, blank=True)
@@ -37,30 +34,6 @@ class Group(models.Model):
     def __str__(self):
         return self.name
 
-class Opening_hours_status(models.Model):
-    status = models.CharField(max_length=50, null=True, blank=True)
-
-    def __str__(self):
-        return self.status
-
-class Opening_hours_time(models.Model):
-    time = models.CharField(max_length=50, null=True, blank=True)
-
-    def __str__(self):
-        return self.time
-
-class Opening_hours_days(models.Model):
-    days = models.CharField(max_length=50, null=True, blank=True)
-
-    def __str__(self):
-        return self.days
-
-class Opening_hours_notification(models.Model):
-    notification = models.CharField(max_length=50, null=True, blank=True)
-
-    def __str__(self):
-        return self.notification
-
 class Opening_hours(models.Model):
 
     STATUS_CHOISES = [
@@ -69,20 +42,17 @@ class Opening_hours(models.Model):
     ]
 
     DAYS_CHOISES = [
-        # ('', ''),
         ('everyday', 'Everyday'),
         ('weekdays', 'Weekdays'),
         ('weekends', 'Weekends'),
     ]
 
     TIME_CHOISES = [
-        # ('', ''),
         ('24 hours', '24 Hours'),
         ('set open and close time', 'Set Open and Close Time'),
     ]
 
     OPEN_TIME_CHOISES = [
-        ('invalid',''),
         ('AM', (
             ('0', '0h'),
             ('1', '1h'),
@@ -114,7 +84,6 @@ class Opening_hours(models.Model):
     ]
 
     CLOSE_TIME_CHOISES = [
-        ('invalid',''),
         ('AM', (
             ('0', '0h'),
             ('1', '1h'),
@@ -146,7 +115,6 @@ class Opening_hours(models.Model):
     ]
 
     NOTIFICATION_CHOISES = [
-        # ('', ''),
         ('on', 'On'),
         ('off', 'Off'),
     ]
@@ -206,8 +174,47 @@ class Opening_hours(models.Model):
         null=True
         )
 
+    timezone = models.CharField(
+        max_length=128, 
+        choices=[(tz, tz) for tz in pytz.common_timezones],
+        default='America/Sao_Paulo',
+        blank=True,
+        null=True)
+
     def __str__(self):
         return f'Opening_hours: {self.user}'
+
+
+
+
+
+
+
+
+
+class Opening_hours_status(models.Model):
+    status = models.CharField(max_length=50, null=True, blank=True)
+
+    def __str__(self):
+        return self.status
+
+class Opening_hours_time(models.Model):
+    time = models.CharField(max_length=50, null=True, blank=True)
+
+    def __str__(self):
+        return self.time
+
+class Opening_hours_days(models.Model):
+    days = models.CharField(max_length=50, null=True, blank=True)
+
+    def __str__(self):
+        return self.days
+
+class Opening_hours_notification(models.Model):
+    notification = models.CharField(max_length=50, null=True, blank=True)
+
+    def __str__(self):
+        return self.notification
 
 
 class Event(models.Model):
@@ -226,22 +233,41 @@ class Event(models.Model):
 
     event_name = models.CharField(
         max_length=70,
-        help_text='''Enter a name for the event. This is a required field and is limited to 70 characters.'''
+        help_text='''Enter a name for the event. This is a required field and is limited to 70 characters.''',
+        blank=True,
+        null=True
     )
 
     recurring_event = models.CharField(
         max_length=5,
         choices=YES_NO_CHOICES,
         default='No',
-        help_text='''Is this a one off event or will it recur? Selecting Yes will open up additional fields.'''
+        help_text='''Is this a one off event or will it recur? Selecting Yes will open up additional fields.''',
+        blank=True,
+        null=True
     )
     
     recurrence_pattern = models.CharField(
         max_length=10,
         choices=RECURRENCE_PATTERN_CHOICES,
         default='---',
-        help_text='''Select the recurrence pattern for this event.'''
+        help_text='''Select the recurrence pattern for this event.''',
+        blank=True,
+        null=True
     )
+    starts_at = models.DateTimeField(auto_now=True, blank=True, null=True)
+
+    timezone = models.CharField(
+        max_length=128, 
+        choices=[(tz, tz) for tz in pytz.common_timezones],
+        blank=True,
+        null=True)
+
+# timezone = models.CharField(
+#         max_length=128, 
+#         choices=[(tz, tz) for tz in pytz.all_timezones if tz.startswith("US")],
+#         blank=True,
+#         null=True)
 
 class Media(models.Model):
     MEDIA_CHOICES = [

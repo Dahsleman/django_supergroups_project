@@ -18,7 +18,7 @@ class Opening_hours_Form(ModelForm):
     class Meta:
         model = Opening_hours
         fields = '__all__'
-        exclude = ['user']
+        exclude = ['user','timezone']
 
     def fields_required_time(self, fields):
     # """Used for conditionally marking fields as required."""
@@ -30,14 +30,14 @@ class Opening_hours_Form(ModelForm):
     def fields_required_open(self, fields):
     # """Used for conditionally marking fields as required."""
         for field in fields:
-            if self.cleaned_data.get(field) == 'invalid':
+            if self.cleaned_data.get(field) == None:
                 msg = ValidationError("Select open time")
                 self.add_error(field, msg)
 
     def fields_required_close(self, fields):
     # """Used for conditionally marking fields as required."""
         for field in fields:
-            if self.cleaned_data.get(field) == 'invalid':
+            if self.cleaned_data.get(field) == None:
                 msg = ValidationError("Select close time")
                 self.add_error(field, msg)
 
@@ -73,11 +73,11 @@ class Opening_hours_Form(ModelForm):
             self.fields_required_time(['time'])
 
         elif time == 'set open and close time':
-            if open_time:
+            if open_time == None:
                 self.fields_required_open(['open_time'])
-            if close_time and open_time != 'invalid':
+            if close_time == None and open_time != None:
                 self.fields_required_close(['close_time'])
-            if open_time == close_time and open_time != 'invalid' and close_time != 'invalid':
+            if open_time == close_time and open_time != None and close_time != None:
                 self.fields_required_error(['time'])
 
         elif days == None:
@@ -87,6 +87,25 @@ class Opening_hours_Form(ModelForm):
             self.fields_required_notification(['notification'])
         
         return self.cleaned_data
+
+class TimezoneForm(ModelForm):
+    class Meta:
+        model = Opening_hours
+        fields = ['timezone']
+
+    def fields_required_timezone(self, fields):
+    # """Used for conditionally marking fields as required."""
+        for field in fields:
+            if self.cleaned_data.get(field) == None:
+                msg = ValidationError("Select Timezone")
+                self.add_error(field, msg)
+
+    def clean(self):
+        timezone = self.cleaned_data.get('timezone')
+
+        if timezone == None:
+                self.fields_required_timezone(['timezone'])
+
 
 class EventForm(ModelForm):
     """Event Staff Update view - allows staff to change event details"""

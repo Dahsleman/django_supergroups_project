@@ -1,0 +1,49 @@
+{% extends 'main.html' %}
+
+{% block content %}
+
+<style>
+    .group-container{
+      display: grid;
+      grid-template-columns: 1fr 6fr 1fr;
+  
+    }
+    .telegram-settings-container2{
+      display: grid;
+      grid-template-columns: 6fr;
+  
+    }
+
+</style>
+
+<div class="group-container">
+
+    <div></div>
+  
+    <div class="content-section">
+        <div class="telegram-settings-container2">
+            <div>
+                <spam style="float:left">
+                    <h1>Timezone</h1>
+                </spam>
+                <spam style="float:right">
+                    <h3><a href="{% url 'telegram-settings-OH' %}">Go Back</a></h3>
+                </spam>
+            </div>
+        </div> 
+        <form method="POST">
+            {% csrf_token %}
+            <fieldset class="form-group">
+            <div id="event_name">
+                {{ form.as_p }}
+                <input type="Submit" value="Submit" />
+            </div>
+            </fieldset>
+        </form>
+    </div>
+  
+    <div></div>
+  
+</div>
+
+{% endblock content %}
