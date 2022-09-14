@@ -69,14 +69,14 @@ class Opening_hours(models.Model):
     ]
 
     DAYS_CHOISES = [
-        ('', ''),
+        # ('', ''),
         ('everyday', 'Everyday'),
         ('weekdays', 'Weekdays'),
         ('weekends', 'Weekends'),
     ]
 
     TIME_CHOISES = [
-        ('', ''),
+        # ('', ''),
         ('24 hours', '24 Hours'),
         ('set open and close time', 'Set Open and Close Time'),
     ]
@@ -146,7 +146,7 @@ class Opening_hours(models.Model):
     ]
 
     NOTIFICATION_CHOISES = [
-        ('', ''),
+        # ('', ''),
         ('on', 'On'),
         ('off', 'Off'),
     ]

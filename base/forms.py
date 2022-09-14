@@ -20,6 +20,13 @@ class Opening_hours_Form(ModelForm):
         fields = '__all__'
         exclude = ['user']
 
+    def fields_required_time(self, fields):
+    # """Used for conditionally marking fields as required."""
+        for field in fields:
+            if self.cleaned_data.get(field) == None:
+                msg = ValidationError("Select Time")
+                self.add_error(field, msg)
+
     def fields_required_open(self, fields):
     # """Used for conditionally marking fields as required."""
         for field in fields:
@@ -41,11 +48,31 @@ class Opening_hours_Form(ModelForm):
             self.add_error(field, msg)
             return 
 
+    def fields_required_days(self, fields):
+    # """Used for conditionally marking fields as required."""
+        for field in fields:
+            if self.cleaned_data.get(field) == None:
+                msg = ValidationError("Select Days")
+                self.add_error(field, msg)
+
+    def fields_required_notification(self, fields):
+    # """Used for conditionally marking fields as required."""
+        for field in fields:
+            if self.cleaned_data.get(field) == None:
+                msg = ValidationError("Select Notification")
+                self.add_error(field, msg)
+
     def clean(self):
         time = self.cleaned_data.get('time')
         open_time = self.cleaned_data.get('open_time')
         close_time = self.cleaned_data.get('close_time')
-        if time == 'set open and close time':
+        days = self.cleaned_data.get('days')
+        notification = self.cleaned_data.get('notification')
+
+        if time == None:
+            self.fields_required_time(['time'])
+
+        elif time == 'set open and close time':
             if open_time:
                 self.fields_required_open(['open_time'])
             if close_time and open_time != 'invalid':
@@ -53,6 +80,12 @@ class Opening_hours_Form(ModelForm):
             if open_time == close_time and open_time != 'invalid' and close_time != 'invalid':
                 self.fields_required_error(['time'])
 
+        elif days == None:
+            self.fields_required_days(['days'])
+
+        elif notification == None:
+            self.fields_required_notification(['notification'])
+        
         return self.cleaned_data
 
 class EventForm(ModelForm):

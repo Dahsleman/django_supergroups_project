@@ -73,7 +73,13 @@
       {
           $('#id_open_time').parents('p:first').hide();
           $('#id_close_time').parents('p:first').hide();
-      }else
+      }
+      else if (document.getElementById('id_time').options[document.getElementById('id_time').selectedIndex].value == "")
+      {
+          $('#id_open_time').parents('p:first').hide();
+          $('#id_close_time').parents('p:first').hide();
+      }
+      else
       {
           $('#id_open_time').parents('p:first').show();
           $('#id_close_time').parents('p:first').show();
@@ -89,7 +95,8 @@
           $('#id_open_time').parents('p:first').hide();
           $('#id_close_time').parents('p:first').hide();
           $('#id_notification').parents('p:first').hide();
-      }else
+      }
+      else
       {
           $('#id_time').parents('p:first').show();
           $('#id_days').parents('p:first').show();
@@ -117,6 +124,15 @@
       }
       else if(document.getElementById('id_status').options[document.getElementById('id_status').selectedIndex].value == "open" 
       && document.getElementById('id_time').options[document.getElementById('id_time').selectedIndex].value == "24 hours")
+      {
+          $('#id_time').parents('p:first').show();
+          $('#id_open_time').parents('p:first').hide();
+          $('#id_close_time').parents('p:first').hide();
+          $('#id_days').parents('p:first').show();
+          $('#id_notification').parents('p:first').show();
+      }
+      else if(document.getElementById('id_status').options[document.getElementById('id_status').selectedIndex].value == "open" 
+      && document.getElementById('id_time').options[document.getElementById('id_time').selectedIndex].value == "")
       {
           $('#id_time').parents('p:first').show();
           $('#id_open_time').parents('p:first').hide();
