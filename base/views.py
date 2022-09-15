@@ -138,7 +138,10 @@ def telegramSettingsOH_update(request):
 def telegramSettingsVM(request):
     current_user = request.user
     objects = Opening_hours.objects.filter(user=current_user)
-    context = {'objects':objects}
+    OH_objects = Opening_hours.objects.get(user=current_user)
+    voice_messages = OH_objects.voice_messages
+    activated = 'activated'
+    context = {'objects':objects, 'voice_messages':voice_messages, 'activated':activated}
     return render(request, 'base/telegram-settings-VM.html', context)
 
 def telegramSettingsVM_update(request):
@@ -149,7 +152,15 @@ def telegramSettingsVM_update(request):
         form = Voice_messagesForm(request.POST, instance=opening_hours_objects)
         if form.is_valid():
             form.save()
-            return redirect('telegram-settings-VM')
+            objects = Opening_hours.objects.get(user=current_user)
+            voice_messages = objects.voice_messages
+            if voice_messages == 'inactivated':
+                objects = form.save(commit=False)
+                objects.voice_messages_notification = ""
+                form.save()
+                return redirect('telegram-settings-VM')
+            else:
+                return redirect('telegram-settings-VM')
     
     context = {'form':form}
     return render(request, 'base/telegram-settings-VM-update.html', context)

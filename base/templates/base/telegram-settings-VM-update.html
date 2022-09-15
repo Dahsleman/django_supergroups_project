@@ -1,5 +1,7 @@
 {% extends 'main.html' %}
 
+{% load static %}
+
 {% block content %}
 
 <style>
@@ -47,3 +49,42 @@
 </div>
 
 {% endblock content %}
+
+{% block javascript %}
+
+<script>
+  // Call hideShow when page is loaded
+  $(document).ready(function(){
+      hideShow()
+  })
+
+  // call hideShow when the user clicks on the time dropdownlist
+  $('#id_voice_messages').click(function(){
+      hideShow()
+  });
+
+  function hideShow(){
+      if(document.getElementById('id_voice_messages').options[document.getElementById('id_voice_messages').selectedIndex].value == "")
+      {
+          $('#id_voice_messages_notification').parents('p:first').hide();
+      }
+      else if(document.getElementById('id_voice_messages').options[document.getElementById('id_voice_messages').selectedIndex].value == "inactivated") 
+      {
+        $('#id_voice_messages_notification').parents('p:first').hide();
+      }
+      else
+      {
+        $('#id_voice_messages_notification').parents('p:first').show();
+      }
+  }
+
+
+</script>
+
+{% endblock javascript %}
+
+
+
+
+
+

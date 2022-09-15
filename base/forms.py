@@ -121,11 +121,22 @@ class Voice_messagesForm(ModelForm):
                 msg = ValidationError("Select notification")
                 self.add_error(field, msg)
 
+    def fields_required_voiceMessages(self, fields):
+    # """Used for conditionally marking fields as required."""
+        for field in fields:
+            if self.cleaned_data.get(field) == None:
+                msg = ValidationError("Select Voice Message type")
+                self.add_error(field, msg)
+
     def clean(self):
         notification = self.cleaned_data.get('voice_messages_notification')
+        voice_messages = self.cleaned_data.get('voice_messages')
 
         if notification == None:
                 self.fields_required_notification(['voice_messages_notification'])
+
+        if voice_messages == None:
+                self.fields_required_voiceMessages(['voice_messages'])
 
 
 class EventForm(ModelForm):
