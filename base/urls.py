@@ -15,6 +15,7 @@ urlpatterns = [
     path('telegram-settings-OH-update/', views.telegramSettingsOH_update, name="telegram-settings-OH-update"),
 
     path('telegram-settings-VM/', views.telegramSettingsVM, name="telegram-settings-VM"),
+    path('telegram-settings-VM-update/', views.telegramSettingsVM_update, name="telegram-settings-VM-update"),
 
     path('telegram-settings-TZ/', views.telegramSettingsTZ, name="telegram-settings-TZ"),
     path('telegram-settings-TZ-update/', views.telegramSettingsTZ_update, name="telegram-settings-TZ-update"),

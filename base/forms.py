@@ -106,6 +106,27 @@ class TimezoneForm(ModelForm):
         if timezone == None:
                 self.fields_required_timezone(['timezone'])
 
+class Voice_messagesForm(ModelForm):
+    class Meta:
+        model = Opening_hours
+        fields = [
+            'voice_messages',
+            'voice_messages_notification'
+        ]
+
+    def fields_required_notification(self, fields):
+    # """Used for conditionally marking fields as required."""
+        for field in fields:
+            if self.cleaned_data.get(field) == None:
+                msg = ValidationError("Select notification")
+                self.add_error(field, msg)
+
+    def clean(self):
+        notification = self.cleaned_data.get('voice_messages_notification')
+
+        if notification == None:
+                self.fields_required_notification(['voice_messages_notification'])
+
 
 class EventForm(ModelForm):
     """Event Staff Update view - allows staff to change event details"""

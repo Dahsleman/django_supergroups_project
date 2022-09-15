@@ -136,8 +136,23 @@ def telegramSettingsOH_update(request):
     return render(request, 'base/telegram-settings-OH-update.html', context)
 
 def telegramSettingsVM(request):
-    context = {}
+    current_user = request.user
+    objects = Opening_hours.objects.filter(user=current_user)
+    context = {'objects':objects}
     return render(request, 'base/telegram-settings-VM.html', context)
+
+def telegramSettingsVM_update(request):
+    current_user = request.user
+    opening_hours_objects = Opening_hours.objects.get(user=current_user)
+    form = Voice_messagesForm(instance=opening_hours_objects)
+    if request.method == 'POST':
+        form = Voice_messagesForm(request.POST, instance=opening_hours_objects)
+        if form.is_valid():
+            form.save()
+            return redirect('telegram-settings-VM')
+    
+    context = {'form':form}
+    return render(request, 'base/telegram-settings-VM-update.html', context)
 
 def telegramSettingsTZ(request):
     current_user = request.user

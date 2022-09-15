@@ -119,6 +119,13 @@ class Opening_hours(models.Model):
         ('off', 'Off'),
     ]
 
+    VOICE_MESSAGES_CHOISES = [
+        ('inactivated','Inactivate'),
+        ('activated','Activate')
+    ]
+
+
+
     user = models.ForeignKey(User, on_delete=models.CASCADE, null=True, blank=True)
 
     status = models.CharField(
@@ -179,7 +186,24 @@ class Opening_hours(models.Model):
         choices=[(tz, tz) for tz in pytz.common_timezones],
         default='America/Sao_Paulo',
         blank=True,
-        null=True)
+        null=True
+        )
+
+    voice_messages = models.CharField(
+        max_length=50,
+        choices=VOICE_MESSAGES_CHOISES,
+        default='Inactivate',
+        blank=True,
+        null=True
+        )
+
+    voice_messages_notification = models.CharField(
+        max_length=10,
+        choices=NOTIFICATION_CHOISES,
+        default='Off',
+        blank=True,
+        null=True
+        )
 
     def __str__(self):
         return f'Opening_hours: {self.user}'
