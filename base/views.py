@@ -1,14 +1,14 @@
-from email.policy import default
 from django.contrib.auth.models import User
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
-from django.shortcuts import render, redirect
+from django.shortcuts import get_object_or_404, render, redirect
 from django.contrib import messages
 from base.scripts import save_token
 from random import randint
 from .models import *
 from .forms import *
 from django.contrib.auth.forms import UserCreationForm
+from django.forms.models import modelformset_factory
 
 """LOGIN-LOGOUT-REGISTER"""
 
@@ -75,8 +75,17 @@ def home(request):
         return redirect('register')
 
 def telegram(request):
-    context = {}
+    """telegram-agenda-list"""
+    agenda_objects = Agenda.objects.filter(user=request.user)
+    total_objects = agenda_objects.count()+1
+    num = range(1,total_objects)
+
+    context = {
+        'agenda_objects':agenda_objects,
+        'num':num,
+    }
     return render(request, 'base/telegram.html', context)
+
 
 
 @login_required(login_url='/login')
@@ -92,8 +101,8 @@ def token(request):
 
 def telegramSettingsOH(request):
     current_user = request.user
-    objects = Opening_hours.objects.filter(user=current_user)
-    OH_objects = Opening_hours.objects.get(user=current_user)
+    objects = Settings.objects.filter(user=current_user)
+    OH_objects = Settings.objects.get(user=current_user)
     status = OH_objects.status
     time = OH_objects.time
     permanently_closed = 'permanently closed'
@@ -104,13 +113,13 @@ def telegramSettingsOH(request):
 
 def telegramSettingsOH_update(request):
     current_user = request.user
-    opening_hours_objects = Opening_hours.objects.get(user=current_user)
+    opening_hours_objects = Settings.objects.get(user=current_user)
     form = Opening_hours_Form(instance=opening_hours_objects)
     if request.method == 'POST':
         form = Opening_hours_Form(request.POST, instance=opening_hours_objects)
         if form.is_valid():
             form.save()
-            opening_hours_objects = Opening_hours.objects.get(user=current_user)
+            opening_hours_objects = Settings.objects.get(user=current_user)
             status = opening_hours_objects.status
             time = opening_hours_objects.time
             if status == 'permanently closed':
@@ -137,8 +146,8 @@ def telegramSettingsOH_update(request):
 
 def telegramSettingsVM(request):
     current_user = request.user
-    objects = Opening_hours.objects.filter(user=current_user)
-    OH_objects = Opening_hours.objects.get(user=current_user)
+    objects = Settings.objects.filter(user=current_user)
+    OH_objects = Settings.objects.get(user=current_user)
     voice_messages = OH_objects.voice_messages
     activated = 'activated'
     context = {'objects':objects, 'voice_messages':voice_messages, 'activated':activated}
@@ -146,13 +155,13 @@ def telegramSettingsVM(request):
 
 def telegramSettingsVM_update(request):
     current_user = request.user
-    opening_hours_objects = Opening_hours.objects.get(user=current_user)
+    opening_hours_objects = Settings.objects.get(user=current_user)
     form = Voice_messagesForm(instance=opening_hours_objects)
     if request.method == 'POST':
         form = Voice_messagesForm(request.POST, instance=opening_hours_objects)
         if form.is_valid():
             form.save()
-            objects = Opening_hours.objects.get(user=current_user)
+            objects = Settings.objects.get(user=current_user)
             voice_messages = objects.voice_messages
             if voice_messages == 'inactivated':
                 objects = form.save(commit=False)
@@ -167,13 +176,13 @@ def telegramSettingsVM_update(request):
 
 def telegramSettingsTZ(request):
     current_user = request.user
-    objects = Opening_hours.objects.filter(user=current_user)
+    objects = Settings.objects.filter(user=current_user)
     context = {'objects':objects}
     return render(request, 'base/telegram-settings-TZ.html', context)
 
 def telegramSettingsTZ_update(request):
     current_user = request.user
-    opening_hours_objects = Opening_hours.objects.get(user=current_user)
+    opening_hours_objects = Settings.objects.get(user=current_user)
     form = TimezoneForm(instance=opening_hours_objects)
     if request.method == 'POST':
         form = TimezoneForm(request.POST, instance=opening_hours_objects)
@@ -184,9 +193,81 @@ def telegramSettingsTZ_update(request):
     context = {'form':form}
     return render(request, 'base/telegram-settings-TZ-update.html', context)
 
-def telegramAgenda(request):
-    context = {}
-    return render(request, 'base/telegram-agenda.html', context)
+
+"""Agenda"""
+
+
+@login_required
+def telegramAgenda_list(request):
+    agenda_objects = Agenda.objects.filter(user=request.user)
+    settings_objs = Settings.objects.filter(user=request.user)
+
+    context = {
+        'agenda_objects':agenda_objects,
+        'settings_objs':settings_objs,
+    }
+
+    return render(request, 'base/telegram-agenda-list.html', context)
+
+
+@login_required
+def telegramAgenda_detail(request, id=None):
+    agenda_obj = get_object_or_404(Agenda, id=id, user=request.user)
+    context = {
+        'agenda_obj':agenda_obj,
+    }
+    return render(request, 'base/telegram-agenda-detail.html', context)
+
+@login_required
+def telegramAgenda_hx(request, id):
+    user = request.user
+    settings_objs = Settings.objects.filter(user=user)
+    agenda_objs = Agenda.objects.get(user=user, id=id)
+    objs_children = MondaySquedules.objects.filter(agenda__user=user)
+    context = {
+        'settings_objs':settings_objs,
+        'agenda_objs':agenda_objs,
+        'objs_children':objs_children,
+    }
+    return render(request, 'base/partials/telegram-agenda.html', context)
+
+@login_required
+def telegramAgenda_create(request):
+    form = AgendaForm(request.POST or None)
+    context = {
+        'form':form
+    }
+    if form.is_valid():
+        obj = form.save(commit=False)
+        obj.user = request.user
+        obj.save()
+        return redirect('telegram-agenda-list')
+    return render(request, 'base/telegram-agenda-create-update.html', context)
+
+@login_required
+def telegramAgenda_update(request, id=None):
+    agenda_obj = get_object_or_404(Agenda, id=id, user=request.user)
+    form = AgendaForm(request.POST or None, instance=agenda_obj)
+    MondayScheduleFormset=modelformset_factory(MondaySquedules, form=MondayScheduleForm, extra=0)
+    qs = agenda_obj.mondaysquedules_set.all()
+    formset=MondayScheduleFormset(request.POST or None, queryset=qs)
+    context = {
+        'form':form,
+        'formset':formset,
+        'agenda_obj':agenda_obj,
+        }
+    
+    if all([form.is_valid(),formset.is_valid()]):
+        parent=form.save(commit=False)
+        parent.save()
+        for form in formset:
+            child=form.save(commit=False)
+            if child.agenda is None:
+                child.agenda = parent
+            child.save()
+        context['message'] = 'Data saved'
+
+    return render(request, 'base/telegram-agenda-create-update.html', context)
 
 """GROUP"""    
 
@@ -275,33 +356,47 @@ def createParticipants(request, pk):
 
 """Form Test"""
 
-def test(request):
-    form = Opening_hours_Form()
-    if request.method == 'POST':
-        form = Opening_hours_Form(request.POST)
-        if form.is_valid():
-            Opening = form.save(commit=False)
-            Opening.user = request.user
-            form.save()
-            return redirect('home')
+# def test(request):
+#     form = Opening_hours_Form()
+#     if request.method == 'POST':
+#         form = Opening_hours_Form(request.POST)
+#         if form.is_valid():
+#             Opening = form.save(commit=False)
+#             Opening.user = request.user
+#             form.save()
+#             return redirect('home')
 
-    context = {'form':form}
+#     context = {'form':form}
 
-    return render(request, 'base/test.html', context)
+#     return render(request, 'base/test.html', context)
 
 def testUpdate(request):
     user = request.user
-    opening_hours = Opening_hours.objects.get(user=user)
-    form = Opening_hours_Form(instance=opening_hours)
-    if request.method == 'POST':
-        form = Opening_hours_Form(request.POST, instance=opening_hours)
-        if form.is_valid():
-            Opening = form.save(commit=False)
-            Opening.user = request.user
-            form.save()
-            return redirect('telegram-settings-OH')
 
-    context = {'form':form}
+    obj = Agenda.objects.get(user=user)
+    form = AgendaForm(instance=obj)
+    
+    MondayAvailabilitiesFormset = modelformset_factory(MondaySquedules, form=MondayScheduleForm, extra=0)
+
+    qs = obj.mondaysquedules_set.all()
+    formset = MondayAvailabilitiesFormset(queryset=qs)
+
+    context = {'form':form, 'formset':formset}
+
+    if request.method == 'POST':
+        form = AgendaForm(request.POST, instance=obj)
+        formset = MondayAvailabilitiesFormset(request.POST, queryset=qs)
+        if all([form.is_valid(),formset.is_valid()]):
+            print('here')
+            parent = form.save(commit=False)
+            parent.save()    
+            for form in formset:
+                child = form.save(commit=False)
+                child.agenda = parent
+                child.save()
+            context['message'] = 'Data Saved.'
+        if request.htmx:
+            return render(request, 'base/partials/forms.html', context)
 
     return render(request, 'base/test.html', context)
 

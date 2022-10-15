@@ -9,96 +9,69 @@
       grid-template-columns: 1fr 6fr 1fr;
   
     }
+    .group-container2{
+      display: grid;
+      grid-template-columns: 2fr 8fr;
+    }
+    .group-container3{
+      display: grid;
+      grid-template-columns: 3fr 7fr;
+    }
+    .hidden{
+      display: none
+    }
+
 </style>
 
 <div class="group-container">
 
-    <div></div>
+  <div></div>
+    
+  <div>
+    {% include 'base/partials/forms.html' %}                                     
+  </div>
   
-    <div class="content-section">
-      <form method="POST">
-        {% csrf_token %}
-        <fieldset class="form-group">
-          <div id="event_name">
-            {{ form.as_p }}
-            <input type="Submit" value="Submit" />
-          </div>
-        </fieldset>
-      </form>
-    </div>
-  
-    <div></div>
+  <div></div>
   
 </div>
 
 {% endblock content %}
 
 {% block javascript %}
-<!-- <script>
-
-$(document).ready(function(){
-  $("#id_recurring_event").change(function() {
-    if ($(this).val() === "No") {
-      $('#id_recurrence_pattern').hide();
-    } else {
-      $('#id_recurrence_pattern').show();
-    }
-  });
-
-  $("#id_recurring_event").trigger("change")
-
-})
-</script> -->
-
 
 <script>
-  // Call hideShow when page is loaded
-  $(document).ready(function(){
-      hideShow()
-  })
 
-  // call hideShow when the user clicks on the time dropdownlist
-  $('#id_time').click(function(){
-      hideShow()
-  });
+const addMoreBtn = document.getElementById('add-more')
 
-  // call hideShow when the user clicks on the status dropdownlist
-  $('#id_status').click(function(){
-      hideShow2()
-  });
-  
-  // The jquery function below hides/shows the open_time and close_time fields depending on the selected time list 
-  function hideShow(){
-      if(document.getElementById('id_time').options[document.getElementById('id_time').selectedIndex].value == "24 hours")
-      {
-          $('#id_open_time').parents('p:first').hide();
-          $('#id_close_time').parents('p:first').hide();
-      }else
-      {
-          $('#id_open_time').parents('p:first').show();
-          $('#id_close_time').parents('p:first').show();
-      }
+
+document.addEventListener('click', (event)=>{
+  if (event.target.id == 'add-more') {
+    add_new_form(event)
   }
+})
 
-  // The jquery function below hides/shows the open_time and close_time fields depending on the selected time list 
-  function hideShow2(){
-      if(document.getElementById('id_status').options[document.getElementById('id_status').selectedIndex].value == "permanently closed")
-      {
-          $('#id_time').parents('p:first').hide();
-          $('#id_days').parents('p:first').hide();
-          $('#id_notification').parents('p:first').hide();
-      }else
-      {
-          $('#id_time').parents('p:first').show();
-          $('#id_days').parents('p:first').show();
-          $('#id_notification').parents('p:first').show();
-      }
+//addMoreBtn.addEventListener('click', (add_new_form))
+
+function add_new_form(event) {
+  if (event) {
+    event.preventDefault()
   }
+  const totalNewForms = document.getElementById('id_form-TOTAL_FORMS')
+  const currentMondayForms = document.getElementsByClassName('monday-form')
+  const currentFormCount = currentMondayForms.length 
+  const formCopyTarget = document.getElementById('monday-form-list')
+  const copyemptyFormEl = document.getElementById('empty-form').cloneNode(true)
+  const deleteBtn = document.getElementById('delete')
+  copyemptyFormEl.setAttribute('class', 'monday-form')
+  copyemptyFormEl.setAttribute('id', `form-${currentFormCount}`)
+  const regex = new RegExp('__prefix__', 'g')
+  copyemptyFormEl.innerHTML = copyemptyFormEl.innerHTML.replace(regex, currentFormCount)
+  totalNewForms.setAttribute('value', currentFormCount + 1)
+  formCopyTarget.append(copyemptyFormEl)
+}
+
 
 
 </script>
-
-
-
 
 {% endblock %}

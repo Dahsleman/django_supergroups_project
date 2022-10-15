@@ -1,6 +1,8 @@
 from django.urls import path
 from . import views
 
+
+# app_name = 'base'
 urlpatterns = [
 
     path('login/', views.loginPage, name="login"),
@@ -20,7 +22,12 @@ urlpatterns = [
     path('telegram-settings-TZ/', views.telegramSettingsTZ, name="telegram-settings-TZ"),
     path('telegram-settings-TZ-update/', views.telegramSettingsTZ_update, name="telegram-settings-TZ-update"),
     
-    path('telegram-agenda/', views.telegramAgenda, name="telegram-agenda"),
+    path('telegram-agenda-list/', views.telegramAgenda_list, name="telegram-agenda-list"),
+    path('telegram-agenda-create/', views.telegramAgenda_create, name="telegram-agenda-create"),
+    path('telegram-agenda-update/<int:id>/', views.telegramAgenda_update, name="telegram-agenda-update"),
+    path('telegram-agenda-detail/<int:id>/', views.telegramAgenda_detail, name="telegram-agenda-detail"),
+
+    path('hx/telegram-agenda/<int:id>', views.telegramAgenda_hx, name="telegram-agenda-hx"),
 
     path('group-settings/<str:pk>/', views.groupSettings, name="group-settings"),
     path('create-group/', views.createGroup, name="create-group"),

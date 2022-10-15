@@ -2,6 +2,7 @@ from django.db import models
 from django.contrib.auth.models import User
 from django.utils.translation import gettext_lazy as _
 import pytz
+from django.urls import reverse
 
 class Telegram(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE, null=True, blank=True)
@@ -34,7 +35,7 @@ class Group(models.Model):
     def __str__(self):
         return self.name
 
-class Opening_hours(models.Model):
+class Settings(models.Model):
 
     STATUS_CHOISES = [
         ('open', 'Open'),
@@ -124,8 +125,6 @@ class Opening_hours(models.Model):
         ('activated','Activate')
     ]
 
-
-
     user = models.ForeignKey(User, on_delete=models.CASCADE, null=True, blank=True)
 
     status = models.CharField(
@@ -149,7 +148,6 @@ class Opening_hours(models.Model):
         choices=OPEN_TIME_CHOISES,
         default='invalid',
         help_text='''Select the open time''',
-        blank=True,
         null=True
 
         ) 
@@ -159,7 +157,6 @@ class Opening_hours(models.Model):
         choices=CLOSE_TIME_CHOISES,
         default='invalid',
         help_text='''Select the close time''',
-        blank=True,
         null=True
         ) 
 
@@ -213,155 +210,93 @@ class Opening_hours(models.Model):
 
 
 
+class Agenda(models.Model):
 
-
-
-class Opening_hours_status(models.Model):
-    status = models.CharField(max_length=50, null=True, blank=True)
-
-    def __str__(self):
-        return self.status
-
-class Opening_hours_time(models.Model):
-    time = models.CharField(max_length=50, null=True, blank=True)
-
-    def __str__(self):
-        return self.time
-
-class Opening_hours_days(models.Model):
-    days = models.CharField(max_length=50, null=True, blank=True)
-
-    def __str__(self):
-        return self.days
-
-class Opening_hours_notification(models.Model):
-    notification = models.CharField(max_length=50, null=True, blank=True)
-
-    def __str__(self):
-        return self.notification
-
-
-class Event(models.Model):
-    YES_NO_CHOICES = [
-    ('No', 'No'),
-    ('Yes', 'Yes'),
-    ]
-    
-    RECURRENCE_PATTERN_CHOICES = [
-    ('---', '---'),
-    ('Daily', 'Daily'),
-    ('Weekly', 'Weekly'),
-    ('Monthly', 'Monthly'),
-    ('Yearly', 'Yearly'),
+    INCREMENTS_CHOISES = [
+        ('15','15 min'), ('30','30 min'), ('45', '45 min'), ('60', '60 min')
     ]
 
-    event_name = models.CharField(
+    class Meta:
+        # verbose_name = 'Monday'
+        verbose_name_plural = 'agenda'
+
+    user = models.ForeignKey(User, on_delete=models.CASCADE, null=True, blank=True)
+
+    name = models.CharField(
         max_length=70,
-        help_text='''Enter a name for the event. This is a required field and is limited to 70 characters.''',
         blank=True,
         null=True
     )
 
-    recurring_event = models.CharField(
-        max_length=5,
-        choices=YES_NO_CHOICES,
-        default='No',
-        help_text='''Is this a one off event or will it recur? Selecting Yes will open up additional fields.''',
-        blank=True,
+    increments = models.CharField(
+        max_length=50,
+        choices=INCREMENTS_CHOISES,
+        default='30 min',
         null=True
-    )
-    
-    recurrence_pattern = models.CharField(
-        max_length=10,
-        choices=RECURRENCE_PATTERN_CHOICES,
-        default='---',
-        help_text='''Select the recurrence pattern for this event.''',
-        blank=True,
-        null=True
-    )
-    starts_at = models.DateTimeField(auto_now=True, blank=True, null=True)
+        )  
 
-    timezone = models.CharField(
-        max_length=128, 
-        choices=[(tz, tz) for tz in pytz.common_timezones],
-        blank=True,
-        null=True)
+    def __str__(self):
+        return f'{self.user} - {self.name}'
 
-# timezone = models.CharField(
-#         max_length=128, 
-#         choices=[(tz, tz) for tz in pytz.all_timezones if tz.startswith("US")],
-#         blank=True,
-#         null=True)
+    def get_absolute_url(self):
+        return reverse('telegram-agenda-detail', kwargs={'id':self.id})
 
-class Media(models.Model):
-    MEDIA_CHOICES = [
-    ('Audio', (
-            ('vinyl', 'Vinyl'),
-            ('cd', 'CD'),
-        )
-    ),
-    ('Video', (
-            ('vhs', 'VHS Tape'),
-            ('dvd', 'DVD'),
-        )
-    ),
-    ('unknown', 'Unknown'),
+    def get_edit_url(self):
+        return reverse('telegram-agenda-update', kwargs={'id':self.id})
+
+    def get_hx_url(self):
+        return reverse("telegram-agenda-hx", kwargs={"id": self.id})
+
+    def get_monday_schedules_children(self):
+        return self.mondaysquedules_set.all()
+
+
+class MondaySquedules(models.Model):
+
+    class Meta:
+        verbose_name = 'Monday'
+        verbose_name_plural = 'monday'
+
+    OPEN_TIME_CHOISES = [
+        ('AM', (('0', '0h'),('1', '1h'),('2', '2h'),('3', '3h'),('4', '4h'),('5', '5h'),('6', '6h'),('7', '7h'),('8', '8h'),('9', '9h'),('10', '10h'),('11', '11h'),)),
+        ('PM', (('12', '12h'),('13', '13h'),('14', '14h'),('15', '15h'),('16', '16h'),('17', '17h'),('18', '18h'),('19', '19h'),('20', '20h'),('21', '21h'),('22', '22h'),('23', '23h'),))
     ]
+
+    CLOSE_TIME_CHOISES = [
+        ('AM', (('0', '0h'),('1', '1h'),('2', '2h'),('3', '3h'),('4', '4h'),('5', '5h'),('6', '6h'),('7', '7h'),('8', '8h'),('9', '9h'),('10', '10h'),('11', '11h'),)),
+        ('PM', (('12', '12h'),('13', '13h'),('14', '14h'),('15', '15h'),('16', '16h'),('17', '17h'),('18', '18h'),('19', '19h'),('20', '20h'),('21', '21h'),('22', '22h'),('23', '23h'),))
+    ]
+
+    agenda = models.ForeignKey(Agenda, on_delete=models.CASCADE, null=True, blank=True)
+
+    available = models.BooleanField(
+        default=True,     
+    )
+
+    start_time = models.CharField(
+        max_length=50,
+        choices=OPEN_TIME_CHOISES,
+        blank=True,
+        null=True
+        ) 
+
+    end_time = models.CharField(
+        max_length=50,
+        choices=CLOSE_TIME_CHOISES,
+        blank=True,
+        null=True
+        )  
     
-    Media_types = models.CharField(
-        max_length=20,
-        choices=MEDIA_CHOICES,
-    )
+    def __str__(self):
+        return f'{self.agenda} availabilities'
 
-class Student(models.Model):
+    def get_absolute_url(self):
+        return self.agenda.get_absolute_url()
 
-    class YearInSchool(models.TextChoices):
-        FRESHMAN = 'FR', _('Freshman')
-        SOPHOMORE = 'SO', _('Sophomore')
-        JUNIOR = 'JR', _('Junior')
-        SENIOR = 'SR', _('Senior')
-        GRADUATE = 'GR', _('Graduate')
 
-    year_in_school = models.CharField(
-        max_length=2,
-        choices=YearInSchool.choices,
-        default=YearInSchool.FRESHMAN,
-    )
+            
 
-    def is_upperclass(self):
-        return self.year_in_school in {
-            self.YearInSchool.JUNIOR,
-            self.YearInSchool.SENIOR,
-        }
-
-class Component(models.Model):
-
-    COMPONENT_TYPE_CHOICES = (
-        (1, 'k_v'),
-        (2, 'pipe')
-    )
-
-    # circuit                     = models.ForeignKey('circuit.Circuit', related_name='components', on_delete=models.CASCADE)
-    component_type              = models.IntegerField(default=1, choices = COMPONENT_TYPE_CHOICES)
-    component_name              = models.CharField(max_length=200)
-    branch_number_collectors    = models.IntegerField(default=4)
-
-    # Hide if component_type==2 
-    k_v                         = models.FloatField(default=1)
-
-    # Hide if component_type==1
-    DI                         = models.FloatField(default=0.025)
-    length                      = models.FloatField(default=1)
-
-    # Calculated properties
-    branch_volumetric_flow_rate = models.FloatField(default=0)
-    branch_mass_flow_rate       = models.FloatField(default=0)
-
-    velocity                    = models.FloatField(default=0)
-    reynolds                    = models.FloatField(default=0)
-    friction_coefficient        = models.FloatField(default=0)
-    pressure_loss               = models.FloatField(default=0)
-
+        
 
 
 

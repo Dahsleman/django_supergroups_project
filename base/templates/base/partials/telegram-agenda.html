@@ -1,0 +1,178 @@
+<style>
+    .telegram-settings-container{
+      display: grid;
+      grid-template-columns: 1fr 6fr 1fr;
+  
+    }
+    .telegram-settings-container2{
+      display: grid;
+      grid-template-columns: 6fr;
+  
+    }
+    .telegram-settings-container3{
+    display: grid;
+    grid-template-columns: 1fr 5fr;
+
+  }
+  .telegram-settings-container4{
+    display: grid;
+    grid-template-columns: 1fr 4fr;
+
+  }
+  .telegram-settings-container5{
+    display: grid;
+    grid-template-columns: 1fr 18fr 4fr 1fr;
+
+  }
+  .telegram-settings-container6{
+    display: grid;
+    grid-template-columns: 1fr 22fr 1fr;
+
+  }
+  .telegram-settings-container7{
+    border-style: solid;
+
+  }
+
+</style>
+
+<div class="telegram-settings-container">
+
+    <div></div>
+
+    <div>
+        <div class="telegram-settings-container2">
+            <div>
+                <spam style="float:left">
+                    <h1>/Agenda</h1>
+                    {% for object in settings_objs %}
+                        <h3 style="float:left">Current Time Zone: {{object.timezone}}</h3>
+                    {% endfor %}
+                </spam>
+                <spam style="float:right">
+                    <h3><a href="{% url 'telegram' %}">Go Back</a>|Create</h3>
+                </spam>
+            </div>
+        </div> 
+        <hr>
+        <div class="telegram-settings-container3">
+
+            <div>
+                <h3>1 - {{ agenda_objs.name }}</h3>
+            </div>
+
+            <div>
+                <div class="telegram-settings-container4">
+                    <div>
+                        
+                    </div>
+                    <div>
+                        <h3 style="float:right"><a href="{% url 'test' %}">Edit</a></h3>
+                    </div>                    
+                </div>
+                <div class="telegram-settings-container4">
+                    <div>
+                        <h3>Name</h3>
+                    </div>
+                    <div>
+                        <h3 style="float:right">{{ agenda_objs.name }}</h3>
+                    </div>                    
+                </div>
+                <hr>
+                <div class="telegram-settings-container4">
+                    <div>
+                        <h3>Start increments</h3>
+                    </div>
+                    <div>
+                        <h3 style="float:right">{{ agenda_objs.increments }} min</h3>
+                    </div>                    
+                </div>
+                <hr>
+                <div class="telegram-settings-container4">
+                    <div>
+                        <h3>Weekly Squedules</h3>
+                    </div>
+                    <div></div>                    
+                </div>
+                <div class="telegram-settings-container7">
+                    <div class="telegram-settings-container5">
+                        <div></div>
+                        <div>
+                            <h4>Mon</h4>
+                        </div>
+                        <div>
+                            {% for obj in objs_children %}
+                            <h4 style="float:right">{{ obj.start_time }}:00 - {{ obj.end_time }}:00</h4>
+                            {% endfor %}
+                        </div>
+                        <div></div>                    
+                    </div>
+                    <div class="telegram-settings-container6">
+                        <div></div>
+                        <div>
+                            <hr>
+                        </div>
+                        <div></div>
+                    </div>
+                    <div class="telegram-settings-container5">
+                        <div></div>
+                        <div>
+                            <h4>Tue</h4>
+                        </div>
+                        <div></div>                    
+                    </div>
+                    <div class="telegram-settings-container6">
+                        <div></div>
+                        <div>
+                            <hr>
+                        </div>
+                        <div></div>
+                    </div>
+                    <div class="telegram-settings-container5">
+                        <div></div>
+                        <div>
+                            <h4>Wed</h4>
+                        </div>
+                        <div></div>                    
+                    </div>
+                    <div class="telegram-settings-container6">
+                        <div></div>
+                        <div>
+                            <hr>
+                        </div>
+                        <div></div>
+                    </div>
+                    <div class="telegram-settings-container5">
+                        <div></div>
+                        <div>
+                            <h4>Thu</h4>
+                        </div>
+                        <div></div>                    
+                    </div>
+                    <div class="telegram-settings-container6">
+                        <div></div>
+                        <div>
+                            <hr>
+                        </div>
+                        <div></div>
+                    </div>
+                    <div class="telegram-settings-container5">
+                        <div></div>
+                        <div>
+                            <h4>Fri</h4>
+                        </div>
+                        <div></div>                    
+                    </div>
+
+                </div>
+                
+
+            </div>  
+
+        </div>
+        
+    </div>
+
+    <div></div>
+        
+</div>

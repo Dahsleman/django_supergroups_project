@@ -12,7 +12,7 @@
 </head>
 
 <body>
-    {% include 'navbar.html '%}
+    {% include 'navbar.html' %}
 
     {% if messages %}
     <ul class="messages">
@@ -26,6 +26,7 @@
     {% endblock %}
     <script type="text/javascript" src="{% static 'js/jquery-3.6.1.min.js' %}"></script>
     <script type="text/javascript" src="{% static 'js/main.js' %}"></script>
+    <script src="https://unpkg.com/htmx.org@1.8.0"></script>
     {% block javascript %}{% endblock %}
 </body>
 </html>

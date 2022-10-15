@@ -1,0 +1,63 @@
+{% extends 'main.html' %}
+{% load static %}
+
+{% block content %}
+
+<style>
+    .bot-container{
+      display: grid;
+      grid-template-columns: 1fr 1fr 5fr 1fr;
+  
+    }
+    .bot-container2{
+      display: grid;
+      grid-template-columns: 5fr;
+  
+    }
+</style>
+
+<div class="bot-container">
+
+    <div></div>
+
+    <div>
+        <h3><a href="{% url 'telegram' %}">Telegram</a></h3>
+        <h3><a href="{% url 'user-profile' user.id %}">Profile</a></h3>
+        <h3>Agenda</h3>
+    </div>
+
+    <div>   
+        <div class="bot-container2">
+            <div>
+                <span style="float:left">
+                    <h1>Agenda</h1>
+                </span>
+                <span style="float:right">
+                    <h3><a href="{% url 'telegram-agenda-create' %}">Add Agenda</a></h3>  
+                </span>
+            </div>
+        </div>     
+        
+        {% for object in agenda_objects %}  
+        <div class="bot-container2">
+            <div>
+                <spam style="float:left">
+                    <h3>{{ object.name }}</h3>
+                </spam>
+                <spam style="float:right">
+                    
+                    <h3><a href="{{ object.get_absolute_url }}">Edit</a></h3>  
+                    
+                </spam>
+            </div>
+        </div>
+        <hr>
+        {% endfor %}
+        
+    </div>
+
+    <div></div>
+        
+</div>
+
+{% endblock content %}

@@ -16,7 +16,7 @@ class ParticipantsForm(ModelForm):
 
 class Opening_hours_Form(ModelForm):
     class Meta:
-        model = Opening_hours
+        model = Settings
         fields = '__all__'
         exclude = ['user','timezone']
 
@@ -90,7 +90,7 @@ class Opening_hours_Form(ModelForm):
 
 class TimezoneForm(ModelForm):
     class Meta:
-        model = Opening_hours
+        model = Settings
         fields = ['timezone']
 
     def fields_required_timezone(self, fields):
@@ -108,7 +108,7 @@ class TimezoneForm(ModelForm):
 
 class Voice_messagesForm(ModelForm):
     class Meta:
-        model = Opening_hours
+        model = Settings
         fields = [
             'voice_messages',
             'voice_messages_notification'
@@ -139,26 +139,96 @@ class Voice_messagesForm(ModelForm):
                 self.fields_required_voiceMessages(['voice_messages'])
 
 
-class EventForm(ModelForm):
-    """Event Staff Update view - allows staff to change event details"""
-    class Meta:
-        model = Event
-        template_name = 'events/event_staff_summary_form.html'
-        fields = [
-                'event_name',
-                'recurring_event',
-                'recurrence_pattern',
-        ]
-        context_object_name = 'event'
+class AgendaForm(ModelForm):
 
-class ComponentForm(forms.ModelForm):
     class Meta:
-        model = Component
+        model = Agenda
         fields = [
-            'component_type',
-            'component_name',
-            'branch_number_collectors',
-            'k_v',
-            'DI',
-            'length'
+            'name',
+            'increments'
         ]
+
+
+class MondayScheduleForm(ModelForm):
+    start_list = []
+    end_list = []
+    var_list = []
+    db_list = []
+    q = None
+    w = 0
+
+    class Meta:
+        model = MondaySquedules
+        # fields = '__all__'
+        exclude = [
+            'agenda',
+            'available'
+        ]
+        verbose_name_plural = 'Monday'
+
+    def clean(self):
+        start_time = self.cleaned_data.get('start_time')
+        end_time = self.cleaned_data.get('end_time')
+        agenda = self.cleaned_data.get('agenda')
+ 
+        if agenda:
+               
+            if start_time == None:
+                self.start_list.clear()
+                self.end_list.clear()
+                self.var_list.clear()
+                raise ValidationError ({'start_time':('select start time')}) 
+            
+            elif end_time == None:
+                self.start_list.clear()
+                self.end_list.clear()
+                self.var_list.clear()
+                raise ValidationError ({'end_time':('select end time')}) 
+
+            else:
+                start_time = int(start_time)
+                end_time = int(end_time)
+
+            if end_time <= start_time:
+                self.start_list.clear()
+                self.end_list.clear()
+                self.var_list.clear()
+                raise ValidationError ({'end_time':('must be bigger')})
+
+            num = len(self.start_list)        
+            if num == 0:
+                self.start_list.append(start_time)
+                self.end_list.append(end_time)
+                self.var_list.append(self.w)
+            else:
+                self.q = self.var_list[0]
+                while self.q >= 0:
+                    
+                    if start_time == self.start_list[self.q]:
+                        self.start_list.clear()
+                        self.end_list.clear()
+                        self.var_list.clear()
+                        raise ValidationError ({'start_time':('conflict')}) 
+                    
+                    if start_time > self.start_list[self.q] and start_time < self.end_list[self.q]:
+                        self.start_list.clear()
+                        self.end_list.clear()
+                        self.var_list.clear()
+                        raise ValidationError ({'start_time':('conflict')}) 
+                    
+                    if end_time > self.start_list[self.q] and end_time < self.end_list[self.q]:
+                        self.start_list.clear()
+                        self.end_list.clear()
+                        self.var_list.clear()
+                        raise ValidationError ({'end_time':('conflict')}) 
+                    else:
+                        self.q = self.q - 1
+                
+                self.start_list.append(start_time)
+                self.end_list.append(end_time)
+                self.w = self.var_list[0]
+                self.w += 1
+                self.var_list[0] = self.w
+        
+
+

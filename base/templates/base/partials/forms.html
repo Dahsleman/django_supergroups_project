@@ -1,0 +1,70 @@
+<style>
+  .group-container{
+    display: grid;
+    grid-template-columns: 1fr 6fr 1fr;
+
+  }
+  .group-container2{
+    display: grid;
+    grid-template-columns: 2fr 8fr;
+  }
+  .group-container3{
+    display: grid;
+    grid-template-columns: 3fr 7fr;
+  }
+  .hidden{
+    display: none
+  }
+
+</style>
+
+
+  <form id="test-form" method="POST" hx-post='.' hx-swap="outerHTML">
+    {% csrf_token %}
+    {% if message %}
+        <p>{{ message }}</p>
+    {% endif %} 
+    <div class="group-container2">
+      <div>
+        <span style="float:left">
+          <p>Agenda:</p>
+        </span>
+        <span style="float:right">
+          <p>{{ form.name }}</p>
+        </span>
+        <span style="float:left">
+          <p>Start time increments:</p>
+        </span>
+        <span style="float:right">
+          <p>{{ form.increments }}</p>
+        </span>
+      </div>
+      <div></div>
+    </div>
+    <p>Set your weekly squedules</p>
+    <div class="group-container3">
+      <div>
+        <span style="float:left">  
+          <p><input type="checkbox" id="el" checked></input>Seg</p>
+        </span>
+        {{ formset.management_form }}
+        <span style="float:right" id="monday-form-list">
+          {% for form in formset %}
+            {{ form.id }}
+            <div class= "monday-form">
+              <p>{{ form.start_time }} - {{ form.end_time }}</p>
+            </div>
+          {% endfor %}
+          <div id="empty-form" class="hidden">
+            <p>{{ formset.empty_form.start_time }} - {{ formset.empty_form.end_time }} <button type="button">Del</button></p>
+          </div> 
+        </span> 
+      </div>
+      <div></div>
+    </div>
+    
+    <p id="text" style="display:none">indisponivel</p>
+    <p><button type="button" id="add-more">Add</button></p>
+    <p><button type="submit" id="save_btn" name="emptylayerbtn">Submit</button></p>
+    
+  </form>  
