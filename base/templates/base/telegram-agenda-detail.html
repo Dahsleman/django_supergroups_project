@@ -3,163 +3,51 @@
 {% block content %}
 
 <style>
-    .telegram-settings-container{
-      display: grid;
-      grid-template-columns: 1fr 6fr 1fr;
-  
-    }
-    .telegram-settings-container2{
-      display: grid;
-      grid-template-columns: 6fr;
-  
-    }
-    .telegram-settings-container3{
+  .agenda-detail-container{
     display: grid;
-    grid-template-columns: 5fr;
+    grid-template-columns: 1fr 6fr 1fr;
 
   }
-  .telegram-settings-container4{
+  .agenda-detail-title{
+    display: grid;
+    grid-template-columns: 6fr;
+
+  }
+  .agenda-detail-list{
+  display: grid;
+  grid-template-columns: 1fr 5fr;
+
+  }
+  .agenda-detail-form{
     display: grid;
     grid-template-columns: 4fr 1fr;
 
   }
-  .telegram-settings-container5{
-    display: grid;
-    grid-template-columns: 1fr 22fr 4fr 1fr;
-
-  }
-  .telegram-settings-container6{
+  .agenda-detail-weekly-squedules{
     display: grid;
     grid-template-columns: 1fr 28fr 1fr;
+    border-style: solid;
 
   }
-  .telegram-settings-container7{
-    border-style: solid;
+  .agenda-detail-weekly-squedules-form{
+    display: grid;
+    grid-template-columns: 1fr 22fr 4fr 1fr;
 
   }
 
 </style>
 
-<div class="telegram-settings-container">
-
-    <div></div>
-
-    <div>
-        <div class="telegram-settings-container2">
-            <div>
-                <spam style="float:left">
-                    <h1>{{ agenda_obj.name }}</h1>
-                </spam>
-                <spam style="float:right">
-                    <h3><a href="{{ agenda_obj.get_edit_url }}">Edit</a>|<a href="{% url 'telegram-agenda-list' %}">Go Back</a></h3>
-                </spam>
-            </div>
-        </div> 
-        <hr>
-        <div class="telegram-settings-container3">
-
-            <div>
-                
-                <div class="telegram-settings-container4">
-                    <div>
-                        <h3>Start increments</h3>
-                    </div>
-                    <div>
-                        <h3 style="float:right">{{ agenda_obj.increments }} min</h3>
-                    </div>                    
-                </div>
-                <hr>
-                <div class="telegram-settings-container4">
-                    <div>
-                        <h3>Weekly Squedules</h3>
-                    </div>
-                    <div></div>                    
-                </div>
-
-                <div class="telegram-settings-container6">
-
-                    <div></div>
-
-                    <div class="telegram-settings-container7">
-                        <div class="telegram-settings-container5">
-                            <div></div>
-                            <div>
-                                <h4>Sun</h4>
-                            </div>
-                            <div>
-        
-                            </div>
-                            <div></div>                    
-                        </div>
-                        <hr>
-                        <div class="telegram-settings-container5">
-                            <div></div>
-                            <div>
-                                <h4>Mon</h4>
-                            </div>
-                            <div>
-                                {% for schedules in agenda_obj.get_monday_schedules_children %}
-                                <h4 style="float:right">{{ schedules.start_time }}:00 - {{ schedules.end_time }}:00</h4>    
-                                {% endfor %}
-                            </div>
-                            <div></div>                    
-                        </div>
-                        <hr>
-                        <div class="telegram-settings-container5">
-                            <div></div>
-                            <div>
-                                <h4>Tue</h4>
-                            </div>
-                            <div></div>                    
-                        </div>
-                        <hr>
-                        <div class="telegram-settings-container5">
-                            <div></div>
-                            <div>
-                                <h4>Wed</h4>
-                            </div>
-                            <div></div>                    
-                        </div>
-                        <hr>
-                        <div class="telegram-settings-container5">
-                            <div></div>
-                            <div>
-                                <h4>Thu</h4>
-                            </div>
-                            <div></div>                    
-                        </div>
-                        <hr>
-                        <div class="telegram-settings-container5">
-                            <div></div>
-                            <div>
-                                <h4>Fri</h4>
-                            </div>
-                            <div></div>                    
-                        </div>
-                        <hr>
-                        <div class="telegram-settings-container5">
-                            <div></div>
-                            <div>
-                                <h4>Sat</h4>
-                            </div>
-                            <div></div>                    
-                        </div>
-                        
-                    </div>
-
-                    <div></div>
-
-                </div>
-
-            </div>  
-
-        </div>
-        
+<div hx-get="{{ hx_url }}" hx-trigger="load delay:0.5s">
+  
+    <div class="telegram-detail-container">
+        <div></div>
+        <div class="htmx-indicator"><h3>Loading...</h3></div>
+        <div></div>
     </div>
-
-    <div></div>
-        
+    
 </div>
+
+
 
 
 {% endblock content %}

@@ -1,6 +1,5 @@
 from django.forms import ModelForm
-from .models import *
-from django import forms
+from .models import Group, Settings, Agenda, MondaySquedules
 from django.core.exceptions import ValidationError
 
 class GroupForm(ModelForm):
@@ -143,92 +142,90 @@ class AgendaForm(ModelForm):
 
     class Meta:
         model = Agenda
-        fields = [
-            'name',
-            'increments'
+        fields = '__all__'
+        exclude = [
+            'user'
         ]
 
+    # def __init__(self, *args, **kwargs):
+    #     super().__init__(*args, **kwargs)
+    #     self.fields['monday'].label = ''
 
 class MondayScheduleForm(ModelForm):
-    start_list = []
-    end_list = []
-    var_list = []
-    db_list = []
-    q = None
-    w = 0
 
     class Meta:
         model = MondaySquedules
-        # fields = '__all__'
-        exclude = [
-            'agenda',
-            'available'
+        fields = [
+            'start_time',
+            'end_time'
         ]
         verbose_name_plural = 'Monday'
 
-    def clean(self):
-        start_time = self.cleaned_data.get('start_time')
-        end_time = self.cleaned_data.get('end_time')
-        agenda = self.cleaned_data.get('agenda')
- 
-        if agenda:
-               
-            if start_time == None:
-                self.start_list.clear()
-                self.end_list.clear()
-                self.var_list.clear()
-                raise ValidationError ({'start_time':('select start time')}) 
+    # def clean(self):
+    #     start_time = self.cleaned_data.get('start_time')
+    #     end_time = self.cleaned_data.get('end_time')
+        
+
+    #     if start_time == None:
+    #         self.start_list.clear()
+    #         self.end_list.clear()
             
-            elif end_time == None:
-                self.start_list.clear()
-                self.end_list.clear()
-                self.var_list.clear()
-                raise ValidationError ({'end_time':('select end time')}) 
+    #         raise ValidationError ({'start_time':('select start time')}) 
+        
+    #     elif end_time == None:
+    #         self.start_list.clear()
+    #         self.end_list.clear()
+            
+    #         raise ValidationError ({'end_time':('select end time')}) 
 
-            else:
-                start_time = int(start_time)
-                end_time = int(end_time)
+    #     else:
+    #         start_time = int(start_time)
+    #         end_time = int(end_time)
 
-            if end_time <= start_time:
-                self.start_list.clear()
-                self.end_list.clear()
-                self.var_list.clear()
-                raise ValidationError ({'end_time':('must be bigger')})
+    #     if end_time <= start_time:
+    #         self.start_list.clear()
+    #         self.end_list.clear()
+            
+    #         raise ValidationError ({'end_time':('must be bigger than start time')})
 
-            num = len(self.start_list)        
-            if num == 0:
-                self.start_list.append(start_time)
-                self.end_list.append(end_time)
-                self.var_list.append(self.w)
-            else:
-                self.q = self.var_list[0]
-                while self.q >= 0:
-                    
-                    if start_time == self.start_list[self.q]:
-                        self.start_list.clear()
-                        self.end_list.clear()
-                        self.var_list.clear()
-                        raise ValidationError ({'start_time':('conflict')}) 
-                    
-                    if start_time > self.start_list[self.q] and start_time < self.end_list[self.q]:
-                        self.start_list.clear()
-                        self.end_list.clear()
-                        self.var_list.clear()
-                        raise ValidationError ({'start_time':('conflict')}) 
-                    
-                    if end_time > self.start_list[self.q] and end_time < self.end_list[self.q]:
-                        self.start_list.clear()
-                        self.end_list.clear()
-                        self.var_list.clear()
-                        raise ValidationError ({'end_time':('conflict')}) 
-                    else:
-                        self.q = self.q - 1
+        # if agenda == None:
+
+        #     num = len(self.start_list)
+                   
+        #     if num == 0:
+        #         self.start_list.append(start_time)
+        #         self.end_list.append(end_time)
+        #         self.var_list.append(self.w)
+        #     else:
                 
-                self.start_list.append(start_time)
-                self.end_list.append(end_time)
-                self.w = self.var_list[0]
-                self.w += 1
-                self.var_list[0] = self.w
+        #         self.q = self.var_list[0]
+        #         while self.q >= 0:
+                    
+        #             if start_time == self.start_list[self.q]:
+        #                 self.start_list.clear()
+        #                 self.end_list.clear()
+        #                 self.var_list.clear()
+        #                 raise ValidationError ({'start_time':('conflict')}) 
+                    
+        #             if start_time > self.start_list[self.q] and start_time < self.end_list[self.q]:
+        #                 self.start_list.clear()
+        #                 self.end_list.clear()
+        #                 self.var_list.clear()
+        #                 raise ValidationError ({'start_time':('conflict')}) 
+                    
+        #             if end_time > self.start_list[self.q] and end_time < self.end_list[self.q]:
+        #                 self.start_list.clear()
+        #                 self.end_list.clear()
+        #                 self.var_list.clear()
+        #                 raise ValidationError ({'end_time':('conflict')}) 
+        #             else:
+        #                 self.q = self.q - 1
+                
+        #         self.start_list.append(start_time)
+        #         self.end_list.append(end_time)
+        #         self.w = self.var_list[0]
+        #         self.w += 1
+        #         self.var_list[0] = self.w
         
 
 

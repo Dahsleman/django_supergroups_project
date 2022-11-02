@@ -1,70 +1,89 @@
-<style>
-  .group-container{
-    display: grid;
-    grid-template-columns: 1fr 6fr 1fr;
+<form action="." method="POST" hx-post="." hx-swap="outerHTML" id="myform">
+  <!-- hx-trigger=" {% if form.instance.id %}change delay:500ms,{% endif %} submit" -->
+  {% if message %}
+    <p>{{ message }}</p>  
+  {% endif %}
+  {% csrf_token %}
+  <h4>Set your agenda name</h4>
+  <p>{{ form.name }}</p>
+  <h4>Set your squedules start increments</h4>
+  <p>{{ form.increments }}</p>
+  <!-- <p>{{ form.monday }}</p> -->
 
-  }
-  .group-container2{
-    display: grid;
-    grid-template-columns: 2fr 8fr;
-  }
-  .group-container3{
-    display: grid;
-    grid-template-columns: 3fr 7fr;
-  }
-  .hidden{
-    display: none
-  }
+  <h3>Set your weekly squedules</h3>
+  {% if error %}
+    <p>{{ error }}</p>  
+  {% endif %}
 
-</style>
+  <div class="monday-container">
 
-
-  <form id="test-form" method="POST" hx-post='.' hx-swap="outerHTML">
-    {% csrf_token %}
-    {% if message %}
-        <p>{{ message }}</p>
-    {% endif %} 
-    <div class="group-container2">
-      <div>
-        <span style="float:left">
-          <p>Agenda:</p>
-        </span>
-        <span style="float:right">
-          <p>{{ form.name }}</p>
-        </span>
-        <span style="float:left">
-          <p>Start time increments:</p>
-        </span>
-        <span style="float:right">
-          <p>{{ form.increments }}</p>
-        </span>
-      </div>
-      <div></div>
+    <div>
+      <span style="float:left">
+        <div id="checkbox-container">
+        <h4>
+          <input type="checkbox" name="display-type" value="mondaybox" id="el" checked></input>
+          <label>Mon</label> 
+        </h4>          
+        </div>
+      </span>
     </div>
-    <p>Set your weekly squedules</p>
-    <div class="group-container3">
-      <div>
-        <span style="float:left">  
-          <p><input type="checkbox" id="el" checked></input>Seg</p>
-        </span>
-        {{ formset.management_form }}
-        <span style="float:right" id="monday-form-list">
-          {% for form in formset %}
-            {{ form.id }}
-            <div class= "monday-form">
-              <p>{{ form.start_time }} - {{ form.end_time }}</p>
-            </div>
-          {% endfor %}
-          <div id="empty-form" class="hidden">
-            <p>{{ formset.empty_form.start_time }} - {{ formset.empty_form.end_time }} <button type="button">Del</button></p>
-          </div> 
-        </span> 
-      </div>
-      <div></div>
+
+    <div>  
+
+      {% for obj in agenda_obj.get_monday_schedules_children %}
+            {% include 'base/partials/monday-inline-del.html' with object=obj %}
+      {% endfor %}
+        
+      {% if new_monday_url %}
+        <div id="monday-create"></div>    
+      {% endif %}
+
+      <h4 id="text" style="display:none">unavailable</h4>
     </div>
+
+    <div>
+      <span style="float:left">
+        <h4><button id="add_btn" style="display:block" hx-get="{{ new_monday_url }}" hx-trigger="click" hx-target="#monday-create" hx-swap="beforeend">+</button></h4>
+      </span>
+    </div>
+    <div></div>
+          
+  </div>
+  <div class="hr-container">
+    <div>
+      <hr>
+    </div>
+    <div></div>
+  </div>
+  
+  <p>
+    <div class="htmx-indicator">Loading...</div>
+    <button class="htmx-inverted-indicator" type="submit" id="save_btn" name="emptylayerbtn">Save and return</button>
+  </p>
+</form>
+
+{% block javascript %}
+
+<script>
+
+var checkboxValues = JSON.parse(localStorage.getItem('checkboxValues')) || {};
+    var $checkboxes = $("#checkbox-container :checkbox");
+
+    $checkboxes.on("change", function(){
+        $checkboxes.each(function(){
+            checkboxValues[this.id] = this.checked;
+        });
     
-    <p id="text" style="display:none">indisponivel</p>
-    <p><button type="button" id="add-more">Add</button></p>
-    <p><button type="submit" id="save_btn" name="emptylayerbtn">Submit</button></p>
-    
-  </form>  
+        localStorage.setItem("checkboxValues", JSON.stringify(checkboxValues));
+    });
+
+    // On page load
+    $.each(checkboxValues, function(key, value) {
+        $("#" + key).prop('checked', value);
+    });
+
+
+
+</script>
+
+{% endblock javascript %}

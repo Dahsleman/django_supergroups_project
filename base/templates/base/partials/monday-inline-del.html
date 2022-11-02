@@ -1,0 +1,17 @@
+<div class= "monday-form">
+    <div id="monday-{{ object.id }}" >
+        <div class="monday-inline-container">
+            
+            <div>
+                <h4>{{ object.start_time }}:00 - {{ object.end_time }}:00</h4>
+            </div>
+            
+            <div>
+                <span style="float:left">
+                    <h4><a href="{{ object.get_delete_monday_url }}">Del</a></h4>
+                </span>
+            </div>
+        </div>
+    </div> 
+</div>
+

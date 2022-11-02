@@ -2,7 +2,6 @@ from django.urls import path
 from . import views
 
 
-# app_name = 'base'
 urlpatterns = [
 
     path('login/', views.loginPage, name="login"),
@@ -25,9 +24,15 @@ urlpatterns = [
     path('telegram-agenda-list/', views.telegramAgenda_list, name="telegram-agenda-list"),
     path('telegram-agenda-create/', views.telegramAgenda_create, name="telegram-agenda-create"),
     path('telegram-agenda-update/<int:id>/', views.telegramAgenda_update, name="telegram-agenda-update"),
+    path('telegram-agenda-delete/<int:id>/', views.telegramAgenda_delete, name="telegram-agenda-delete"),
     path('telegram-agenda-detail/<int:id>/', views.telegramAgenda_detail, name="telegram-agenda-detail"),
 
-    path('hx/telegram-agenda/<int:id>', views.telegramAgenda_hx, name="telegram-agenda-hx"),
+    path('hx/telegram-agenda-detail/<int:id>/', views.telegramAgenda_detail_hx, name="hx-telegram-agenda-detail"),
+
+    path('monday-delete/<int:parent_id>/monday/<int:id>/', views.telegramMonday_delete, name="monday-delete"),
+    
+    path('hx/telegram-agenda-detail/<int:parent_id>/monday/<int:id>/', views.telegramMonday_update_hx, name="hx-monday-detail"),
+    path('hx/telegram-agenda-create/<int:parent_id>/monday/', views.telegramMonday_update_hx, name="hx-monday-create"),
 
     path('group-settings/<str:pk>/', views.groupSettings, name="group-settings"),
     path('create-group/', views.createGroup, name="create-group"),
@@ -37,7 +42,7 @@ urlpatterns = [
 
     path('user-profile/<str:pk>/', views.userProfile, name="user-profile"),
 
-    path('create-participants/<str:pk>/', views.createParticipants, name="create-participants"),
+    # path('create-participants/<str:pk>/', views.createParticipants, name="create-participants"),
 
     path('test/', views.testUpdate, name="test"),
 

@@ -2,39 +2,45 @@
   .navbar-container{
     display: grid;
     grid-template-columns: 1fr 1fr 5fr 1fr;
-
+    
   }
+  
 </style>
 
 {% if request.user.is_authenticated %}
 
 <div class="navbar-container">
 
-  <div>
-
-  </div>
+  <div></div>
 
   <div> 
-    <a href="/telegram">
-      <h1>CalenDrive</h1>
-    </a>
+    <a href="/"><h1>CalenDrive</h1></a>
   </div>
 
   <div>
-    <p style="text-align:right"> Hello, <a href="{% url 'user-profile' user.id %}">@{{request.user}}</a> | <a href="{% url 'logout' %}">Logout</a></p> 
+    {% for object in agenda_objects %} 
+    {% if forloop.first %} 
+    <p style="text-align:right"> <a href="{{ object.get_absolute_url }}">Agenda</a> | <a href="{% url 'telegram-settings-OH' %}">Settings</a> | Hello, <a href="{% url 'user-profile' user.id %}">@{{request.user}}</a> | <a href="{% url 'logout' %}">Logout</a></p> 
+    {% endif %}
+    {% endfor %}
   </div>
 
-  <div>
-  {% else %}
-    <center>
-      <a href="/register">
-        <h1>iROOMS</h1>
-      </a>
-    </center>  
-  {% endif %}
-  </div>
-  
+  <div></div>
 
 </div>
+<hr>
+
+{% else %}
+<div>
+  <center>
+    <a href="/register">
+      <h1>Calendrive</h1>
+    </a>
+  </center>  
+</div>
+{% endif %}
+  
+
+
   
 

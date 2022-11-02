@@ -4,7 +4,7 @@ from .models import *
 from django.forms.models import BaseInlineFormSet
 
 admin.site.register(Telegram)
-admin.site.register(Group)
+# admin.site.register(Group)
 admin.site.register(Group_type)
 admin.site.register(Settings)
 

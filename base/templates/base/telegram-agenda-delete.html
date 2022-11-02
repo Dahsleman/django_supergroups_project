@@ -1,0 +1,59 @@
+{% extends 'main.html' %}
+
+{% block content %}
+
+<style>
+    .telegram-settings-container{
+      display: grid;
+      grid-template-columns: 1fr 6fr 1fr;
+  
+    }
+    .telegram-settings-container2{
+      display: grid;
+      grid-template-columns: 6fr;
+  
+    }
+    .telegram-settings-container3{
+    display: grid;
+    grid-template-columns: 5fr;
+
+  }
+  .telegram-settings-container4{
+    display: grid;
+    grid-template-columns: 4fr 1fr;
+
+  }
+  .telegram-settings-container5{
+    display: grid;
+    grid-template-columns: 1fr 22fr 4fr 1fr;
+
+  }
+  .telegram-settings-container6{
+    display: grid;
+    grid-template-columns: 1fr 28fr 1fr;
+
+  }
+  .telegram-settings-container7{
+    border-style: solid;
+
+  }
+
+</style>
+
+
+<div class="telegram-settings-container">
+    <div></div>
+    <div>
+        {% if agenda_obj %}
+        <form method="POST" action=".">
+            {% csrf_token %}
+            <p>Are you sure you want to delete {{ agenda_obj.name }}?</p>
+            <button type="submit">Yes, delete.</button>
+        </form>
+        {% endif %}
+    </div>
+    <div></div>
+</div>
+
+{% endblock content %}
+    

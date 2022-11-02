@@ -1,0 +1,143 @@
+<div class="agenda-detail-container">
+
+    <div></div>
+
+    <div>
+    
+        <div class="agenda-detail-title">
+            <div>
+                <spam style="float:left">
+                    <h1>Agenda</h1>
+                </spam>
+                <spam style="float:right">
+                    <h3><a href="{% url 'telegram-agenda-create' %}">Add new</a></h3>
+                </spam>
+            </div>
+        </div> 
+        <hr>
+
+        <div class="agenda-detail-list">
+            <div>
+                {% for object in agenda_objects %}  
+                    <div>    
+                        <h3><a href="{{ object.get_absolute_url }}">{{ object.name }}</a></h3>  
+                    </div>
+                    
+                {% endfor %}
+            </div>
+        
+            <div>
+                <div class="agenda-detail-form">
+                    <div>
+                        <h2>{{ agenda_obj.name }}</h2>
+                    </div>
+                    <div>
+                        <h3 style="float:right">
+                            <a href="{{ agenda_obj.get_edit_url }}">Edit</a>
+                            {% if num > '1' %}|
+                                <a href="{{ agenda_obj.get_delete_url }}">Delete</a>
+                            {% endif %}
+                        </h3>
+                    </div>
+                </div>
+                <hr>            
+                <div class="agenda-detail-form">
+                    <div>
+                        <h3>Start increments</h3>
+                    </div>
+                    <div>
+                        <h3 style="float:right">{{ agenda_obj.increments }} min</h3>
+                    </div>                    
+                </div>
+                <hr>
+                <div class="agenda-detail-weekly-squedules">
+        
+                    <div></div>
+        
+                    <div>
+                        <h4>Weekly Squedules</h4>
+                        <div class="agenda-detail-weekly-squedules-form">
+                            <div></div>
+                            <div>
+                                <h4>Sun</h4>
+                            </div>
+                            <div>
+        
+                            </div>
+                            <div></div>                    
+                        </div>
+                        <hr>
+                        <div class="agenda-detail-weekly-squedules-form">
+                            <div></div>
+                            <div>
+                                <h4>Mon</h4>
+                            </div>
+                            <div>
+                                {% if monday %}
+                                    {% for schedules in agenda_obj.get_monday_schedules_children %}
+                                    <h4 style="float:right">{{ schedules.start_time }}:00 - {{ schedules.end_time }}:00</h4>    
+                                    {% endfor %}
+                                {% else %}
+                                    <h4>unavailable</h4>
+                                {% endif %}
+                            </div>
+                            <div></div>                    
+                        </div>
+                        <hr>
+                        <div class="agenda-detail-weekly-squedules-form">
+                            <div></div>
+                            <div>
+                                <h4>Tue</h4>
+                            </div>
+                            <div></div>                    
+                        </div>
+                        <hr>
+                        <div class="agenda-detail-weekly-squedules-form">
+                            <div></div>
+                            <div>
+                                <h4>Wed</h4>
+                            </div>
+                            <div></div>                    
+                        </div>
+                        <hr>
+                        <div class="agenda-detail-weekly-squedules-form">
+                            <div></div>
+                            <div>
+                                <h4>Thu</h4>
+                            </div>
+                            <div></div>                    
+                        </div>
+                        <hr>
+                        <div class="agenda-detail-weekly-squedules-form">
+                            <div></div>
+                            <div>
+                                <h4>Fri</h4>
+                            </div>
+                            <div></div>                    
+                        </div>
+                        <hr>
+                        <div class="agenda-detail-weekly-squedules-form">
+                            <div></div>
+                            <div>
+                                <h4>Sat</h4>
+                            </div>
+                            <div></div>                    
+                        </div>
+                        
+                    </div>
+        
+                    <div></div>
+        
+                </div>
+        
+            </div>  
+        
+        </div>
+
+    </div>
+    
+
+    <div></div>
+        
+</div>
+

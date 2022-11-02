@@ -27,8 +27,20 @@
 
   <div></div>
     
-  <div>
-    {% include 'base/partials/forms.html' %}                                     
+  <div id="checkbox-container">
+    <div>
+      <label>Option 1<input type="checkbox" id="option1"></label>
+      
+    </div>
+    <div>
+      <label for="option2">Option 2</label>
+      <input type="checkbox" id="option2">
+    </div>
+    <div>
+      <label for="option3">Option 3</label>
+      <input type="checkbox" id="option3">
+    </div>
+                                 
   </div>
   
   <div></div>
@@ -41,35 +53,21 @@
 
 <script>
 
-const addMoreBtn = document.getElementById('add-more')
+  var checkboxValues = JSON.parse(localStorage.getItem('checkboxValues')) || {};
+  var $checkboxes = $("#checkbox-container :checkbox");
 
+  $checkboxes.on("change", function(){
+    $checkboxes.each(function(){
+      checkboxValues[this.id] = this.checked;
+    });
+    
+    localStorage.setItem("checkboxValues", JSON.stringify(checkboxValues));
+  });
 
-document.addEventListener('click', (event)=>{
-  if (event.target.id == 'add-more') {
-    add_new_form(event)
-  }
-})
-
-//addMoreBtn.addEventListener('click', (add_new_form))
-
-function add_new_form(event) {
-  if (event) {
-    event.preventDefault()
-  }
-  const totalNewForms = document.getElementById('id_form-TOTAL_FORMS')
-  const currentMondayForms = document.getElementsByClassName('monday-form')
-  const currentFormCount = currentMondayForms.length 
-  const formCopyTarget = document.getElementById('monday-form-list')
-  const copyemptyFormEl = document.getElementById('empty-form').cloneNode(true)
-  const deleteBtn = document.getElementById('delete')
-  copyemptyFormEl.setAttribute('class', 'monday-form')
-  copyemptyFormEl.setAttribute('id', `form-${currentFormCount}`)
-  const regex = new RegExp('__prefix__', 'g')
-  copyemptyFormEl.innerHTML = copyemptyFormEl.innerHTML.replace(regex, currentFormCount)
-  totalNewForms.setAttribute('value', currentFormCount + 1)
-  formCopyTarget.append(copyemptyFormEl)
-}
-
+  // On page load
+  $.each(checkboxValues, function(key, value) {
+    $("#" + key).prop('checked', value);
+  });
 
 
 </script>

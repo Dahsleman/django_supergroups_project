@@ -3,6 +3,8 @@ from django.contrib.auth.models import User
 from django.utils.translation import gettext_lazy as _
 import pytz
 from django.urls import reverse
+from django.core.exceptions import ValidationError
+# from base.forms import MondayScheduleForm
 
 class Telegram(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE, null=True, blank=True)
@@ -233,10 +235,17 @@ class Agenda(models.Model):
         choices=INCREMENTS_CHOISES,
         default='30 min',
         null=True
-        )  
+        ) 
+
+    monday = models.BooleanField(
+        default=True,     
+    ) 
 
     def __str__(self):
         return f'{self.user} - {self.name}'
+
+    def get_list_url():
+        return reverse('telegram-agenda-list')
 
     def get_absolute_url(self):
         return reverse('telegram-agenda-detail', kwargs={'id':self.id})
@@ -244,11 +253,17 @@ class Agenda(models.Model):
     def get_edit_url(self):
         return reverse('telegram-agenda-update', kwargs={'id':self.id})
 
+    def get_delete_url(self):
+        return reverse('telegram-agenda-delete', kwargs={'id':self.id})
+
     def get_hx_url(self):
-        return reverse("telegram-agenda-hx", kwargs={"id": self.id})
+        return reverse("hx-telegram-agenda-detail", kwargs={"id": self.id})
 
     def get_monday_schedules_children(self):
         return self.mondaysquedules_set.all()
+
+    def get_user_id(self):
+        return self.user.id
 
 
 class MondaySquedules(models.Model):
@@ -276,15 +291,15 @@ class MondaySquedules(models.Model):
     start_time = models.CharField(
         max_length=50,
         choices=OPEN_TIME_CHOISES,
-        blank=True,
-        null=True
+        # blank=True,
+        null=True,
         ) 
 
     end_time = models.CharField(
         max_length=50,
         choices=CLOSE_TIME_CHOISES,
-        blank=True,
-        null=True
+        # blank=True,
+        null=True,
         )  
     
     def __str__(self):
@@ -292,6 +307,29 @@ class MondaySquedules(models.Model):
 
     def get_absolute_url(self):
         return self.agenda.get_absolute_url()
+
+    def get_delete_monday_url(self):
+        kwargs = {
+            "parent_id":self.agenda.id,
+            "id":self.id
+        }
+        return reverse('monday-delete', kwargs=kwargs)
+
+    def get_hx_edit_url(self):
+        kwargs = {
+            "parent_id":self.agenda.id,
+            "id":self.id
+        }
+        return reverse('hx-monday-detail', kwargs=kwargs)
+
+    def get_hx_create_url(self):
+        return reverse("hx-monday-create", kwargs={"parent_id":self.agenda.id})
+
+
+    
+        
+
+    
 
 
             
