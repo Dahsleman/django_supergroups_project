@@ -226,7 +226,7 @@ class Agenda(models.Model):
 
     name = models.CharField(
         max_length=70,
-        blank=True,
+        # blank=True,
         null=True
     )
 
@@ -262,10 +262,6 @@ class Agenda(models.Model):
     def get_monday_schedules_children(self):
         return self.mondaysquedules_set.all()
 
-    def get_user_id(self):
-        return self.user.id
-
-
 class MondaySquedules(models.Model):
 
     class Meta:
@@ -300,7 +296,7 @@ class MondaySquedules(models.Model):
         choices=CLOSE_TIME_CHOISES,
         # blank=True,
         null=True,
-        )  
+        ) 
     
     def __str__(self):
         return f'{self.agenda} availabilities'

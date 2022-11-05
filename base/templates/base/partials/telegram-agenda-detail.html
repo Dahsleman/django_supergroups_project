@@ -34,7 +34,7 @@
                     <div>
                         <h3 style="float:right">
                             <a href="{{ agenda_obj.get_edit_url }}">Edit</a>
-                            {% if num > '1' %}|
+                            {% if agenda_obj.name != 'Main' %}
                                 <a href="{{ agenda_obj.get_delete_url }}">Delete</a>
                             {% endif %}
                         </h3>

@@ -1,0 +1,41 @@
+{% extends 'main.html' %}
+
+{% block content %}
+
+<style>
+    .create-update-container{
+      display: grid;
+      grid-template-columns: 1fr 6fr 1fr;
+  
+    }
+    .monday-container{
+        display: grid;
+        grid-template-columns: 1.5fr 3fr 1.5fr 10fr;
+    }
+    .monday-inline-container{
+        display: grid;
+        grid-template-columns: 2fr 1.5fr;
+    }
+    .hr-container{
+        display: grid;
+        grid-template-columns: 5fr 10fr;
+    }
+
+    .hidden{
+        display: none
+    }
+    
+</style>
+
+<div class="create-update-container">
+
+    <div></div>
+
+    <div>
+        {% include 'base/partials/agenda-create-form.html' %}
+    </div>
+    <div>
+</div>
+
+
+{% endblock content %}

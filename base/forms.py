@@ -151,6 +151,23 @@ class AgendaForm(ModelForm):
     #     super().__init__(*args, **kwargs)
     #     self.fields['monday'].label = ''
 
+class Main_AgendaForm(ModelForm):
+
+    class Meta:
+        model = Agenda
+        fields = '__all__'
+        exclude = [
+            'user',
+            'name',
+        ]
+
+    # def __init__(self, *args, **kwargs):
+    #     super().__init__(*args, **kwargs)
+    #     self.fields['monday'].label = ''
+
+
+
+
 class MondayScheduleForm(ModelForm):
 
     class Meta:

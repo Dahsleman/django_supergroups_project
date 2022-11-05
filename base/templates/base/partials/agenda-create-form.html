@@ -1,0 +1,24 @@
+<form action="." method="POST" hx-post="." hx-swap="outerHTML" id="myform">
+  
+  {% if message %}
+    <p>{{ message }}</p>  
+  {% endif %}
+  {% csrf_token %}
+  <h4>Set your agenda name</h4>
+  <p>{{ form.name }}</p>
+  <h4>Set your squedules start increments</h4>
+  <p>{{ form.increments }}</p>
+
+  {% if error %}
+    <p>{{ error }}</p>  
+  {% endif %}
+  
+  <p>
+    <div class="htmx-indicator">Loading...</div>
+    <button class="htmx-inverted-indicator" type="submit" id="save_btn" name="add_squedules">Add squedules</button>
+  </p>
+  <p>
+    <div class="htmx-indicator">Loading...</div>
+    <button class="htmx-inverted-indicator" type="submit" id="save_btn" name="save">Save and return</button>
+  </p>
+</form>

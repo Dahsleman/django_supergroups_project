@@ -157,7 +157,6 @@ def userProfile(request, pk):
     return render(request, 'base/user_profile.html', context)
 
 
-""" AUTH """
 @login_required(login_url='/login')
 def token(request):
     if request.method == 'POST':
@@ -170,8 +169,6 @@ def token(request):
     return render(request, 'base/token.html', context)
 
 
-"""SETTINGS"""
-
 def telegram(request):
     """telegram-agenda-list"""
     agenda_objects = Agenda.objects.filter(user=request.user)
@@ -181,6 +178,7 @@ def telegram(request):
     }
     return render(request, 'base/telegram.html', context)
 
+"""SETTINGS"""
 
 
 def telegramSettingsOH(request):
@@ -288,19 +286,34 @@ def telegramSettingsTZ_update(request):
 
 """Agenda"""
 
-
 @login_required
-def telegramAgenda_list(request):
+def telegramAgenda_create(request):
     agenda_objects = Agenda.objects.filter(user=request.user)
-    settings_objs = Settings.objects.filter(user=request.user)
-
+    form = AgendaForm(request.POST or None)
     context = {
+        'form':form,
         'agenda_objects':agenda_objects,
-        'settings_objs':settings_objs,
     }
-
-    return render(request, 'base/telegram-agenda-list.html', context)
-
+    if form.is_valid():
+        obj = form.save(commit=False)
+        obj.user = request.user
+        obj.save()
+        if request.htmx:
+            if 'add_squedules' in request.POST:    
+                headers = {
+                    "HX-Redirect": obj.get_edit_url(),
+                }
+            elif 'save' in request.POST:    
+                headers = {
+                    "HX-Redirect": obj.get_absolute_url(),
+                }
+            
+            return HttpResponse("Created", headers=headers)
+        
+        # return redirect(obj.get_edit_url())
+        return redirect(obj.get_absolute_url())
+    return render(request, 'base/agenda-create.html', context)    
+    # return render(request, 'base/telegram-agenda-create-update.html', context)
 
 @login_required
 def telegramAgenda_detail(request, id=None):
@@ -315,6 +328,9 @@ def telegramAgenda_detail(request, id=None):
 @login_required
 def telegramAgenda_detail_hx(request, id):
     agenda_objects = Agenda.objects.filter(user=request.user)
+
+    agenda_obj = Agenda.objects.get(user=request.user, name='Main')
+
     num = str(agenda_objects.count())
     if not request.htmx:
         raise Http404
@@ -330,15 +346,19 @@ def telegramAgenda_detail_hx(request, id):
         'agenda_obj':agenda_obj,
         'agenda_objects':agenda_objects,
         'num':num,
-        'monday':monday
+        'monday':monday,
+        'agenda_obj':agenda_obj,
     }
     return render(request, 'base/partials/telegram-agenda-detail.html', context)
+
+
 
 
 @login_required
 def telegramAgenda_delete(request, id=None):
     agenda_objects = Agenda.objects.filter(user=request.user)
-
+    main_agenda = Agenda.objects.get(user=request.user, name='Main')
+    
     try:
         agenda_obj = get_object_or_404(Agenda, id=id, user=request.user)
     except:
@@ -347,33 +367,55 @@ def telegramAgenda_delete(request, id=None):
         if request.htmx:
             return HttpResponse('Not found')
         raise Http404
+
+    context = {
+
+        'agenda_objects':agenda_objects,
+        'agenda_obj':agenda_obj,
+    }
     
     if request.method == "POST":
         agenda_obj.delete()
 
-        success_url = reverse('telegram-agenda-list')
-        if request.htmx:
-            headers = {
-                'HX-Redirect':success_url
-            }
-            return HttpResponse('Success',headers=headers)
-        return redirect(success_url)
+        # success_url = reverse('telegram-agenda-list')
+        # if request.htmx:
+        #     print('here')
+        #     headers = {
+        #         'HX-Redirect':success_url
+        #     }
+        #     return HttpResponse('Success',headers=headers)
+        return redirect(main_agenda.get_absolute_url())
+
+    return render(request, 'base/telegram-agenda-delete.html', context)
+
+@login_required
+def telegramAgenda_list(request):
+    agenda_objects = Agenda.objects.filter(user=request.user)
+    settings_objs = Settings.objects.filter(user=request.user)
 
     context = {
-        
         'agenda_objects':agenda_objects,
-        'agenda_obj':agenda_obj,
+        'settings_objs':settings_objs,
     }
-    return render(request, 'base/telegram-agenda-delete.html', context)
+
+    return render(request, 'base/telegram-agenda-list.html', context)
 
 
 @login_required
 def telegramAgenda_update(request, id=None):
     agenda_objects = Agenda.objects.filter(user=request.user)
     agenda_obj = get_object_or_404(Agenda, id=id, user=request.user)
+
+    main_agenda = Agenda.objects.get(user=request.user, name='Main')
+
     children_obj = agenda_obj.get_monday_schedules_children()
     quantity = str(children_obj.count())
-    form = AgendaForm(request.POST or None, instance=agenda_obj)
+    
+    if agenda_obj.name == 'Main':
+        form=Main_AgendaForm(request.POST or None, instance=agenda_obj)
+    else:
+        form = AgendaForm(request.POST or None, instance=agenda_obj)
+
     new_monday_url = reverse("hx-monday-create", kwargs={"parent_id":agenda_obj.id})
 
     true = True
@@ -385,8 +427,9 @@ def telegramAgenda_update(request, id=None):
         'form':form,
         'agenda_obj':agenda_obj,
 
-        'quantity':quantity
-        
+        'quantity':quantity,
+
+        'main_agenda':main_agenda
         }
 
     if form.is_valid():
@@ -402,7 +445,6 @@ def telegramAgenda_update(request, id=None):
         else:
             parent.monday = False
         parent.save()
-        context['message'] = 'Data saved.'
 
         if request.htmx:
             headers = {
@@ -413,25 +455,6 @@ def telegramAgenda_update(request, id=None):
 
     return render(request, 'base/telegram-agenda-create-update.html', context)
 
-@login_required
-def telegramAgenda_create(request):
-    agenda_objects = Agenda.objects.filter(user=request.user)
-    form = AgendaForm(request.POST or None)
-    context = {
-        'form':form,
-        'agenda_objects':agenda_objects,
-    }
-    if form.is_valid():
-        obj = form.save(commit=False)
-        obj.user = request.user
-        obj.save()
-        if request.htmx:
-            headers = {
-                "HX-Redirect": obj.get_absolute_url(),
-            }
-            return HttpResponse("Created", headers=headers)
-        return redirect(obj.get_absolute_url())
-    return render(request, 'base/telegram-agenda-create-update.html', context)
 
 @login_required
 def telegramMonday_update_hx(request, parent_id=None, id=None):
@@ -440,6 +463,8 @@ def telegramMonday_update_hx(request, parent_id=None, id=None):
         raise Http404
     try:
         parent_agenda_obj = Agenda.objects.get(id=parent_id, user=request.user)
+        agenda_name=parent_agenda_obj.name
+
     except:
         parent_agenda_obj = None
 
@@ -471,13 +496,15 @@ def telegramMonday_update_hx(request, parent_id=None, id=None):
         end_list=[]
         user_id=request.user.id
         objs=MondaySquedules.objects.filter(agenda__user__id=user_id)
+        objs=objs.filter(agenda__name=agenda_name)
+        
         for obj in objs:
             start_list.append(obj.start_time)
             end_list.append(obj.end_time)
 
         if instance is None:
         
-            if int(new_obj.start_time) > int(new_obj.end_time):
+            if int(new_obj.start_time) >= int(new_obj.end_time):
                 start_list.clear()
                 end_list.clear()
                 error='end time must be bigger'
@@ -508,6 +535,7 @@ def telegramMonday_update_hx(request, parent_id=None, id=None):
                         return render(request, 'base/partials/monday-form.html', context)
 
             new_obj.agenda = parent_agenda_obj
+            
         new_obj.save()
         start_list.clear()
         end_list.clear()

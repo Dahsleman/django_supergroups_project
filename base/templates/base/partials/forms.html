@@ -1,14 +1,26 @@
+
 <form action="." method="POST" hx-post="." hx-swap="outerHTML" id="myform">
-  <!-- hx-trigger=" {% if form.instance.id %}change delay:500ms,{% endif %} submit" -->
+  
   {% if message %}
     <p>{{ message }}</p>  
   {% endif %}
+
   {% csrf_token %}
+
+  {% if agenda_obj.name == 'Main' %}
+  
+  <h4>Set your squedules start increments</h4>
+  <p>{{ form.increments }}</p>  
+  
+  {% else %}
+
   <h4>Set your agenda name</h4>
   <p>{{ form.name }}</p>
+
   <h4>Set your squedules start increments</h4>
   <p>{{ form.increments }}</p>
-  <!-- <p>{{ form.monday }}</p> -->
+
+  {% endif %}
 
   <h3>Set your weekly squedules</h3>
   {% if error %}
@@ -29,7 +41,6 @@
     </div>
 
     <div>  
-
       {% for obj in agenda_obj.get_monday_schedules_children %}
             {% include 'base/partials/monday-inline-del.html' with object=obj %}
       {% endfor %}
