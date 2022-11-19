@@ -49,56 +49,6 @@
     }
 </style>
 
-<!-- <div class="bot-container">
-
-    <div></div>
-
-    <div>
-        <h3>Telegram</h3>
-        {% for object in agenda_objects %} 
-        {% if forloop.first %} 
-        
-            <h3><a href="{{ object.get_absolute_url }}">Agenda</a></h3>  
-                    
-        {% endif %}
-        {% endfor %}
-    </div>
-
-    <div>        
-        <h1>Telegram</h1>
-        <div class="bot-container2">
-            <div>
-                <spam style="float:left">
-                    <h3>OAuth</h3>
-                </spam>
-                <spam style="float:right">
-                    <form method="POST" action="{% url 'token' %}">
-                        {% csrf_token %}
-                        <h3><button>Token</button></h3>    
-                    </form>
-                </spam>
-            </div>
-        </div>
-        <hr>
-        <div class="bot-container2">
-            <div>
-                <spam style="float:left">
-                    <h3>Settings</h3>
-                </spam>
-                <spam style="float:right">
-                    <form method="POST" action="{% url 'telegram-settings-OH' %}">
-                        {% csrf_token %}
-                        <h3><button>Edit</button></h3>    
-                    </form>
-                </spam>
-            </div>
-        </div>
-        <hr>
-        
-    </div>
-    <div></div>
-        
-</div> -->
 
 <div class="telegram-settings-container">
 
@@ -112,7 +62,6 @@
             <h1>Account</h1>
           </spam>
           <spam style="float:right">
-            <h3><a href="{% url 'home' %}">Go Back</a></h3>
           </spam>
         </div>
       </div> 
@@ -122,9 +71,8 @@
           
         <div>    
           <h3><a href="{% url 'user-profile' user.id %}">Profile</a></h3>
-          <h3>Auth</h3> 
+          <h3>Telegram Auth</h3> 
           <h3><a href="">Calendar conections</a></h3>
-          <h3><a href="">Drive conections</a></h3>
         </div>
       
         <div>
@@ -133,7 +81,7 @@
               <h1>Auth</h1>
             </div>
             <div>
-              <!-- <h3 style="float:right"><a href="{{ agenda_obj.get_edit_url }}">Edit</a></h3> -->
+
             </div>
           </div>
           <hr>            

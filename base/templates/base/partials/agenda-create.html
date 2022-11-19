@@ -5,6 +5,9 @@
   {% endif %}
   {% csrf_token %}
   <h4>Set your agenda name</h4>
+  {% if error %}
+    <li>{{ error }}</li>  
+  {% endif %}
   <p>{{ form.name }}</p>
   <h4>Set your squedules start increments</h4>
   <p>{{ form.increments }}</p>

@@ -1,20 +1,22 @@
 
 <form action="." method="POST" hx-post="." hx-swap="outerHTML" id="myform">
-  
-  {% if message %}
-    <p>{{ message }}</p>  
-  {% endif %}
 
   {% csrf_token %}
 
   {% if agenda_obj.name == 'Main' %}
   
+  <h4>Set your agenda name</h4>
+  <p>Main</p>
+
   <h4>Set your squedules start increments</h4>
   <p>{{ form.increments }}</p>  
   
   {% else %}
 
   <h4>Set your agenda name</h4>
+  {% if error_name %}
+    <p>{{ error_name }}</p>  
+  {% endif %}
   <p>{{ form.name }}</p>
 
   <h4>Set your squedules start increments</h4>
@@ -42,7 +44,7 @@
 
     <div>  
       {% for obj in agenda_obj.get_monday_schedules_children %}
-            {% include 'base/partials/monday-inline-del.html' with object=obj %}
+        {% include 'base/partials/monday-detail.html' with object=obj %}
       {% endfor %}
         
       {% if new_monday_url %}

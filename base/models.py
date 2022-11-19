@@ -244,20 +244,17 @@ class Agenda(models.Model):
     def __str__(self):
         return f'{self.user} - {self.name}'
 
-    def get_list_url():
-        return reverse('telegram-agenda-list')
+    def get_agenda_detail_url(self):
+        return reverse('agenda-detail', kwargs={'id':self.id})
 
-    def get_absolute_url(self):
-        return reverse('telegram-agenda-detail', kwargs={'id':self.id})
+    def get_agenda_update_url(self):
+        return reverse('agenda-update', kwargs={'id':self.id})
 
-    def get_edit_url(self):
-        return reverse('telegram-agenda-update', kwargs={'id':self.id})
-
-    def get_delete_url(self):
-        return reverse('telegram-agenda-delete', kwargs={'id':self.id})
+    def get_agenda_delete_url(self):
+        return reverse('agenda-delete', kwargs={'id':self.id})
 
     def get_hx_url(self):
-        return reverse("hx-telegram-agenda-detail", kwargs={"id": self.id})
+        return reverse("hx-agenda-detail", kwargs={"id": self.id})
 
     def get_monday_schedules_children(self):
         return self.mondaysquedules_set.all()
@@ -304,22 +301,19 @@ class MondaySquedules(models.Model):
     def get_absolute_url(self):
         return self.agenda.get_absolute_url()
 
-    def get_delete_monday_url(self):
+    def get_delete_url(self):
         kwargs = {
             "parent_id":self.agenda.id,
             "id":self.id
         }
         return reverse('monday-delete', kwargs=kwargs)
 
-    def get_hx_edit_url(self):
+    def get_update_url(self):
         kwargs = {
             "parent_id":self.agenda.id,
             "id":self.id
         }
-        return reverse('hx-monday-detail', kwargs=kwargs)
-
-    def get_hx_create_url(self):
-        return reverse("hx-monday-create", kwargs={"parent_id":self.agenda.id})
+        return reverse('hx-monday-update', kwargs=kwargs)
 
 
     

@@ -10,7 +10,7 @@
                     <h1>Agenda</h1>
                 </spam>
                 <spam style="float:right">
-                    <h3><a href="{% url 'telegram-agenda-create' %}">Add new</a></h3>
+                    <h3><a href="{% url 'agenda-create' %}">Add new</a></h3>
                 </spam>
             </div>
         </div> 
@@ -20,9 +20,8 @@
             <div>
                 {% for object in agenda_objects %}  
                     <div>    
-                        <h3><a href="{{ object.get_absolute_url }}">{{ object.name }}</a></h3>  
-                    </div>
-                    
+                        <h3><a href="{{ object.get_agenda_detail_url }}">{{ object.name }}</a></h3>  
+                    </div>    
                 {% endfor %}
             </div>
         
@@ -33,9 +32,9 @@
                     </div>
                     <div>
                         <h3 style="float:right">
-                            <a href="{{ agenda_obj.get_edit_url }}">Edit</a>
+                            <a href="{{ agenda_obj.get_agenda_update_url }}">Edit</a>
                             {% if agenda_obj.name != 'Main' %}
-                                <a href="{{ agenda_obj.get_delete_url }}">Delete</a>
+                                <a href="{{ agenda_obj.get_agenda_delete_url }}">Delete</a>
                             {% endif %}
                         </h3>
                     </div>
