@@ -10,7 +10,7 @@
   <link rel="stylesheet" type="text/css" media="screen" href="{% static 'css/main.css' %}">
   {% block stylesheet %}{% endblock %}
   <style>  
-      .htmx-indicator{
+    .htmx-indicator{
         display: none;
     }
 
@@ -31,13 +31,13 @@
 
 <body>
     {% include 'navbar.html' %}
-    {% if messages %}
+    <!-- {% if messages %}
     <ul class="messages">
         {% for message in messages %}
         <li>{{ message }}</li>
         {% endfor %}
     </ul>
-    {% endif %}
+    {% endif %} -->
 
     {% block content %}
     

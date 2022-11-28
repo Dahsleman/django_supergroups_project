@@ -34,20 +34,25 @@
     grid-template-columns: 1fr 22fr 4fr 1fr;
 
   }
+  .htmx-indicator{
+    display: none;
+
+  }
+  .htmx-request .htmx-indicator{
+    display: block;
+
+  }
 
 </style>
 
 <div hx-get="{{ hx_url }}" hx-trigger="load delay:0.5s">
   
-    <div class="telegram-detail-container">
-        <div></div>
-        <div class="htmx-indicator"><h3>Loading...</h3></div>
-        <div></div>
-    </div>
+  <div class="agenda-detail-container">
+    <div></div>
+    <div class="htmx-indicator"><h3>Loading...</h3></div>
+    <div></div>
+  </div>
     
 </div>
-
-
-
 
 {% endblock content %}

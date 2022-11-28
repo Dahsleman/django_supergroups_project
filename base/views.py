@@ -335,6 +335,12 @@ def agendaDetail_HX(request, id):
     try:
         agenda_obj = Agenda.objects.get(id=id, user=request.user)
         monday=agenda_obj.monday
+        tuesday=agenda_obj.tuesday
+        wednesday=agenda_obj.wednesday
+        thursday=agenda_obj.thursday
+        friday=agenda_obj.friday
+        saturday=agenda_obj.saturday
+        sunday=agenda_obj.sunday
     except:
         agenda_obj = None
 
@@ -345,6 +351,12 @@ def agendaDetail_HX(request, id):
         'agenda_obj':agenda_obj,
         'agenda_objects':agenda_objects,
         'monday':monday,
+        'tuesday':tuesday,
+        'wednesday':wednesday,
+        'thursday':thursday,
+        'friday':friday,
+        'saturday':saturday,
+        'sunday':sunday,
     }
     return render(request, 'base/partials/agenda-detail.html', context)
 
@@ -353,8 +365,20 @@ def agendaDetail_HX(request, id):
 def agendaUpdate(request, id=None):
     agenda_objects = Agenda.objects.filter(user=request.user)
     agenda_obj = get_object_or_404(Agenda, id=id, user=request.user)
-    children_obj = agenda_obj.get_monday_schedules_children()
-    quantity = str(children_obj.count())
+    monday_obj = agenda_obj.get_monday_schedules()
+    monday_obj_quantity = str(monday_obj.count())
+    tuesday_obj = agenda_obj.get_tuesday_schedules()
+    tuesday_obj_quantity = str(tuesday_obj.count())
+    wednesday_obj = agenda_obj.get_wednesday_schedules()
+    wednesday_obj_quantity = str(wednesday_obj.count())
+    thursday_obj = agenda_obj.get_thursday_schedules()
+    thursday_obj_quantity = str(thursday_obj.count())
+    friday_obj = agenda_obj.get_friday_schedules()
+    friday_obj_quantity = str(friday_obj.count())
+    saturday_obj = agenda_obj.get_saturday_schedules()
+    saturday_obj_quantity = str(saturday_obj.count())
+    sunday_obj = agenda_obj.get_sunday_schedules()
+    sunday_obj_quantity = str(sunday_obj.count())
     
     if agenda_obj.name == 'Main':
         form=Main_AgendaForm(request.POST or None, instance=agenda_obj)
@@ -362,35 +386,105 @@ def agendaUpdate(request, id=None):
         form = AgendaForm(request.POST or None, instance=agenda_obj)
 
     new_monday_url = reverse("hx-monday-create", kwargs={"parent_id":agenda_obj.id})
+    new_tuesday_url = reverse("hx-tuesday-create", kwargs={"parent_id":agenda_obj.id})
+    new_wednesday_url = reverse("hx-wednesday-create", kwargs={"parent_id":agenda_obj.id})
+    new_thursday_url = reverse("hx-thursday-create", kwargs={"parent_id":agenda_obj.id})
+    new_friday_url = reverse("hx-friday-create", kwargs={"parent_id":agenda_obj.id})
+    new_saturday_url = reverse("hx-saturday-create", kwargs={"parent_id":agenda_obj.id})
+    new_sunday_url = reverse("hx-sunday-create", kwargs={"parent_id":agenda_obj.id})
 
     context = {
         'agenda_objects':agenda_objects,
         'new_monday_url':new_monday_url,
+        'new_tuesday_url':new_tuesday_url,
+        'new_wednesday_url':new_wednesday_url,
+        'new_thursday_url':new_thursday_url,
+        'new_friday_url':new_friday_url,
+        'new_saturday_url':new_saturday_url,
+        'new_sunday_url':new_sunday_url,
 
         'form':form,
         'agenda_obj':agenda_obj,
-
-        'quantity':quantity,
+        'error':False
         }
-
     if form.is_valid():
         parent=form.save(commit=False)
-        # objs=Agenda.objects.filter(user=request.user)
-        # for obj in objs:
-        #     if obj.name == parent.name:
-        #         context['error_name'] = 'Agenda name already exist'
-        #         return render(request, 'base/partials/monday-form.html', context)
-        display_type = request.POST.get("display-type", None)
-        if display_type in ["mondaybox"]:
-            if quantity > '0':
+        monday_type = request.POST.get("monday-type", None)
+        tuesday_type = request.POST.get("tuesday-type", None)
+        wednesday_type = request.POST.get("wednesday-type", None)
+        thursday_type = request.POST.get("thursday-type", None)
+        friday_type = request.POST.get("friday-type", None)
+        saturday_type = request.POST.get("saturday-type", None)
+        sunday_type = request.POST.get("sunday-type", None)
+
+        if monday_type in ["mondaybox"]:
+            if monday_obj_quantity > '0':
                 parent.monday = True
             else:
-                context['error'] = 'Insert squedule'
-                return render(request, 'base/partials/agenda-update.html', context)
-
+                context['error'] = True
+                context['error_monday'] = 'Insert squedule'
         else:
             parent.monday = False
-        parent.save()
+
+        if tuesday_type in ["tuesdaybox"]:
+            if tuesday_obj_quantity > '0':
+                parent.tuesday = True
+            else:
+                context['error'] = True
+                context['error_tuesday'] = 'Insert squedule'
+        else:
+            parent.tuesday = False
+
+        if wednesday_type in ["wednesdaybox"]:
+            if wednesday_obj_quantity > '0':
+                parent.wednesday = True
+            else:
+                context['error'] = True
+                context['error_wednesday'] = 'Insert squedule'
+        else:
+            parent.wednesday = False
+
+        if thursday_type in ["thursdaybox"]:
+            if thursday_obj_quantity > '0':
+                parent.thursday = True
+            else:
+                context['error'] = True
+                context['error_thursday'] = 'Insert squedule'
+        else:
+            parent.thursday = False
+
+        if friday_type in ["fridaybox"]:
+            if friday_obj_quantity > '0':
+                parent.friday = True
+            else:
+                context['error'] = True
+                context['error_friday'] = 'Insert squedule'
+        else:
+            parent.friday = False
+
+        if saturday_type in ["saturdaybox"]:
+            if saturday_obj_quantity > '0':
+                parent.saturday = True
+            else:
+                context['error'] = True
+                context['error_saturday'] = 'Insert squedule'
+        else:
+            parent.saturday = False
+
+        if sunday_type in ["sundaybox"]:
+            if sunday_obj_quantity > '0':
+                parent.sunday = True
+            else:
+                context['error'] = True
+                context['error_sunday'] = 'Insert squedule'
+        else:
+            parent.sunday = False
+
+        x = context['error']
+        if x == True:
+            return render(request, 'base/partials/agenda-update.html', context)
+        else:
+            parent.save()
 
         if request.htmx:
             headers = {
@@ -445,7 +539,7 @@ def mondayCreateUpdate_HX(request, parent_id=None, id=None):
     instance = None
     if id is not None:
         try:
-            instance = MondaySquedules.objects.get(agenda=parent_agenda_obj, id=id)
+            instance = MondaySchedules.objects.get(agenda=parent_agenda_obj, id=id)
         except:
             instance = None
 
@@ -453,7 +547,7 @@ def mondayCreateUpdate_HX(request, parent_id=None, id=None):
 
     url = reverse("hx-monday-create", kwargs={"parent_id":parent_agenda_obj.id})
     if instance:
-        url = instance.get_update_url()
+        url = instance.get_monday_update_url()
 
     context = {
         'object':instance,
@@ -463,17 +557,28 @@ def mondayCreateUpdate_HX(request, parent_id=None, id=None):
 
     if form.is_valid():
         new_obj = form.save(commit=False)
+        start_time_list = new_obj.start_time.split(":")
+        new_start_time = "".join(start_time_list)
+        end_time_list = new_obj.end_time.split(":")
+        new_end_time = "".join(end_time_list)
+        
         start_list=[]
         end_list=[]
         user_id=request.user.id
-        objs=MondaySquedules.objects.filter(agenda__user__id=user_id)
+        objs=MondaySchedules.objects.filter(agenda__user__id=user_id)
         objs=objs.filter(agenda__name=agenda_name)
         for obj in objs:
-            start_list.append(obj.start_time)
-            end_list.append(obj.end_time)
+            start_time_list = obj.start_time.split(":")
+            start_time = "".join(start_time_list)
+            start_list.append(start_time)
+
+            end_time_list = obj.end_time.split(":")
+            end_time = "".join(end_time_list)
+            end_list.append(end_time)
 
         if instance is None:
-            if int(new_obj.start_time) >= int(new_obj.end_time):
+
+            if int(new_start_time) >= int(new_end_time):
                 start_list.clear()
                 end_list.clear()
                 error='end time must be bigger'
@@ -484,19 +589,19 @@ def mondayCreateUpdate_HX(request, parent_id=None, id=None):
             if num > 0:
                 while num != 0:
                     num = num - 1
-                    if int(new_obj.start_time) >= int(start_list[num]) and int(new_obj.start_time) < int(end_list[num]):
+                    if int(new_start_time) >= int(start_list[num]) and int(new_start_time) < int(end_list[num]):
                         start_list.clear()
                         end_list.clear()
                         error='conflict, select a diferent start time'
                         context['error'] = error
                         return render(request, 'base/partials/monday-create.html', context)
-                    elif int(new_obj.end_time) > int(start_list[num]) and int(new_obj.end_time) <= int(end_list[num]):
+                    elif int(new_end_time) > int(start_list[num]) and int(new_end_time) <= int(end_list[num]):
                         start_list.clear()
                         end_list.clear()
                         error='conflict, select diferent end time'
                         context['error'] = error
                         return render(request, 'base/partials/monday-create.html', context)
-                    elif int(new_obj.start_time) < int(start_list[num]) and int(new_obj.end_time) > int(end_list[num]):
+                    elif int(new_start_time) < int(start_list[num]) and int(new_end_time) > int(end_list[num]):
                         start_list.clear()
                         end_list.clear()
                         error='conflict, select diferent interval'
@@ -517,13 +622,658 @@ def mondayCreateUpdate_HX(request, parent_id=None, id=None):
 
 @login_required
 def mondayDelete(request, parent_id=None, id=None):
-    monday_obj = get_object_or_404(MondaySquedules, agenda__id=parent_id, id=id, agenda__user=request.user)
+    monday_obj = get_object_or_404(MondaySchedules, agenda__id=parent_id, id=id, agenda__user=request.user)
     monday_obj.delete()
     success_url = reverse('agenda-update', kwargs={'id':parent_id})
     return redirect(success_url)
 
+@login_required
+def tuesdayCreateUpdate_HX(request, parent_id=None, id=None):
 
+    if not request.htmx:
+        raise Http404
+    try:
+        parent_agenda_obj = Agenda.objects.get(id=parent_id, user=request.user)
+        agenda_name=parent_agenda_obj.name
 
+    except:
+        parent_agenda_obj = None
+
+    if parent_agenda_obj is None:
+        return HttpResponse('Not found.')
+        
+    instance = None
+    if id is not None:
+        try:
+            instance = TuesdaySchedules.objects.get(agenda=parent_agenda_obj, id=id)
+        except:
+            instance = None
+
+    form = TuesdayScheduleForm(request.POST or None, instance=instance)
+
+    url = reverse("hx-tuesday-create", kwargs={"parent_id":parent_agenda_obj.id})
+    if instance:
+        url = instance.get_tuesday_update_url()
+
+    context = {
+        'object':instance,
+        'form':form,
+        'url':url,
+    }
+
+    if form.is_valid():
+        new_obj = form.save(commit=False)
+        start_time_list = new_obj.start_time.split(":")
+        new_start_time = "".join(start_time_list)
+        end_time_list = new_obj.end_time.split(":")
+        new_end_time = "".join(end_time_list)
+        
+        start_list=[]
+        end_list=[]
+        user_id=request.user.id
+        objs=TuesdaySchedules.objects.filter(agenda__user__id=user_id)
+        objs=objs.filter(agenda__name=agenda_name)
+        for obj in objs:
+            start_time_list = obj.start_time.split(":")
+            start_time = "".join(start_time_list)
+            start_list.append(start_time)
+
+            end_time_list = obj.end_time.split(":")
+            end_time = "".join(end_time_list)
+            end_list.append(end_time)
+
+        if instance is None:
+
+            if int(new_start_time) >= int(new_end_time):
+                start_list.clear()
+                end_list.clear()
+                error='end time must be bigger'
+                context['error'] = error
+                return render(request, 'base/partials/tuesday-create.html', context)
+
+            num = len(start_list)
+            if num > 0:
+                while num != 0:
+                    num = num - 1
+                    if int(new_start_time) >= int(start_list[num]) and int(new_start_time) < int(end_list[num]):
+                        start_list.clear()
+                        end_list.clear()
+                        error='conflict, select a diferent start time'
+                        context['error'] = error
+                        return render(request, 'base/partials/tuesday-create.html', context)
+
+                    elif int(new_end_time) > int(start_list[num]) and int(new_end_time) <= int(end_list[num]):
+                        start_list.clear()
+                        end_list.clear()
+                        error='conflict, select diferent end time'
+                        context['error'] = error
+                        return render(request, 'base/partials/tuesday-create.html', context)
+
+                    elif int(new_start_time) < int(start_list[num]) and int(new_end_time) > int(end_list[num]):
+                        start_list.clear()
+                        end_list.clear()
+                        error='conflict, select diferent interval'
+                        context['error'] = error
+                        return render(request, 'base/partials/tuesday-create.html', context)
+
+            new_obj.agenda = parent_agenda_obj
+            
+        new_obj.save()
+        start_list.clear()
+        end_list.clear()
+
+        context['object'] = new_obj
+
+        return render(request, 'base/partials/tuesday-detail.html', context)
+        
+    return render(request, 'base/partials/tuesday-create.html', context)
+
+@login_required
+def tuesdayDelete(request, parent_id=None, id=None):
+    tuesday_obj = get_object_or_404(TuesdaySchedules, agenda__id=parent_id, id=id, agenda__user=request.user)
+    tuesday_obj.delete()
+    success_url = reverse('agenda-update', kwargs={'id':parent_id})
+    return redirect(success_url)
+
+@login_required
+def wednesdayCreateUpdate_HX(request, parent_id=None, id=None):
+
+    if not request.htmx:
+        raise Http404
+    try:
+        parent_agenda_obj = Agenda.objects.get(id=parent_id, user=request.user)
+        agenda_name=parent_agenda_obj.name
+
+    except:
+        parent_agenda_obj = None
+
+    if parent_agenda_obj is None:
+        return HttpResponse('Not found.')
+        
+    instance = None
+    if id is not None:
+        try:
+            instance = WednesdaySchedules.objects.get(agenda=parent_agenda_obj, id=id)
+        except:
+            instance = None
+
+    form = WednesdayScheduleForm(request.POST or None, instance=instance)
+
+    url = reverse("hx-wednesday-create", kwargs={"parent_id":parent_agenda_obj.id})
+    if instance:
+        url = instance.get_wednesday_update_url()
+
+    context = {
+        'object':instance,
+        'form':form,
+        'url':url,
+    }
+
+    if form.is_valid():
+        new_obj = form.save(commit=False)
+        start_time_list = new_obj.start_time.split(":")
+        new_start_time = "".join(start_time_list)
+        end_time_list = new_obj.end_time.split(":")
+        new_end_time = "".join(end_time_list)
+        
+        start_list=[]
+        end_list=[]
+        user_id=request.user.id
+        objs=WednesdaySchedules.objects.filter(agenda__user__id=user_id)
+        objs=objs.filter(agenda__name=agenda_name)
+        for obj in objs:
+            start_time_list = obj.start_time.split(":")
+            start_time = "".join(start_time_list)
+            start_list.append(start_time)
+
+            end_time_list = obj.end_time.split(":")
+            end_time = "".join(end_time_list)
+            end_list.append(end_time)
+
+        if instance is None:
+
+            if int(new_start_time) >= int(new_end_time):
+                start_list.clear()
+                end_list.clear()
+                error='end time must be bigger'
+                context['error'] = error
+                return render(request, 'base/partials/wednesday-create.html', context)
+
+            num = len(start_list)
+            if num > 0:
+                while num != 0:
+                    num = num - 1
+                    if int(new_start_time) >= int(start_list[num]) and int(new_start_time) < int(end_list[num]):
+                        start_list.clear()
+                        end_list.clear()
+                        error='conflict, select a diferent start time'
+                        context['error'] = error
+                        return render(request, 'base/partials/wednesday-create.html', context)
+
+                    elif int(new_end_time) > int(start_list[num]) and int(new_end_time) <= int(end_list[num]):
+                        start_list.clear()
+                        end_list.clear()
+                        error='conflict, select diferent end time'
+                        context['error'] = error
+                        return render(request, 'base/partials/wednesday-create.html', context)
+
+                    elif int(new_start_time) < int(start_list[num]) and int(new_end_time) > int(end_list[num]):
+                        start_list.clear()
+                        end_list.clear()
+                        error='conflict, select diferent interval'
+                        context['error'] = error
+                        return render(request, 'base/partials/wednesday-create.html', context)
+
+            new_obj.agenda = parent_agenda_obj
+            
+        new_obj.save()
+        start_list.clear()
+        end_list.clear()
+
+        context['object'] = new_obj
+
+        return render(request, 'base/partials/wednesday-detail.html', context)
+        
+    return render(request, 'base/partials/wednesday-create.html', context)
+
+@login_required
+def wednesdayDelete(request, parent_id=None, id=None):
+    wednesday_obj = get_object_or_404(WednesdaySchedules, agenda__id=parent_id, id=id, agenda__user=request.user)
+    wednesday_obj.delete()
+    success_url = reverse('agenda-update', kwargs={'id':parent_id})
+    return redirect(success_url)
+
+@login_required
+def thursdayCreateUpdate_HX(request, parent_id=None, id=None):
+
+    if not request.htmx:
+        raise Http404
+    try:
+        parent_agenda_obj = Agenda.objects.get(id=parent_id, user=request.user)
+        agenda_name=parent_agenda_obj.name
+
+    except:
+        parent_agenda_obj = None
+
+    if parent_agenda_obj is None:
+        return HttpResponse('Not found.')
+        
+    instance = None
+    if id is not None:
+        try:
+            instance = ThursdaySchedules.objects.get(agenda=parent_agenda_obj, id=id)
+        except:
+            instance = None
+
+    form = ThursdayScheduleForm(request.POST or None, instance=instance)
+
+    url = reverse("hx-thursday-create", kwargs={"parent_id":parent_agenda_obj.id})
+    if instance:
+        url = instance.get_thursday_update_url()
+
+    context = {
+        'object':instance,
+        'form':form,
+        'url':url,
+    }
+
+    if form.is_valid():
+        new_obj = form.save(commit=False)
+        start_time_list = new_obj.start_time.split(":")
+        new_start_time = "".join(start_time_list)
+        end_time_list = new_obj.end_time.split(":")
+        new_end_time = "".join(end_time_list)
+        
+        start_list=[]
+        end_list=[]
+        user_id=request.user.id
+        objs=ThursdaySchedules.objects.filter(agenda__user__id=user_id)
+        objs=objs.filter(agenda__name=agenda_name)
+        for obj in objs:
+            start_time_list = obj.start_time.split(":")
+            start_time = "".join(start_time_list)
+            start_list.append(start_time)
+
+            end_time_list = obj.end_time.split(":")
+            end_time = "".join(end_time_list)
+            end_list.append(end_time)
+
+        if instance is None:
+
+            if int(new_start_time) >= int(new_end_time):
+                start_list.clear()
+                end_list.clear()
+                error='end time must be bigger'
+                context['error'] = error
+                return render(request, 'base/partials/thursday-create.html', context)
+
+            num = len(start_list)
+            if num > 0:
+                while num != 0:
+                    num = num - 1
+                    if int(new_start_time) >= int(start_list[num]) and int(new_start_time) < int(end_list[num]):
+                        start_list.clear()
+                        end_list.clear()
+                        error='conflict, select a diferent start time'
+                        context['error'] = error
+                        return render(request, 'base/partials/thursday-create.html', context)
+
+                    elif int(new_end_time) > int(start_list[num]) and int(new_end_time) <= int(end_list[num]):
+                        start_list.clear()
+                        end_list.clear()
+                        error='conflict, select diferent end time'
+                        context['error'] = error
+                        return render(request, 'base/partials/thursday-create.html', context)
+
+                    elif int(new_start_time) < int(start_list[num]) and int(new_end_time) > int(end_list[num]):
+                        start_list.clear()
+                        end_list.clear()
+                        error='conflict, select diferent interval'
+                        context['error'] = error
+                        return render(request, 'base/partials/thursday-create.html', context)
+
+            new_obj.agenda = parent_agenda_obj
+            
+        new_obj.save()
+        start_list.clear()
+        end_list.clear()
+
+        context['object'] = new_obj
+
+        return render(request, 'base/partials/thursday-detail.html', context)
+        
+    return render(request, 'base/partials/thursday-create.html', context)
+
+@login_required
+def thursdayDelete(request, parent_id=None, id=None):
+    thursday_obj = get_object_or_404(ThursdaySchedules, agenda__id=parent_id, id=id, agenda__user=request.user)
+    thursday_obj.delete()
+    success_url = reverse('agenda-update', kwargs={'id':parent_id})
+    return redirect(success_url)
+
+@login_required
+def fridayCreateUpdate_HX(request, parent_id=None, id=None):
+
+    if not request.htmx:
+        raise Http404
+    try:
+        parent_agenda_obj = Agenda.objects.get(id=parent_id, user=request.user)
+        agenda_name=parent_agenda_obj.name
+
+    except:
+        parent_agenda_obj = None
+
+    if parent_agenda_obj is None:
+        return HttpResponse('Not found.')
+        
+    instance = None
+    if id is not None:
+        try:
+            instance = FridaySchedules.objects.get(agenda=parent_agenda_obj, id=id)
+        except:
+            instance = None
+
+    form = FridayScheduleForm(request.POST or None, instance=instance)
+
+    url = reverse("hx-friday-create", kwargs={"parent_id":parent_agenda_obj.id})
+    if instance:
+        url = instance.get_friday_update_url()
+
+    context = {
+        'object':instance,
+        'form':form,
+        'url':url,
+    }
+
+    if form.is_valid():
+        new_obj = form.save(commit=False)
+        start_time_list = new_obj.start_time.split(":")
+        new_start_time = "".join(start_time_list)
+        end_time_list = new_obj.end_time.split(":")
+        new_end_time = "".join(end_time_list)
+        
+        start_list=[]
+        end_list=[]
+        user_id=request.user.id
+        objs=FridaySchedules.objects.filter(agenda__user__id=user_id)
+        objs=objs.filter(agenda__name=agenda_name)
+        for obj in objs:
+            start_time_list = obj.start_time.split(":")
+            start_time = "".join(start_time_list)
+            start_list.append(start_time)
+
+            end_time_list = obj.end_time.split(":")
+            end_time = "".join(end_time_list)
+            end_list.append(end_time)
+
+        if instance is None:
+
+            if int(new_start_time) >= int(new_end_time):
+                start_list.clear()
+                end_list.clear()
+                error='end time must be bigger'
+                context['error'] = error
+                return render(request, 'base/partials/friday-create.html', context)
+
+            num = len(start_list)
+            if num > 0:
+                while num != 0:
+                    num = num - 1
+                    if int(new_start_time) >= int(start_list[num]) and int(new_start_time) < int(end_list[num]):
+                        start_list.clear()
+                        end_list.clear()
+                        error='conflict, select a diferent start time'
+                        context['error'] = error
+                        return render(request, 'base/partials/friday-create.html', context)
+
+                    elif int(new_end_time) > int(start_list[num]) and int(new_end_time) <= int(end_list[num]):
+                        start_list.clear()
+                        end_list.clear()
+                        error='conflict, select diferent end time'
+                        context['error'] = error
+                        return render(request, 'base/partials/friday-create.html', context)
+
+                    elif int(new_start_time) < int(start_list[num]) and int(new_end_time) > int(end_list[num]):
+                        start_list.clear()
+                        end_list.clear()
+                        error='conflict, select diferent interval'
+                        context['error'] = error
+                        return render(request, 'base/partials/friday-create.html', context)
+
+            new_obj.agenda = parent_agenda_obj
+            
+        new_obj.save()
+        start_list.clear()
+        end_list.clear()
+
+        context['object'] = new_obj
+
+        return render(request, 'base/partials/friday-detail.html', context)
+        
+    return render(request, 'base/partials/friday-create.html', context)
+
+@login_required
+def fridayDelete(request, parent_id=None, id=None):
+    friday_obj = get_object_or_404(FridaySchedules, agenda__id=parent_id, id=id, agenda__user=request.user)
+    friday_obj.delete()
+    success_url = reverse('agenda-update', kwargs={'id':parent_id})
+    return redirect(success_url)
+
+@login_required
+def saturdayCreateUpdate_HX(request, parent_id=None, id=None):
+
+    if not request.htmx:
+        raise Http404
+    try:
+        parent_agenda_obj = Agenda.objects.get(id=parent_id, user=request.user)
+        agenda_name=parent_agenda_obj.name
+
+    except:
+        parent_agenda_obj = None
+
+    if parent_agenda_obj is None:
+        return HttpResponse('Not found.')
+        
+    instance = None
+    if id is not None:
+        try:
+            instance = SaturdaySchedules.objects.get(agenda=parent_agenda_obj, id=id)
+        except:
+            instance = None
+
+    form = SaturdayScheduleForm(request.POST or None, instance=instance)
+
+    url = reverse("hx-saturday-create", kwargs={"parent_id":parent_agenda_obj.id})
+    if instance:
+        url = instance.get_saturday_update_url()
+
+    context = {
+        'object':instance,
+        'form':form,
+        'url':url,
+    }
+
+    if form.is_valid():
+        new_obj = form.save(commit=False)
+        start_time_list = new_obj.start_time.split(":")
+        new_start_time = "".join(start_time_list)
+        end_time_list = new_obj.end_time.split(":")
+        new_end_time = "".join(end_time_list)
+        
+        start_list=[]
+        end_list=[]
+        user_id=request.user.id
+        objs=SaturdaySchedules.objects.filter(agenda__user__id=user_id)
+        objs=objs.filter(agenda__name=agenda_name)
+        for obj in objs:
+            start_time_list = obj.start_time.split(":")
+            start_time = "".join(start_time_list)
+            start_list.append(start_time)
+
+            end_time_list = obj.end_time.split(":")
+            end_time = "".join(end_time_list)
+            end_list.append(end_time)
+
+        if instance is None:
+
+            if int(new_start_time) >= int(new_end_time):
+                start_list.clear()
+                end_list.clear()
+                error='end time must be bigger'
+                context['error'] = error
+                return render(request, 'base/partials/saturday-create.html', context)
+
+            num = len(start_list)
+            if num > 0:
+                while num != 0:
+                    num = num - 1
+                    if int(new_start_time) >= int(start_list[num]) and int(new_start_time) < int(end_list[num]):
+                        start_list.clear()
+                        end_list.clear()
+                        error='conflict, select a diferent start time'
+                        context['error'] = error
+                        return render(request, 'base/partials/saturday-create.html', context)
+
+                    elif int(new_end_time) > int(start_list[num]) and int(new_end_time) <= int(end_list[num]):
+                        start_list.clear()
+                        end_list.clear()
+                        error='conflict, select diferent end time'
+                        context['error'] = error
+                        return render(request, 'base/partials/saturday-create.html', context)
+
+                    elif int(new_start_time) < int(start_list[num]) and int(new_end_time) > int(end_list[num]):
+                        start_list.clear()
+                        end_list.clear()
+                        error='conflict, select diferent interval'
+                        context['error'] = error
+                        return render(request, 'base/partials/saturday-create.html', context)
+
+            new_obj.agenda = parent_agenda_obj
+            
+        new_obj.save()
+        start_list.clear()
+        end_list.clear()
+
+        context['object'] = new_obj
+
+        return render(request, 'base/partials/saturday-detail.html', context)
+        
+    return render(request, 'base/partials/saturday-create.html', context)
+
+@login_required
+def saturdayDelete(request, parent_id=None, id=None):
+    friday_obj = get_object_or_404(SaturdaySchedules, agenda__id=parent_id, id=id, agenda__user=request.user)
+    friday_obj.delete()
+    success_url = reverse('agenda-update', kwargs={'id':parent_id})
+    return redirect(success_url)
+
+@login_required
+def sundayCreateUpdate_HX(request, parent_id=None, id=None):
+
+    if not request.htmx:
+        raise Http404
+    try:
+        parent_agenda_obj = Agenda.objects.get(id=parent_id, user=request.user)
+        agenda_name=parent_agenda_obj.name
+
+    except:
+        parent_agenda_obj = None
+
+    if parent_agenda_obj is None:
+        return HttpResponse('Not found.')
+        
+    instance = None
+    if id is not None:
+        try:
+            instance = SundaySchedules.objects.get(agenda=parent_agenda_obj, id=id)
+        except:
+            instance = None
+
+    form = SundayScheduleForm(request.POST or None, instance=instance)
+
+    url = reverse("hx-sunday-create", kwargs={"parent_id":parent_agenda_obj.id})
+    if instance:
+        url = instance.get_saturday_update_url()
+
+    context = {
+        'object':instance,
+        'form':form,
+        'url':url,
+    }
+
+    if form.is_valid():
+        new_obj = form.save(commit=False)
+        start_time_list = new_obj.start_time.split(":")
+        new_start_time = "".join(start_time_list)
+        end_time_list = new_obj.end_time.split(":")
+        new_end_time = "".join(end_time_list)
+        
+        start_list=[]
+        end_list=[]
+        user_id=request.user.id
+        objs=SundaySchedules.objects.filter(agenda__user__id=user_id)
+        objs=objs.filter(agenda__name=agenda_name)
+        for obj in objs:
+            start_time_list = obj.start_time.split(":")
+            start_time = "".join(start_time_list)
+            start_list.append(start_time)
+
+            end_time_list = obj.end_time.split(":")
+            end_time = "".join(end_time_list)
+            end_list.append(end_time)
+
+        if instance is None:
+
+            if int(new_start_time) >= int(new_end_time):
+                start_list.clear()
+                end_list.clear()
+                error='end time must be bigger'
+                context['error'] = error
+                return render(request, 'base/partials/sunday-create.html', context)
+
+            num = len(start_list)
+            if num > 0:
+                while num != 0:
+                    num = num - 1
+                    if int(new_start_time) >= int(start_list[num]) and int(new_start_time) < int(end_list[num]):
+                        start_list.clear()
+                        end_list.clear()
+                        error='conflict, select a diferent start time'
+                        context['error'] = error
+                        return render(request, 'base/partials/sunday-create.html', context)
+
+                    elif int(new_end_time) > int(start_list[num]) and int(new_end_time) <= int(end_list[num]):
+                        start_list.clear()
+                        end_list.clear()
+                        error='conflict, select diferent end time'
+                        context['error'] = error
+                        return render(request, 'base/partials/sunday-create.html', context)
+
+                    elif int(new_start_time) < int(start_list[num]) and int(new_end_time) > int(end_list[num]):
+                        start_list.clear()
+                        end_list.clear()
+                        error='conflict, select diferent interval'
+                        context['error'] = error
+                        return render(request, 'base/partials/sunday-create.html', context)
+
+            new_obj.agenda = parent_agenda_obj
+            
+        new_obj.save()
+        start_list.clear()
+        end_list.clear()
+
+        context['object'] = new_obj
+
+        return render(request, 'base/partials/sunday-detail.html', context)
+        
+    return render(request, 'base/partials/sunday-create.html', context)
+
+@login_required
+def sundayDelete(request, parent_id=None, id=None):
+    sunday_obj = get_object_or_404(SundaySchedules, agenda__id=parent_id, id=id, agenda__user=request.user)
+    sunday_obj.delete()
+    success_url = reverse('agenda-update', kwargs={'id':parent_id})
+    return redirect(success_url)
 
 
 

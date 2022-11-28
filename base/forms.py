@@ -1,5 +1,6 @@
 from django.forms import ModelForm
-from .models import Group, Settings, Agenda, MondaySquedules
+from .models import (Group, Settings, Agenda, MondaySchedules, TuesdaySchedules, 
+WednesdaySchedules, ThursdaySchedules, FridaySchedules, SaturdaySchedules,SundaySchedules)
 from django.core.exceptions import ValidationError
 
 class GroupForm(ModelForm):
@@ -161,17 +162,9 @@ class Main_AgendaForm(ModelForm):
             'name',
         ]
 
-    # def __init__(self, *args, **kwargs):
-    #     super().__init__(*args, **kwargs)
-    #     self.fields['monday'].label = ''
-
-
-
-
 class MondayScheduleForm(ModelForm):
-
     class Meta:
-        model = MondaySquedules
+        model = MondaySchedules
         fields = [
             'start_time',
             'end_time'
@@ -244,5 +237,56 @@ class MondayScheduleForm(ModelForm):
         #         self.w += 1
         #         self.var_list[0] = self.w
         
+class TuesdayScheduleForm(ModelForm):
+    class Meta:
+        model = TuesdaySchedules
+        fields = [
+            'start_time',
+            'end_time'
+        ]
+        verbose_name_plural = 'Tuesday'
 
+class WednesdayScheduleForm(ModelForm):
+    class Meta:
+        model = WednesdaySchedules
+        fields = [
+            'start_time',
+            'end_time'
+        ]
+        verbose_name_plural = 'Wednesday'
 
+class ThursdayScheduleForm(ModelForm):
+    class Meta:
+        model = ThursdaySchedules
+        fields = [
+            'start_time',
+            'end_time'
+        ]
+        verbose_name_plural = 'Thursday'
+
+class FridayScheduleForm(ModelForm):
+    class Meta:
+        model = FridaySchedules
+        fields = [
+            'start_time',
+            'end_time'
+        ]
+        verbose_name_plural = 'Friday'
+
+class SaturdayScheduleForm(ModelForm):
+    class Meta:
+        model = SaturdaySchedules
+        fields = [
+            'start_time',
+            'end_time'
+        ]
+        verbose_name_plural = 'Saturday'
+
+class SundayScheduleForm(ModelForm):
+    class Meta:
+        model = SundaySchedules
+        fields = [
+            'start_time',
+            'end_time'
+        ]
+        verbose_name_plural = 'Sunday'

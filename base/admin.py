@@ -4,7 +4,6 @@ from .models import *
 from django.forms.models import BaseInlineFormSet
 
 admin.site.register(Telegram)
-# admin.site.register(Group)
 admin.site.register(Group_type)
 admin.site.register(Settings)
 
@@ -18,11 +17,20 @@ class WeekdaySquedulesInlineFormSet(BaseInlineFormSet):
             MondayScheduleForm.var_list.clear()
             return saved_instances
 
-class WeekdaySquedulesInline(admin.TabularInline):
-    model = MondaySquedules
+class MondaySquedulesInline(admin.TabularInline):
+    model = MondaySchedules
     extra = 0
     form = MondayScheduleForm
-    formset = WeekdaySquedulesInlineFormSet
+    # formset = WeekdaySquedulesInlineFormSet
+    exclude = [
+        'available'
+    ]
+
+class TuesdaySquedulesInline(admin.TabularInline):
+    model = TuesdaySchedules
+    extra = 0
+    form = MondayScheduleForm
+    # formset = WeekdaySquedulesInlineFormSet
     exclude = [
         'available'
     ]  
@@ -30,7 +38,8 @@ class WeekdaySquedulesInline(admin.TabularInline):
 
 class AgendaAdmin(admin.ModelAdmin):
     inlines = [
-        WeekdaySquedulesInline,
+        MondaySquedulesInline,
+        TuesdaySquedulesInline,
     ]
     
     list_display = ['user', 'name']
@@ -39,4 +48,4 @@ class AgendaAdmin(admin.ModelAdmin):
 
 admin.site.register(Agenda, AgendaAdmin)
 
-admin.site.register(MondaySquedules)
+admin.site.register(MondaySchedules)

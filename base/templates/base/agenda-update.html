@@ -8,21 +8,17 @@
       grid-template-columns: 1fr 6fr 1fr;
   
     }
-    .monday-container{
+    .weekday-container{
         display: grid;
         grid-template-columns: 1.5fr 3fr 1.5fr 10fr;
     }
-    .monday-inline-container{
+    .weekday-inline-container{
         display: grid;
         grid-template-columns: 2fr 1.5fr;
     }
     .hr-container{
         display: grid;
         grid-template-columns: 5fr 10fr;
-    }
-
-    .hidden{
-        display: none
     }
     
 </style>
@@ -34,7 +30,8 @@
     <div>
         {% include 'base/partials/agenda-update.html' %}        
     </div>
-    <div>
+    
+    <div></div>
 </div>
 
 
@@ -43,72 +40,159 @@
 {% block javascript %}
 
 <script>
+  
+  $(document).ready(function(){
+      mondayStatus()
+      tuesdayStatus()
+      wednesdayStatus()
+      thursdayStatus()
+      fridayStatus()
+      saturdayStatus()
+      sundayStatus()
+  })
 
-    document.addEventListener('click', (event)=>{
-    if (event.target.id == 'add-more') {
-        add_new_form(event)
-    }
-    })
+  // Monday checkbox
+  function mondayStatus(event) {
+  var text = document.getElementById("monday-text");
+  var btn = document.getElementById("monday-add_btn");
+  const currentForms = document.getElementsByClassName('monday-form')  
+  if ($("#monday-checkbox").is(":checked")) {
+      $(currentForms).show();
+      text.style.display = "none";
+      btn.style.display = "block";
+  } else {
+      $(currentForms).hide();
+      text.style.display = "block";
+      btn.style.display = "none";
+  }
+  };
 
-    function add_new_form(event) {
-    if (event) {
-        event.preventDefault()
-    }
-    const totalNewForms = document.getElementById('id_form-TOTAL_FORMS')
-    const currentMondayForms = document.getElementsByClassName('monday-form')
-    const currentFormCount = currentMondayForms.length 
-    const formCopyTarget = document.getElementById('monday-form-list')
-    const copyemptyFormEl = document.getElementById('empty-form').cloneNode(true)
-    const deleteBtn = document.getElementById('delete')
-    copyemptyFormEl.setAttribute('class', 'monday-form')
-    copyemptyFormEl.setAttribute('id', `form-${currentFormCount}`)
-    const regex = new RegExp('__prefix__', 'g')
-    copyemptyFormEl.innerHTML = copyemptyFormEl.innerHTML.replace(regex, currentFormCount)
-    totalNewForms.setAttribute('value', currentFormCount + 1)
-    formCopyTarget.append(copyemptyFormEl)
-    }
+  $(document).on("click", "#monday-checkbox", mondayStatus);
 
-    $(document).ready(function(){
-        alertStatus()
-    })
+  // Tuesday checkbox
+  function tuesdayStatus(event) {
+  var text = document.getElementById("tuesday-text");
+  var btn = document.getElementById("tuesday-add_btn");
+  const currentForms = document.getElementsByClassName('tuesday-form')  
+  if ($("#tuesday-checkbox").is(":checked")) {
+      $(currentForms).show();
+      text.style.display = "none";
+      btn.style.display = "block";
+  } else {
+      $(currentForms).hide();
+      text.style.display = "block";
+      btn.style.display = "none";
+  }
+  };
 
-    function alertStatus(event) {
-    
-    var text = document.getElementById("text");
-    var btn = document.getElementById("add_btn");
-    const currentMondayForms = document.getElementsByClassName('monday-form')  
-    const addMoreBtn = document.getElementById('add-more')
-    if ($("#el").is(":checked")) {
-        $(currentMondayForms).show();
-        $(addMoreBtn).show();
-        text.style.display = "none";
-        btn.style.display = "block";
-    } else {
-        $(currentMondayForms).hide();
-        $(addMoreBtn).hide();
-        text.style.display = "block";
-        btn.style.display = "none";
-    }
-    };
+  $(document).on("click", "#tuesday-checkbox", tuesdayStatus);
 
-    $(document).on("click", "#el", alertStatus);
+  // Wednesday checkbox
+  function wednesdayStatus(event) {
+  var text = document.getElementById("wednesday-text");
+  var btn = document.getElementById("wednesday-add_btn");
+  const currentForms = document.getElementsByClassName('wednesday-form')  
+  if ($("#wednesday-checkbox").is(":checked")) {
+      $(currentForms).show();
+      text.style.display = "none";
+      btn.style.display = "block";
+  } else {
+      $(currentForms).hide();
+      text.style.display = "block";
+      btn.style.display = "none";
+  }
+  };
 
-    var checkboxValues = JSON.parse(localStorage.getItem('checkboxValues')) || {};
-    var $checkboxes = $("#checkbox-container :checkbox");
+  $(document).on("click", "#wednesday-checkbox", wednesdayStatus);
 
-    $checkboxes.on("change", function(){
-        $checkboxes.each(function(){
-            checkboxValues[this.id] = this.checked;
-        });
-    
-        localStorage.setItem("checkboxValues", JSON.stringify(checkboxValues));
-    });
+  // Thursday checkbox
+  function thursdayStatus(event) {
+  var text = document.getElementById("thursday-text");
+  var btn = document.getElementById("thursday-add_btn");
+  const currentForms = document.getElementsByClassName('thursday-form')  
+  if ($("#thursday-checkbox").is(":checked")) {
+      $(currentForms).show();
+      text.style.display = "none";
+      btn.style.display = "block";
+  } else {
+      $(currentForms).hide();
+      text.style.display = "block";
+      btn.style.display = "none";
+  }
+  };
 
-    // On page load
-    $.each(checkboxValues, function(key, value) {
-        $("#" + key).prop('checked', value);
-    });
+  $(document).on("click", "#thursday-checkbox", thursdayStatus);
+
+  // Friday checkbox
+  function fridayStatus(event) {
+  var text = document.getElementById("friday-text");
+  var btn = document.getElementById("friday-add_btn");
+  const currentForms = document.getElementsByClassName('friday-form')  
+  if ($("#friday-checkbox").is(":checked")) {
+      $(currentForms).show();
+      text.style.display = "none";
+      btn.style.display = "block";
+  } else {
+      $(currentForms).hide();
+      text.style.display = "block";
+      btn.style.display = "none";
+  }
+  };
+
+  $(document).on("click", "#friday-checkbox", fridayStatus);
+
+  // Saturday checkbox
+  function saturdayStatus(event) {
+  var text = document.getElementById("saturday-text");
+  var btn = document.getElementById("saturday-add_btn");
+  const currentForms = document.getElementsByClassName('saturday-form')  
+  if ($("#saturday-checkbox").is(":checked")) {
+      $(currentForms).show();
+      text.style.display = "none";
+      btn.style.display = "block";
+  } else {
+      $(currentForms).hide();
+      text.style.display = "block";
+      btn.style.display = "none";
+  }
+  };
+
+  $(document).on("click", "#saturday-checkbox", saturdayStatus);
+
+  // Sunday checkbox
+  function sundayStatus(event) {
+  var text = document.getElementById("sunday-text");
+  var btn = document.getElementById("sunday-add_btn");
+  const currentForms = document.getElementsByClassName('sunday-form')  
+  if ($("#sunday-checkbox").is(":checked")) {
+      $(currentForms).show();
+      text.style.display = "none";
+      btn.style.display = "block";
+  } else {
+      $(currentForms).hide();
+      text.style.display = "block";
+      btn.style.display = "none";
+  }
+  };
+
+  $(document).on("click", "#sunday-checkbox", sundayStatus);
+
+  // Persist checkbox function
+  var checkboxValues = JSON.parse(localStorage.getItem('checkboxValues')) || {};
+  var $checkboxes = $("#checkbox-container :checkbox");
+
+  $checkboxes.on("change", function(){
+      $checkboxes.each(function(){
+          checkboxValues[this.id] = this.checked;
+      });
+  
+      localStorage.setItem("checkboxValues", JSON.stringify(checkboxValues));
+  });
+
+  $.each(checkboxValues, function(key, value) {
+      $("#" + key).prop('checked', value);
+  });
 
 </script>
 
-{% endblock %}
+{% endblock javascript %}

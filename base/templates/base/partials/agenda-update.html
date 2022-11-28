@@ -8,8 +8,11 @@
   <h4>Set your agenda name</h4>
   <p>Main</p>
 
-  <h4>Set your squedules start increments</h4>
-  <p>{{ form.increments }}</p>  
+  <h4>Set Time limit for scheduling before the start</h4>
+  <p>{{ form.increments }}</p>
+  
+  <h4>Set your agenda time zone</h4>
+  <p>{{ form.timezone }}</p>
   
   {% else %}
 
@@ -19,83 +22,479 @@
   {% endif %}
   <p>{{ form.name }}</p>
 
-  <h4>Set your squedules start increments</h4>
+  <h4>Set Time limit for scheduling before the start</h4>
   <p>{{ form.increments }}</p>
 
+  <h4>Set your agenda time zone</h4>
+  <p>{{ form.timezone }}</p>
+
   {% endif %}
 
-  <h3>Set your weekly squedules</h3>
-  {% if error %}
-    <p>{{ error }}</p>  
-  {% endif %}
+  <h3>Set your weekly schedules</h3>
 
-  <div class="monday-container">
+  <div id="checkbox-container">
 
-    <div>
-      <span style="float:left">
-        <div id="checkbox-container">
-        <h4>
-          <input type="checkbox" name="display-type" value="mondaybox" id="el" checked></input>
-          <label>Mon</label> 
-        </h4>          
-        </div>
-      </span>
-    </div>
+    {% if error_sunday %}
+      <p>{{ error_sunday }}</p>  
+    {% endif %}
+    <div class="weekday-container">
 
-    <div>  
-      {% for obj in agenda_obj.get_monday_schedules_children %}
-        {% include 'base/partials/monday-detail.html' with object=obj %}
-      {% endfor %}
-        
-      {% if new_monday_url %}
-        <div id="monday-create"></div>    
-      {% endif %}
+      <div>
+        <span style="float:left">
+          <h4>
+            <input type="checkbox" name="sunday-type" value="sundaybox" id="sunday-checkbox" checked></input>
+            <label>Sun</label> 
+          </h4>          
+        </span>
+      </div>
 
-      <h4 id="text" style="display:none">unavailable</h4>
-    </div>
-
-    <div>
-      <span style="float:left">
-        <h4><button id="add_btn" style="display:block" hx-get="{{ new_monday_url }}" hx-trigger="click" hx-target="#monday-create" hx-swap="beforeend">+</button></h4>
-      </span>
-    </div>
-    <div></div>
+      <div>  
+        {% for obj in agenda_obj.get_sunday_schedules %}
+          {% include 'base/partials/sunday-detail.html' with object=obj %}
+        {% endfor %}
           
-  </div>
-  <div class="hr-container">
-    <div>
-      <hr>
+        {% if new_sunday_url %}
+          <div id="sunday-create"></div>    
+        {% endif %}
+
+        <h4 id="sunday-text" style="display:none">unavailable</h4>
+      </div>
+
+      <div>
+        <span style="float:left">
+          <h4><button id="sunday-add_btn" style="display:block" hx-get="{{ new_sunday_url }}" hx-trigger="click" hx-target="#sunday-create" hx-swap="beforeend">+</button></h4>
+        </span>
+      </div>
+      <div></div>
+            
     </div>
-    <div></div>
+
+    <div class="hr-container">
+      <div>
+        <hr>
+      </div>
+      <div></div>
+    </div>
+
+    {% if error_monday %}
+      <p>{{ error_monday }}</p>  
+    {% endif %}
+    <div class="weekday-container">
+
+      <div>
+        <span style="float:left">
+          <h4>
+            <input type="checkbox" name="monday-type" value="mondaybox" id="monday-checkbox" checked></input>
+            <label>Mon</label> 
+          </h4>          
+        </span>
+      </div>
+
+      <div>  
+        {% for obj in agenda_obj.get_monday_schedules %}
+          {% include 'base/partials/monday-detail.html' with object=obj %}
+        {% endfor %}
+          
+        {% if new_monday_url %}
+          <div id="monday-create"></div>    
+        {% endif %}
+
+        <h4 id="monday-text" style="display:none">unavailable</h4>
+      </div>
+
+      <div>
+        <span style="float:left">
+          <h4><button id="monday-add_btn" style="display:block" hx-get="{{ new_monday_url }}" hx-trigger="click" hx-target="#monday-create" hx-swap="beforeend">+</button></h4>
+        </span>
+      </div>
+      <div></div>
+              
+    </div>
+
+    <div class="hr-container">
+      <div>
+        <hr>
+      </div>
+      <div></div>
+    </div>
+
+    {% if error_tuesday %}
+      <p>{{ error_tuesday }}</p>  
+    {% endif %}
+    <div class="weekday-container">
+
+      <div>
+        <span style="float:left">
+          <h4>
+            <input type="checkbox" name="tuesday-type" value="tuesdaybox" id="tuesday-checkbox" checked></input>
+            <label>Tue</label> 
+          </h4>          
+        </span>
+      </div>
+
+      <div>  
+        {% for obj in agenda_obj.get_tuesday_schedules %}
+          {% include 'base/partials/tuesday-detail.html' with object=obj %}
+        {% endfor %}
+          
+        {% if new_tuesday_url %}
+          <div id="tuesday-create"></div>    
+        {% endif %}
+
+        <h4 id="tuesday-text" style="display:none">unavailable</h4>
+      </div>
+
+      <div>
+        <span style="float:left">
+          <h4><button id="tuesday-add_btn" style="display:block" hx-get="{{ new_tuesday_url }}" hx-trigger="click" hx-target="#tuesday-create" hx-swap="beforeend">+</button></h4>
+        </span>
+      </div>
+      <div></div>
+            
+    </div>
+
+    <div class="hr-container">
+      <div>
+        <hr>
+      </div>
+      <div></div>
+    </div>
+
+    {% if error_wednesday %}
+      <p>{{ error_wednesday }}</p>  
+    {% endif %}
+    <div class="weekday-container">
+
+      <div>
+        <span style="float:left">
+          <h4>
+            <input type="checkbox" name="wednesday-type" value="wednesdaybox" id="wednesday-checkbox" checked></input>
+            <label>Wed</label> 
+          </h4>          
+        </span>
+      </div>
+
+      <div>  
+        {% for obj in agenda_obj.get_wednesday_schedules %}
+          {% include 'base/partials/wednesday-detail.html' with object=obj %}
+        {% endfor %}
+          
+        {% if new_wednesday_url %}
+          <div id="wednesday-create"></div>    
+        {% endif %}
+
+        <h4 id="wednesday-text" style="display:none">unavailable</h4>
+      </div>
+
+      <div>
+        <span style="float:left">
+          <h4><button id="wednesday-add_btn" style="display:block" hx-get="{{ new_wednesday_url }}" hx-trigger="click" hx-target="#wednesday-create" hx-swap="beforeend">+</button></h4>
+        </span>
+      </div>
+      <div></div>
+            
+    </div>
+
+    <div class="hr-container">
+      <div>
+        <hr>
+      </div>
+      <div></div>
+    </div>
+
+    {% if error_thursday %}
+      <p>{{ error_thursday }}</p>  
+    {% endif %}
+    <div class="weekday-container">
+
+      <div>
+        <span style="float:left">
+          <h4>
+            <input type="checkbox" name="thursday-type" value="thursdaybox" id="thursday-checkbox" checked></input>
+            <label>Thu</label> 
+          </h4>          
+        </span>
+      </div>
+
+      <div>  
+        {% for obj in agenda_obj.get_thursday_schedules %}
+          {% include 'base/partials/thursday-detail.html' with object=obj %}
+        {% endfor %}
+          
+        {% if new_thursday_url %}
+          <div id="thursday-create"></div>    
+        {% endif %}
+
+        <h4 id="thursday-text" style="display:none">unavailable</h4>
+      </div>
+
+      <div>
+        <span style="float:left">
+          <h4><button id="thursday-add_btn" style="display:block" hx-get="{{ new_thursday_url }}" hx-trigger="click" hx-target="#thursday-create" hx-swap="beforeend">+</button></h4>
+        </span>
+      </div>
+      <div></div>
+            
+    </div>
+
+    <div class="hr-container">
+      <div>
+        <hr>
+      </div>
+      <div></div>
+    </div>
+
+
+    {% if error_friday %}
+      <p>{{ error_friday }}</p>  
+    {% endif %}
+    <div class="weekday-container">
+
+      <div>
+        <span style="float:left">
+          <h4>
+            <input type="checkbox" name="friday-type" value="fridaybox" id="friday-checkbox" checked></input>
+            <label>Fri</label> 
+          </h4>          
+        </span>
+      </div>
+
+      <div>  
+        {% for obj in agenda_obj.get_friday_schedules %}
+          {% include 'base/partials/friday-detail.html' with object=obj %}
+        {% endfor %}
+          
+        {% if new_friday_url %}
+          <div id="friday-create"></div>    
+        {% endif %}
+
+        <h4 id="friday-text" style="display:none">unavailable</h4>
+      </div>
+
+      <div>
+        <span style="float:left">
+          <h4><button id="friday-add_btn" style="display:block" hx-get="{{ new_friday_url }}" hx-trigger="click" hx-target="#friday-create" hx-swap="beforeend">+</button></h4>
+        </span>
+      </div>
+      <div></div>
+            
+    </div>
+
+    <div class="hr-container">
+      <div>
+        <hr>
+      </div>
+      <div></div>
+    </div>
+
+    {% if error_saturday %}
+      <p>{{ error_saturday }}</p>  
+    {% endif %}
+    <div class="weekday-container">
+
+      <div>
+        <span style="float:left">
+          <h4>
+            <input type="checkbox" name="saturday-type" value="saturdaybox" id="saturday-checkbox" checked></input>
+            <label>Sat</label> 
+          </h4>          
+        </span>
+      </div>
+
+      <div>  
+        {% for obj in agenda_obj.get_saturday_schedules %}
+          {% include 'base/partials/saturday-detail.html' with object=obj %}
+        {% endfor %}
+          
+        {% if new_saturday_url %}
+          <div id="saturday-create"></div>    
+        {% endif %}
+
+        <h4 id="saturday-text" style="display:none">unavailable</h4>
+      </div>
+
+      <div>
+        <span style="float:left">
+          <h4><button id="saturday-add_btn" style="display:block" hx-get="{{ new_saturday_url }}" hx-trigger="click" hx-target="#saturday-create" hx-swap="beforeend">+</button></h4>
+        </span>
+      </div>
+      <div></div>
+            
+    </div>
+
+    <div class="hr-container">
+      <div>
+        <hr>
+      </div>
+      <div></div>
+    </div>
+
+    <p>
+      <div class="htmx-indicator">Loading...</div>
+      <button class="htmx-inverted-indicator" type="submit" id="save_btn" name="emptylayerbtn">Save and return</button>
+    </p>
+    
   </div>
-  
-  <p>
-    <div class="htmx-indicator">Loading...</div>
-    <button class="htmx-inverted-indicator" type="submit" id="save_btn" name="emptylayerbtn">Save and return</button>
-  </p>
 </form>
+
+
+
 
 {% block javascript %}
 
 <script>
+  
+  $(document).ready(function(){
+      mondayStatus()
+      tuesdayStatus()
+      wednesdayStatus()
+      thursdayStatus()
+      fridayStatus()
+      saturdayStatus()
+      sundayStatus()
+  })
 
-var checkboxValues = JSON.parse(localStorage.getItem('checkboxValues')) || {};
-    var $checkboxes = $("#checkbox-container :checkbox");
+  // Monday checkbox
+  function mondayStatus(event) {
+  var text = document.getElementById("monday-text");
+  var btn = document.getElementById("monday-add_btn");
+  const currentForms = document.getElementsByClassName('monday-form')  
+  if ($("#monday-checkbox").is(":checked")) {
+      $(currentForms).show();
+      text.style.display = "none";
+      btn.style.display = "block";
+  } else {
+      $(currentForms).hide();
+      text.style.display = "block";
+      btn.style.display = "none";
+  }
+  };
 
-    $checkboxes.on("change", function(){
-        $checkboxes.each(function(){
-            checkboxValues[this.id] = this.checked;
-        });
-    
-        localStorage.setItem("checkboxValues", JSON.stringify(checkboxValues));
-    });
+  $(document).on("click", "#monday-checkbox", mondayStatus);
 
-    // On page load
-    $.each(checkboxValues, function(key, value) {
-        $("#" + key).prop('checked', value);
-    });
+  // Tuesday checkbox
+  function tuesdayStatus(event) {
+  var text = document.getElementById("tuesday-text");
+  var btn = document.getElementById("tuesday-add_btn");
+  const currentForms = document.getElementsByClassName('tuesday-form')  
+  if ($("#tuesday-checkbox").is(":checked")) {
+      $(currentForms).show();
+      text.style.display = "none";
+      btn.style.display = "block";
+  } else {
+      $(currentForms).hide();
+      text.style.display = "block";
+      btn.style.display = "none";
+  }
+  };
 
+  $(document).on("click", "#tuesday-checkbox", tuesdayStatus);
 
+  // Wednesday checkbox
+  function wednesdayStatus(event) {
+  var text = document.getElementById("wednesday-text");
+  var btn = document.getElementById("wednesday-add_btn");
+  const currentForms = document.getElementsByClassName('wednesday-form')  
+  if ($("#wednesday-checkbox").is(":checked")) {
+      $(currentForms).show();
+      text.style.display = "none";
+      btn.style.display = "block";
+  } else {
+      $(currentForms).hide();
+      text.style.display = "block";
+      btn.style.display = "none";
+  }
+  };
+
+  $(document).on("click", "#wednesday-checkbox", wednesdayStatus);
+
+  // Thursday checkbox
+  function thursdayStatus(event) {
+  var text = document.getElementById("thursday-text");
+  var btn = document.getElementById("thursday-add_btn");
+  const currentForms = document.getElementsByClassName('thursday-form')  
+  if ($("#thursday-checkbox").is(":checked")) {
+      $(currentForms).show();
+      text.style.display = "none";
+      btn.style.display = "block";
+  } else {
+      $(currentForms).hide();
+      text.style.display = "block";
+      btn.style.display = "none";
+  }
+  };
+
+  $(document).on("click", "#thursday-checkbox", thursdayStatus);
+
+  // Friday checkbox
+  function fridayStatus(event) {
+  var text = document.getElementById("friday-text");
+  var btn = document.getElementById("friday-add_btn");
+  const currentForms = document.getElementsByClassName('friday-form')  
+  if ($("#friday-checkbox").is(":checked")) {
+      $(currentForms).show();
+      text.style.display = "none";
+      btn.style.display = "block";
+  } else {
+      $(currentForms).hide();
+      text.style.display = "block";
+      btn.style.display = "none";
+  }
+  };
+
+  $(document).on("click", "#friday-checkbox", fridayStatus);
+
+  // Saturday checkbox
+  function saturdayStatus(event) {
+  var text = document.getElementById("saturday-text");
+  var btn = document.getElementById("saturday-add_btn");
+  const currentForms = document.getElementsByClassName('saturday-form')  
+  if ($("#saturday-checkbox").is(":checked")) {
+      $(currentForms).show();
+      text.style.display = "none";
+      btn.style.display = "block";
+  } else {
+      $(currentForms).hide();
+      text.style.display = "block";
+      btn.style.display = "none";
+  }
+  };
+
+  $(document).on("click", "#saturday-checkbox", saturdayStatus);
+
+  // Sunday checkbox
+  function sundayStatus(event) {
+  var text = document.getElementById("sunday-text");
+  var btn = document.getElementById("sunday-add_btn");
+  const currentForms = document.getElementsByClassName('sunday-form')  
+  if ($("#sunday-checkbox").is(":checked")) {
+      $(currentForms).show();
+      text.style.display = "none";
+      btn.style.display = "block";
+  } else {
+      $(currentForms).hide();
+      text.style.display = "block";
+      btn.style.display = "none";
+  }
+  };
+
+  $(document).on("click", "#sunday-checkbox", sundayStatus);
+
+  // Persist checkbox function
+  var checkboxValues = JSON.parse(localStorage.getItem('checkboxValues')) || {};
+  var $checkboxes = $("#checkbox-container :checkbox");
+
+  $checkboxes.on("change", function(){
+      $checkboxes.each(function(){
+          checkboxValues[this.id] = this.checked;
+      });
+  
+      localStorage.setItem("checkboxValues", JSON.stringify(checkboxValues));
+  });
+
+  $.each(checkboxValues, function(key, value) {
+      $("#" + key).prop('checked', value);
+  });
 
 </script>
 
