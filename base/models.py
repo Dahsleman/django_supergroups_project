@@ -1,10 +1,14 @@
 from django.db import models
 from django.contrib.auth.models import User
-from django.utils.translation import gettext_lazy as _
 import pytz
 from django.urls import reverse
-from django.core.exceptions import ValidationError
-# from base.forms import MondayScheduleForm
+from django.dispatch import receiver
+from django.db.models.signals import (
+    post_save,
+    pre_save 
+)
+from django.conf import settings
+
 
 class Telegram(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE, null=True, blank=True)
@@ -207,6 +211,15 @@ class Settings(models.Model):
     def __str__(self):
         return f'Opening_hours: {self.user}'
 
+@receiver(post_save, sender=User)
+def new_user_agenda_create(sender, instance, created, *args, **kwargs):
+    if created:
+        Agenda.objects.create(user=instance, name='Main')
+        # MondaySchedules.objects.create(agenda=new_agenda, start_time='7:00', end_time='17:00')
+        # TuesdaySchedules.objects.create(agenda=new_agenda, start_time='7:00', end_time='17:00')
+        # WednesdaySchedules.objects.create(agenda=new_agenda, start_time='7:00', end_time='17:00')
+        # ThursdaySchedules.objects.create(agenda=new_agenda, start_time='7:00', end_time='17:00')
+        # FridaySchedules.objects.create(agenda=new_agenda, start_time='7:00', end_time='16:00') 
 
 class Agenda(models.Model):
 
@@ -240,31 +253,31 @@ class Agenda(models.Model):
         ) 
 
     monday = models.BooleanField(
-        default=True,     
+        default=True
     )
 
     tuesday = models.BooleanField(
-        default=True,     
+        default=True
     )
 
     wednesday = models.BooleanField(
-        default=True,     
+        default=True
     )
 
     thursday = models.BooleanField(
-        default=True,     
+        default=True
     )
 
     friday = models.BooleanField(
-        default=True,     
+        default=True
     )
 
     saturday = models.BooleanField(
-        default=False,     
+        default=False
     )
 
     sunday = models.BooleanField(
-        default=False,     
+        default=False
     )
 
     def __str__(self):
@@ -302,6 +315,32 @@ class Agenda(models.Model):
 
     def get_sunday_schedules(self):
         return self.sundayschedules_set.all()
+
+# @receiver(pre_save, sender=Agenda)
+# def new_agenda_create(sender, instance, *args, **kwargs):
+#     if instance.new == True:
+        
+
+
+@receiver(post_save, sender=Agenda)
+def new_agenda_create(sender, instance, created, *args, **kwargs):
+    if created:
+        instance.monday = True
+        instance.tuesday = True
+        instance.wednesday = True
+        instance.thursday = True
+        instance.friday = True
+        instance.saturday = False
+        instance.sunday = False
+        instance.new = False
+        new_agenda = instance
+        MondaySchedules.objects.create(agenda=new_agenda, start_time='7:00', end_time='17:00')
+        TuesdaySchedules.objects.create(agenda=new_agenda, start_time='7:00', end_time='17:00')
+        WednesdaySchedules.objects.create(agenda=new_agenda, start_time='7:00', end_time='17:00')
+        ThursdaySchedules.objects.create(agenda=new_agenda, start_time='7:00', end_time='17:00')
+        FridaySchedules.objects.create(agenda=new_agenda, start_time='7:00', end_time='17:00')
+            
+            
 
 class MondaySchedules(models.Model):
 
