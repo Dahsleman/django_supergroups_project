@@ -42,7 +42,11 @@
       <div>
         <span style="float:left">
           <h4>
-            <input type="checkbox" name="sunday-type" value="sundaybox" id="sunday-checkbox" checked></input>
+            {% if sunday %}
+              <input type="checkbox" name="sunday-type" value="sundaybox" id="sunday-checkbox" checked></input>
+            {% else %}
+              <input type="checkbox" name="sunday-type" value="sundaybox" id="sunday-checkbox"></input>
+            {% endif %}
             <label>Sun</label> 
           </h4>          
         </span>
@@ -84,7 +88,11 @@
       <div>
         <span style="float:left">
           <h4>
-            <input type="checkbox" name="monday-type" value="mondaybox" id="monday-checkbox" checked></input>
+            {% if monday %}
+              <input type="checkbox" name="monday-type" value="mondaybox" id="monday-checkbox" checked></input>
+            {% else %}
+              <input type="checkbox" name="monday-type" value="mondaybox" id="monday-checkbox"></input>
+            {% endif %}
             <label>Mon</label> 
           </h4>          
         </span>
@@ -126,8 +134,12 @@
       <div>
         <span style="float:left">
           <h4>
-            <input type="checkbox" name="tuesday-type" value="tuesdaybox" id="tuesday-checkbox" checked></input>
-            <label>Tue</label> 
+            {% if tuesday %}
+              <input type="checkbox" name="tuesday-type" value="tuesdaybox" id="tuesday-checkbox" checked></input>
+            {% else %}
+              <input type="checkbox" name="tuesday-type" value="tuesdaybox" id="tuesday-checkbox"></input>
+            {% endif %}
+              <label>Tue</label> 
           </h4>          
         </span>
       </div>
@@ -168,8 +180,12 @@
       <div>
         <span style="float:left">
           <h4>
-            <input type="checkbox" name="wednesday-type" value="wednesdaybox" id="wednesday-checkbox" checked></input>
-            <label>Wed</label> 
+            {% if wednesday %}
+              <input type="checkbox" name="wednesday-type" value="wednesdaybox" id="wednesday-checkbox" checked></input>
+            {% else %}
+              <input type="checkbox" name="wednesday-type" value="wednesdaybox" id="wednesday-checkbox"></input>
+            {% endif %}
+              <label>Wed</label> 
           </h4>          
         </span>
       </div>
@@ -210,7 +226,11 @@
       <div>
         <span style="float:left">
           <h4>
-            <input type="checkbox" name="thursday-type" value="thursdaybox" id="thursday-checkbox" checked></input>
+            {% if thursday %}
+              <input type="checkbox" name="thursday-type" value="thursdaybox" id="thursday-checkbox" checked></input>
+            {% else %}
+              <input type="checkbox" name="thursday-type" value="thursdaybox" id="thursday-checkbox"></input>
+            {% endif %}
             <label>Thu</label> 
           </h4>          
         </span>
@@ -253,8 +273,12 @@
       <div>
         <span style="float:left">
           <h4>
-            <input type="checkbox" name="friday-type" value="fridaybox" id="friday-checkbox" checked></input>
-            <label>Fri</label> 
+            {% if friday %}
+              <input type="checkbox" name="friday-type" value="fridaybox" id="friday-checkbox" checked></input>
+            {% else %}
+              <input type="checkbox" name="friday-type" value="fridaybox" id="friday-checkbox"></input>
+            {% endif %}
+              <label>Fri</label> 
           </h4>          
         </span>
       </div>
@@ -295,8 +319,12 @@
       <div>
         <span style="float:left">
           <h4>
-            <input type="checkbox" name="saturday-type" value="saturdaybox" id="saturday-checkbox" checked></input>
-            <label>Sat</label> 
+            {% if saturday %}
+              <input type="checkbox" name="saturday-type" value="saturdaybox" id="saturday-checkbox" checked></input>
+            {% else %}
+              <input type="checkbox" name="saturday-type" value="saturdaybox" id="saturday-checkbox"></input>
+            {% endif %}
+              <label>Sat</label> 
           </h4>          
         </span>
       </div>
@@ -480,21 +508,21 @@
 
   $(document).on("click", "#sunday-checkbox", sundayStatus);
 
-  // Persist checkbox function
-  var checkboxValues = JSON.parse(localStorage.getItem('checkboxValues')) || {};
-  var $checkboxes = $("#checkbox-container :checkbox");
+  // // Persist checkbox function
+  // var checkboxValues = JSON.parse(localStorage.getItem('checkboxValues')) || {};
+  // var $checkboxes = $("#checkbox-container :checkbox");
 
-  $checkboxes.on("change", function(){
-      $checkboxes.each(function(){
-          checkboxValues[this.id] = this.checked;
-      });
+  // $checkboxes.on("change", function(){
+  //     $checkboxes.each(function(){
+  //         checkboxValues[this.id] = this.checked;
+  //     });
   
-      localStorage.setItem("checkboxValues", JSON.stringify(checkboxValues));
-  });
+  //     localStorage.setItem("checkboxValues", JSON.stringify(checkboxValues));
+  // });
 
-  $.each(checkboxValues, function(key, value) {
-      $("#" + key).prop('checked', value);
-  });
+  // $.each(checkboxValues, function(key, value) {
+  //     $("#" + key).prop('checked', value);
+  // });
 
 </script>
 

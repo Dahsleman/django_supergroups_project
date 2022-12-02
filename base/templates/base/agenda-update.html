@@ -177,21 +177,21 @@
 
   $(document).on("click", "#sunday-checkbox", sundayStatus);
 
-  // Persist checkbox function
-  var checkboxValues = JSON.parse(localStorage.getItem('checkboxValues')) || {};
-  var $checkboxes = $("#checkbox-container :checkbox");
+//   // Persist checkbox function
+//   var checkboxValues = JSON.parse(localStorage.getItem('checkboxValues')) || {};
+//   var $checkboxes = $("#checkbox-container :checkbox");
 
-  $checkboxes.on("change", function(){
-      $checkboxes.each(function(){
-          checkboxValues[this.id] = this.checked;
-      });
+//   $checkboxes.on("change", function(){
+//       $checkboxes.each(function(){
+//           checkboxValues[this.id] = this.checked;
+//       });
   
-      localStorage.setItem("checkboxValues", JSON.stringify(checkboxValues));
-  });
+//       localStorage.setItem("checkboxValues", JSON.stringify(checkboxValues));
+//   });
 
-  $.each(checkboxValues, function(key, value) {
-      $("#" + key).prop('checked', value);
-  });
+//   $.each(checkboxValues, function(key, value) {
+//       $("#" + key).prop('checked', value);
+//   });
 
 </script>
 

@@ -280,6 +280,11 @@ class Agenda(models.Model):
         default=False
     )
 
+    new = models.BooleanField(
+        default=True,
+        null=True
+    )
+
     def __str__(self):
         return f'{self.user} - {self.name}'
 
@@ -316,31 +321,28 @@ class Agenda(models.Model):
     def get_sunday_schedules(self):
         return self.sundayschedules_set.all()
 
-# @receiver(pre_save, sender=Agenda)
-# def new_agenda_create(sender, instance, *args, **kwargs):
-#     if instance.new == True:
-        
-
-
-@receiver(post_save, sender=Agenda)
-def new_agenda_create(sender, instance, created, *args, **kwargs):
-    if created:
+@receiver(pre_save, sender=Agenda)
+def new_agenda_create(sender, instance, *args, **kwargs):
+    if instance.new == True:
+        instance.sunday = False
         instance.monday = True
         instance.tuesday = True
         instance.wednesday = True
         instance.thursday = True
         instance.friday = True
         instance.saturday = False
-        instance.sunday = False
-        instance.new = False
+        instance.increments = '30'
+        instance.timezone = 'America/Sao_Paulo'
+
+@receiver(post_save, sender=Agenda)
+def new_agenda_create(sender, instance, created, *args, **kwargs):
+    if created:
         new_agenda = instance
         MondaySchedules.objects.create(agenda=new_agenda, start_time='7:00', end_time='17:00')
         TuesdaySchedules.objects.create(agenda=new_agenda, start_time='7:00', end_time='17:00')
         WednesdaySchedules.objects.create(agenda=new_agenda, start_time='7:00', end_time='17:00')
         ThursdaySchedules.objects.create(agenda=new_agenda, start_time='7:00', end_time='17:00')
         FridaySchedules.objects.create(agenda=new_agenda, start_time='7:00', end_time='17:00')
-            
-            
 
 class MondaySchedules(models.Model):
 

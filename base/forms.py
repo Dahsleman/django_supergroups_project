@@ -148,6 +148,8 @@ class AgendaForm(ModelForm):
             'user'
         ]
 
+    def clean(self):
+        increments = self.cleaned_data.get('increments')
     # def __init__(self, *args, **kwargs):
     #     super().__init__(*args, **kwargs)
     #     self.fields['monday'].label = ''

@@ -299,6 +299,7 @@ def agendaCreate(request):
                 context['error'] = 'Agenda name already exist'
                 return render(request, 'base/partials/agenda-create.html', context)
         new_obj.user = request.user
+        new_obj.new = True
         new_obj.save()
 
         if request.htmx:
@@ -393,6 +394,14 @@ def agendaUpdate(request, id=None):
     new_saturday_url = reverse("hx-saturday-create", kwargs={"parent_id":agenda_obj.id})
     new_sunday_url = reverse("hx-sunday-create", kwargs={"parent_id":agenda_obj.id})
 
+    monday = agenda_obj.monday
+    tuesday=agenda_obj.tuesday
+    wednesday=agenda_obj.wednesday
+    thursday=agenda_obj.thursday
+    friday=agenda_obj.friday
+    saturday=agenda_obj.saturday
+    sunday=agenda_obj.sunday
+
     context = {
         'agenda_objects':agenda_objects,
         'new_monday_url':new_monday_url,
@@ -405,7 +414,15 @@ def agendaUpdate(request, id=None):
 
         'form':form,
         'agenda_obj':agenda_obj,
-        'error':False
+        'error':False,
+
+        'monday':monday,
+        'tuesday':tuesday,
+        'wednesday':wednesday,
+        'thursday':thursday,
+        'friday':friday,
+        'saturday':saturday,
+        'sunday':sunday,
         }
     if form.is_valid():
         parent=form.save(commit=False)
@@ -484,6 +501,7 @@ def agendaUpdate(request, id=None):
         if x == True:
             return render(request, 'base/partials/agenda-update.html', context)
         else:
+            parent.new = False
             parent.save()
 
         if request.htmx:
