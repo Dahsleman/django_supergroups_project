@@ -7,8 +7,6 @@ from django.db.models.signals import (
     post_save,
     pre_save 
 )
-from django.conf import settings
-
 
 class Telegram(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE, null=True, blank=True)
@@ -214,12 +212,7 @@ class Settings(models.Model):
 @receiver(post_save, sender=User)
 def new_user_agenda_create(sender, instance, created, *args, **kwargs):
     if created:
-        Agenda.objects.create(user=instance, name='Main')
-        # MondaySchedules.objects.create(agenda=new_agenda, start_time='7:00', end_time='17:00')
-        # TuesdaySchedules.objects.create(agenda=new_agenda, start_time='7:00', end_time='17:00')
-        # WednesdaySchedules.objects.create(agenda=new_agenda, start_time='7:00', end_time='17:00')
-        # ThursdaySchedules.objects.create(agenda=new_agenda, start_time='7:00', end_time='17:00')
-        # FridaySchedules.objects.create(agenda=new_agenda, start_time='7:00', end_time='16:00') 
+        Agenda.objects.create(user=instance, name='Main') 
 
 class Agenda(models.Model):
 

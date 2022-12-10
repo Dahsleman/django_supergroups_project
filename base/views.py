@@ -1,286 +1,33 @@
 from pickle import GET
 from django.contrib.auth.models import User
-from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import get_object_or_404, render, redirect
-from django.contrib import messages
 from base.scripts import save_token
 from random import randint
 from .models import *
 from .forms import *
-from django.contrib.auth.forms import UserCreationForm
-from django.forms.models import modelformset_factory
 from django.http import Http404, HttpResponse
 from django.urls import reverse
 
-"""LOGIN-LOGOUT-REGISTER"""
-
-def loginPage(request):
-    page = 'login'
-    if request.user.is_authenticated:
-        return redirect('home') 
-
-    if request.method == "POST":
-
-        username = request.POST.get('username')
-        password = request.POST.get('password')
-
-        try:
-           user = User.objects.get(username=username)
-        except:
-            messages.error(request, 'User does not exist')
-
-        user = authenticate(request, username=username, password=password)
-
-        if user is not None:
-            login(request, user)
-            return redirect('home')
-
-        else:
-            messages.error(request, 'username OR password does not exist')
-
-    context = {'page': page} 
-    return render(request, 'base/login_register.html', context)
-
-def logoutUser(request):
-    logout(request)
-    return redirect('login')
-
-def registerPage(request):
-    
-    form = UserCreationForm()
-
-    if request.method == 'POST':
-        form = UserCreationForm(request.POST)
-        if form.is_valid():
-            user = form.save(commit=False)
-            user.username = user.username
-            user.save()
-            login(request, user)
-            return redirect('home')
-        else:
-            messages.error(request, 'An error occurred during registration')
-
-    return render(request, 'base/login_register.html', {'form': form})
-
-
-""" GROUPS"""
-
-def home(request):
-    if request.user.is_authenticated: 
-        agenda_objects = Agenda.objects.filter(user=request.user)
-        current_user = request.user
-        groups = Group.objects.filter(participants = current_user)
-
-        group_participants = Group.objects.filter(participants = current_user)
-
-        group_count = groups.count()
-        context = {
-            'groups': groups, 
-            'group_count':group_count, 
-            'group:participants':group_participants,
-            'agenda_objects':agenda_objects
-            }
-        return render(request, 'base/home.html', context)
-    else:
-        return redirect('register')   
-
-def groupSettings(request, pk):
-    group = Group.objects.get(id=pk)
-    participants = group.participants.all().exclude(username=group.admin)
-
-    context = {'group':group, 'participants':participants}
-
-    return render(request, 'base/group_settings.html', context)
-
-def groupMembers(request, pk):
-    group = Group.objects.get(id=pk)
-    participants = group.participants.all().exclude(username=group.admin)
-    group_type = 'Private'
-    private_type = Group_type.objects.get(id='2')
-
-    
-    if request.method == 'POST':
-        return render('group-settings', pk=pk)
-
-    context = {'group': group, 'participants':participants, 'group_type':group_type, 'private_type':private_type}
-    return render(request, 'base/group_members.html', context)
-
-@login_required(login_url='/login')
-def createGroup(request):
-    form = GroupForm()
-    if request.method == 'POST':
-        form = GroupForm(request.POST)
-        if form.is_valid():
-            group = form.save(commit=False)
-            group.admin = request.user
-            group.save()
-            group = Group.objects.get(participants__isnull=True)
-            group.participants.add(request.user)
-            group.save()
-            return redirect('home')
-
-    context = {'form':form}
-    return render(request, 'base/group_form.html', context)
-
-def updateGroup(request, pk):
-    group = Group.objects.get(id=pk)
-    form = GroupForm(instance=group)
-    if request.method == 'POST':
-        form = GroupForm(request.POST, instance=group)
-        if form.is_valid():
-            form.save()
-            return redirect('home')
-
-
-    context = {'form': form}
-    return render(request, 'base/group_form.html',context)
-
-def deleteGroup(request, pk):
-    group = Group.objects.get(id=pk)
-    if request.method == 'POST':
-        group.delete()
-        return redirect('home')
-    
-    return render(request, 'base/group_delete.html',{'obj':group})
+# from django.contrib import messages
+# from django.contrib.auth import authenticate, login, logout
+# from django.contrib.auth.forms import UserCreationForm
+# from django.forms.models import modelformset_factory
 
 """ ACCOUNT """
 
+@login_required
 def userProfile(request, pk):
     agenda_objects = Agenda.objects.filter(user=request.user)
     users = User.objects.get(id=pk)
+    email = users.email
 
     context = {
         'users':users,
+        'email':email,
         'agenda_objects':agenda_objects,
         }
     return render(request, 'base/account-user-profile.html', context)
-
-
-@login_required(login_url='/login')
-def token(request):
-    if request.method == 'POST':
-        token_id = randint(1000,9999)
-        tokens = [
-        {'number': token_id},
-        ]
-        save_token(token_id, request)
-        context = {'tokens': tokens}
-    return render(request, 'base/account-auth-token.html', context)
-
-
-def auth(request):
-    agenda_objects = Agenda.objects.filter(user=request.user)
-
-    context = {
-        'agenda_objects':agenda_objects,
-    }
-    return render(request, 'base/account-auth.html', context)
-
-"""SETTINGS"""
-
-def settingsOH(request):
-    current_user = request.user
-    objects = Settings.objects.filter(user=current_user)
-    OH_objects = Settings.objects.get(user=current_user)
-    agenda_objects = Agenda.objects.filter(user=request.user)
-    status = OH_objects.status
-    time = OH_objects.time
-    permanently_closed = 'permanently closed'
-    set_open_and_close_time = 'set open and close time'
-
-    context = {
-        'objects':objects, 
-        'status':status, 
-        'permanently_closed':permanently_closed, 
-        'set_open_and_close_time':set_open_and_close_time, 
-        'time':time,
-        'agenda_objects':agenda_objects,
-    }
-    return render(request, 'base/settings-OH.html', context)
-
-def settingsOH_update(request):
-    current_user = request.user
-    opening_hours_objects = Settings.objects.get(user=current_user)
-    form = Opening_hours_Form(instance=opening_hours_objects)
-    if request.method == 'POST':
-        form = Opening_hours_Form(request.POST, instance=opening_hours_objects)
-        if form.is_valid():
-            form.save()
-            opening_hours_objects = Settings.objects.get(user=current_user)
-            status = opening_hours_objects.status
-            time = opening_hours_objects.time
-            if status == 'permanently closed':
-                Opening = form.save(commit=False)
-                Opening.time = ""
-                Opening.open_time = ""
-                Opening.close_time = ""
-                Opening.days = ""
-                Opening.notification = ""
-                form.save()
-                return redirect('telegram-settings-OH')
-            elif status == 'open' and time == '24 hours':
-                Opening = form.save(commit=False)
-                Opening.open_time = ""
-                Opening.close_time = ""
-                form.save()
-                return redirect('telegram-settings-OH')
-            else:   
-                return redirect('telegram-settings-OH')
-
-    context = {'form':form}
-
-    return render(request, 'base/settings-OH-update.html', context)
-
-def settingsVM(request):
-    current_user = request.user
-    objects = Settings.objects.filter(user=current_user)
-    OH_objects = Settings.objects.get(user=current_user)
-    voice_messages = OH_objects.voice_messages
-    activated = 'activated'
-    context = {'objects':objects, 'voice_messages':voice_messages, 'activated':activated}
-    return render(request, 'base/settings-VM.html', context)
-
-def settingsVM_update(request):
-    current_user = request.user
-    opening_hours_objects = Settings.objects.get(user=current_user)
-    form = Voice_messagesForm(instance=opening_hours_objects)
-    if request.method == 'POST':
-        form = Voice_messagesForm(request.POST, instance=opening_hours_objects)
-        if form.is_valid():
-            form.save()
-            objects = Settings.objects.get(user=current_user)
-            voice_messages = objects.voice_messages
-            if voice_messages == 'inactivated':
-                objects = form.save(commit=False)
-                objects.voice_messages_notification = ""
-                form.save()
-                return redirect('settings-VM')
-            else:
-                return redirect('settings-VM')
-    
-    context = {'form':form}
-    return render(request, 'base/settings-VM-update.html', context)
-
-def settingsTZ(request):
-    current_user = request.user
-    objects = Settings.objects.filter(user=current_user)
-    context = {'objects':objects}
-    return render(request, 'base/settings-TZ.html', context)
-
-def settingsTZ_update(request):
-    current_user = request.user
-    opening_hours_objects = Settings.objects.get(user=current_user)
-    form = TimezoneForm(instance=opening_hours_objects)
-    if request.method == 'POST':
-        form = TimezoneForm(request.POST, instance=opening_hours_objects)
-        if form.is_valid():
-            form.save()
-            return redirect('settings-TZ')
-
-    context = {'form':form}
-    return render(request, 'base/settings-TZ-update.html', context)
-
 
 """Agenda"""
 
@@ -527,7 +274,6 @@ def agendaDelete(request, id=None):
         raise Http404
 
     context = {
-
        'agenda_objects':agenda_objects,
         'agenda_obj':agenda_obj,
     }
@@ -1297,5 +1043,209 @@ def sundayDelete(request, parent_id=None, id=None):
 
 
 
+""" GROUPS"""
 
+def home(request):
+    if request.user.is_authenticated: 
+        agenda_objects = Agenda.objects.filter(user=request.user)
+        current_user = request.user
+        groups = Group.objects.filter(participants = current_user)
+
+        group_participants = Group.objects.filter(participants = current_user)
+
+        group_count = groups.count()
+        context = {
+            'groups': groups, 
+            'group_count':group_count, 
+            'group:participants':group_participants,
+            'agenda_objects':agenda_objects
+            }
+        return render(request, 'base/home.html', context)
+    else:
+        return redirect('login')   
+
+def groupSettings(request, pk):
+    group = Group.objects.get(id=pk)
+    participants = group.participants.all().exclude(username=group.admin)
+
+    context = {'group':group, 'participants':participants}
+
+    return render(request, 'base/group_settings.html', context)
+
+def groupMembers(request, pk):
+    group = Group.objects.get(id=pk)
+    participants = group.participants.all().exclude(username=group.admin)
+    group_type = 'Private'
+    private_type = Group_type.objects.get(id='2')
+
+    
+    if request.method == 'POST':
+        return render('group-settings', pk=pk)
+
+    context = {'group': group, 'participants':participants, 'group_type':group_type, 'private_type':private_type}
+    return render(request, 'base/group_members.html', context)
+
+@login_required(login_url='/login')
+def createGroup(request):
+    form = GroupForm()
+    if request.method == 'POST':
+        form = GroupForm(request.POST)
+        if form.is_valid():
+            group = form.save(commit=False)
+            group.admin = request.user
+            group.save()
+            group = Group.objects.get(participants__isnull=True)
+            group.participants.add(request.user)
+            group.save()
+            return redirect('home')
+
+    context = {'form':form}
+    return render(request, 'base/group_form.html', context)
+
+def updateGroup(request, pk):
+    group = Group.objects.get(id=pk)
+    form = GroupForm(instance=group)
+    if request.method == 'POST':
+        form = GroupForm(request.POST, instance=group)
+        if form.is_valid():
+            form.save()
+            return redirect('home')
+
+
+    context = {'form': form}
+    return render(request, 'base/group_form.html',context)
+
+def deleteGroup(request, pk):
+    group = Group.objects.get(id=pk)
+    if request.method == 'POST':
+        group.delete()
+        return redirect('home')
+    
+    return render(request, 'base/group_delete.html',{'obj':group})
+
+"""SETTINGS"""
+
+def settingsOH(request):
+    current_user = request.user
+    objects = Settings.objects.filter(user=current_user)
+    OH_objects = Settings.objects.get(user=current_user)
+    agenda_objects = Agenda.objects.filter(user=request.user)
+    status = OH_objects.status
+    time = OH_objects.time
+    permanently_closed = 'permanently closed'
+    set_open_and_close_time = 'set open and close time'
+
+    context = {
+        'objects':objects, 
+        'status':status, 
+        'permanently_closed':permanently_closed, 
+        'set_open_and_close_time':set_open_and_close_time, 
+        'time':time,
+        'agenda_objects':agenda_objects,
+    }
+    return render(request, 'base/settings-OH.html', context)
+
+def settingsOH_update(request):
+    current_user = request.user
+    opening_hours_objects = Settings.objects.get(user=current_user)
+    form = Opening_hours_Form(instance=opening_hours_objects)
+    if request.method == 'POST':
+        form = Opening_hours_Form(request.POST, instance=opening_hours_objects)
+        if form.is_valid():
+            form.save()
+            opening_hours_objects = Settings.objects.get(user=current_user)
+            status = opening_hours_objects.status
+            time = opening_hours_objects.time
+            if status == 'permanently closed':
+                Opening = form.save(commit=False)
+                Opening.time = ""
+                Opening.open_time = ""
+                Opening.close_time = ""
+                Opening.days = ""
+                Opening.notification = ""
+                form.save()
+                return redirect('telegram-settings-OH')
+            elif status == 'open' and time == '24 hours':
+                Opening = form.save(commit=False)
+                Opening.open_time = ""
+                Opening.close_time = ""
+                form.save()
+                return redirect('telegram-settings-OH')
+            else:   
+                return redirect('telegram-settings-OH')
+
+    context = {'form':form}
+
+    return render(request, 'base/settings-OH-update.html', context)
+
+def settingsVM(request):
+    current_user = request.user
+    objects = Settings.objects.filter(user=current_user)
+    OH_objects = Settings.objects.get(user=current_user)
+    voice_messages = OH_objects.voice_messages
+    activated = 'activated'
+    context = {'objects':objects, 'voice_messages':voice_messages, 'activated':activated}
+    return render(request, 'base/settings-VM.html', context)
+
+def settingsVM_update(request):
+    current_user = request.user
+    opening_hours_objects = Settings.objects.get(user=current_user)
+    form = Voice_messagesForm(instance=opening_hours_objects)
+    if request.method == 'POST':
+        form = Voice_messagesForm(request.POST, instance=opening_hours_objects)
+        if form.is_valid():
+            form.save()
+            objects = Settings.objects.get(user=current_user)
+            voice_messages = objects.voice_messages
+            if voice_messages == 'inactivated':
+                objects = form.save(commit=False)
+                objects.voice_messages_notification = ""
+                form.save()
+                return redirect('settings-VM')
+            else:
+                return redirect('settings-VM')
+    
+    context = {'form':form}
+    return render(request, 'base/settings-VM-update.html', context)
+
+def settingsTZ(request):
+    current_user = request.user
+    objects = Settings.objects.filter(user=current_user)
+    context = {'objects':objects}
+    return render(request, 'base/settings-TZ.html', context)
+
+def settingsTZ_update(request):
+    current_user = request.user
+    opening_hours_objects = Settings.objects.get(user=current_user)
+    form = TimezoneForm(instance=opening_hours_objects)
+    if request.method == 'POST':
+        form = TimezoneForm(request.POST, instance=opening_hours_objects)
+        if form.is_valid():
+            form.save()
+            return redirect('settings-TZ')
+
+    context = {'form':form}
+    return render(request, 'base/settings-TZ-update.html', context)
+
+"""Telegram-token"""
+
+@login_required(login_url='/login')
+def token(request):
+    if request.method == 'POST':
+        token_id = randint(1000,9999)
+        tokens = [
+        {'number': token_id},
+        ]
+        save_token(token_id, request)
+        context = {'tokens': tokens}
+    return render(request, 'base/account-auth-token.html', context)
+
+
+def auth(request):
+    agenda_objects = Agenda.objects.filter(user=request.user)
+
+    context = {
+        'agenda_objects':agenda_objects,
+    }
+    return render(request, 'base/account-auth.html', context)
 

@@ -1,16 +1,11 @@
 from django.urls import path
 from . import views
+from django.contrib.auth import views as auth_views #import this
 
 
 urlpatterns = [
 
-    path('login/', views.loginPage, name="login"),
-    path('logout/', views.logoutUser, name="logout"),
-    path('register/', views.registerPage, name="register"),
-
     path('account-user-profile/<str:pk>/', views.userProfile, name="user-profile"),
-    path('account-auth/', views.auth, name="telegram"),
-    path('account-auth-token/', views.token, name="token"),
 
     path('agenda-create/', views.agendaCreate, name="agenda-create"),
     path('agenda-detail/<int:id>/', views.agendaDetail, name="agenda-detail"),
@@ -46,14 +41,14 @@ urlpatterns = [
     path('hx/agenda-update/<int:parent_id>/sunday/<int:id>/', views.sundayCreateUpdate_HX, name="hx-sunday-update"),
     path('sunday-delete/<int:parent_id>/sunday/<int:id>/', views.sundayDelete, name="sunday-delete"),
 
-
-
-
-
-
-
-
     path('', views.home, name="home"),
+
+
+
+
+
+
+
     path('group-settings/<str:pk>/', views.groupSettings, name="group-settings"),
     path('create-group/', views.createGroup, name="create-group"),
     path('update-group/<str:pk>/', views.updateGroup, name="update-group"),
@@ -65,5 +60,7 @@ urlpatterns = [
     path('settings-VM-update/', views.settingsVM_update, name="telegram-settings-VM-update"),
     path('settings-TZ/', views.settingsTZ, name="telegram-settings-TZ"),
     path('settings-TZ-update/', views.settingsTZ_update, name="telegram-settings-TZ-update"),
+    path('account-auth/', views.auth, name="telegram"),
+    path('account-auth-token/', views.token, name="token"),
 
 ]

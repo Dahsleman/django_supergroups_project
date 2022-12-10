@@ -3,12 +3,15 @@
 <html lang="en">
 
 <head>
-  <meta name="description" content="" />
+  <!-- <meta name="description" content="" /> -->
+
+  <title>Calendrive</title>
   <meta charset="utf-8">
-  <title>Supergroups</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link rel="stylesheet" type="text/css" media="screen" href="{% static 'css/main.css' %}">
-  {% block stylesheet %}{% endblock %}
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+
+  {% block stylesheet %}
   <style>  
     .htmx-indicator{
         display: none;
@@ -26,21 +29,14 @@
         display: none;
     }
   </style>
+  {% endblock stylesheet %}
   
 </head>
 
 <body>
+    {% load crispy_forms_tags %} 
     {% include 'navbar.html' %}
-    <!-- {% if messages %}
-    <ul class="messages">
-        {% for message in messages %}
-        <li>{{ message }}</li>
-        {% endfor %}
-    </ul>
-    {% endif %} -->
-
     {% block content %}
-    
     {% endblock %}
     <script type="text/javascript" src="{% static 'js/jquery-3.6.1.min.js' %}"></script>
     <script type="text/javascript" src="{% static 'js/main.js' %}"></script>

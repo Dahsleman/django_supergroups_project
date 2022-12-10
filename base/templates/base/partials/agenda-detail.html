@@ -7,7 +7,7 @@
         <div class="agenda-detail-title">
             <div>
                 <spam style="float:left">
-                    <h1>Agenda</h1>
+                    <h3>Agenda</h3>
                 </spam>
                 <spam style="float:right">
                     <h3><a href="{% url 'agenda-create' %}">Add new</a></h3>
@@ -20,7 +20,7 @@
             <div>
                 {% for object in agenda_objects %}  
                     <div>    
-                        <h3><a href="{{ object.get_agenda_detail_url }}">{{ object.name }}</a></h3>  
+                        <h5><a href="{{ object.get_agenda_detail_url }}">{{ object.name }}</a></h5>  
                     </div>    
                 {% endfor %}
             </div>
@@ -28,33 +28,33 @@
             <div>
                 <div class="agenda-detail-form">
                     <div>
-                        <h2>{{ agenda_obj.name }}</h2>
+                        <h3>{{ agenda_obj.name }}</h3>
                     </div>
                     <div>
-                        <h3 style="float:right">
+                        <h5 style="float:right">
                             <a href="{{ agenda_obj.get_agenda_update_url }}">Edit</a>
                             {% if agenda_obj.name != 'Main' %}
                                 <a href="{{ agenda_obj.get_agenda_delete_url }}">Delete</a>
                             {% endif %}
-                        </h3>
+                        </h5>
                     </div>
                 </div>
                 <hr>            
                 <div class="agenda-detail-form">
                     <div>
-                        <h3>Time limit for scheduling</h3>
+                        <h5>Time limit for scheduling</h5>
                     </div>
                     <div>
-                        <h3 style="float:right">{{ agenda_obj.increments }} min before the start</h3>
+                        <h7 style="float:right">{{ agenda_obj.increments }} min before the start</h7>
                     </div>                    
                 </div>
                 <hr>
                 <div class="agenda-detail-form">
                     <div>
-                        <h3>Time Zone</h3>
+                        <h5>Time Zone</h5>
                     </div>
                     <div>
-                        <h3 style="float:right">{{ agenda_obj.timezone }}</h3>
+                        <h7 style="float:right">{{ agenda_obj.timezone }}</h7>
                     </div>                    
                 </div>
                 <hr>
@@ -63,19 +63,19 @@
                     <div></div>
         
                     <div>
-                        <h4>Weekly Schedules</h4>
+                        <h5>Weekly Schedules</h5>
                         <div class="agenda-detail-weekly-squedules-form">
                             <div></div>
                             <div>
-                                <h4>Sun</h4>
+                                <h5>Sun</h5>
                             </div>
                             <div>
                                 {% if sunday %}
                                     {% for schedules in agenda_obj.get_sunday_schedules %}
-                                    <h4 style="float:right">{{ schedules.start_time }} - {{ schedules.end_time }}</h4>    
+                                    <h7 style="float:right">{{ schedules.start_time }} - {{ schedules.end_time }}</h7>    
                                     {% endfor %}
                                 {% else %}
-                                    <h4>unavailable</h4>
+                                    <h7 style="float:right">unavailable</h7>
                                 {% endif %}
                             </div>
                             <div></div>                    
@@ -84,15 +84,15 @@
                         <div class="agenda-detail-weekly-squedules-form">
                             <div></div>
                             <div>
-                                <h4>Mon</h4>
+                                <h5>Mon</h5>
                             </div>
                             <div>
                                 {% if monday %}
                                     {% for schedules in agenda_obj.get_monday_schedules %}
-                                    <h4 style="float:right">{{ schedules.start_time }} - {{ schedules.end_time }}</h4>    
+                                    <h7 style="float:right">{{ schedules.start_time }} - {{ schedules.end_time }}</h7>    
                                     {% endfor %}
                                 {% else %}
-                                    <h4>unavailable</h4>
+                                    <h7 style="float:right">unavailable</h7>
                                 {% endif %}
                             </div>
                             <div></div>                    
@@ -101,15 +101,15 @@
                         <div class="agenda-detail-weekly-squedules-form">
                             <div></div>
                             <div>
-                                <h4>Tue</h4>
+                                <h5>Tue</h5>
                             </div>
                             <div>
                                 {% if tuesday %}
                                     {% for schedules in agenda_obj.get_tuesday_schedules %}
-                                    <h4 style="float:right">{{ schedules.start_time }} - {{ schedules.end_time }}</h4>    
+                                    <h7 style="float:right">{{ schedules.start_time }} - {{ schedules.end_time }}</h7>    
                                     {% endfor %}
                                 {% else %}
-                                    <h4>unavailable</h4>
+                                    <h7 style="float:right">unavailable</h7>
                                 {% endif %}
                             </div>                    
                         </div>
@@ -117,15 +117,15 @@
                         <div class="agenda-detail-weekly-squedules-form">
                             <div></div>
                             <div>
-                                <h4>Wed</h4>
+                                <h5>Wed</h5>
                             </div>
                             <div>
                                 {% if wednesday %}
                                     {% for schedules in agenda_obj.get_wednesday_schedules %}
-                                    <h4 style="float:right">{{ schedules.start_time }} - {{ schedules.end_time }}</h4>    
+                                    <h7 style="float:right">{{ schedules.start_time }} - {{ schedules.end_time }}</h7>    
                                     {% endfor %}
                                 {% else %}
-                                    <h4>unavailable</h4>
+                                    <h7 style="float:right">unavailable</h7>
                                 {% endif %}
                             </div>                    
                         </div>
@@ -133,15 +133,15 @@
                         <div class="agenda-detail-weekly-squedules-form">
                             <div></div>
                             <div>
-                                <h4>Thu</h4>
+                                <h5>Thu</h5>
                             </div>
                             <div>
                                 {% if thursday %}
                                     {% for schedules in agenda_obj.get_thursday_schedules %}
-                                    <h4 style="float:right">{{ schedules.start_time }} - {{ schedules.end_time }}</h4>    
+                                    <h7 style="float:right">{{ schedules.start_time }} - {{ schedules.end_time }}</h7>    
                                     {% endfor %}
                                 {% else %}
-                                    <h4>unavailable</h4>
+                                    <h7 style="float:right">unavailable</h7>
                                 {% endif %}
                             </div>                    
                         </div>
@@ -149,15 +149,15 @@
                         <div class="agenda-detail-weekly-squedules-form">
                             <div></div>
                             <div>
-                                <h4>Fri</h4>
+                                <h5>Fri</h5>
                             </div>
                             <div>
                                 {% if friday %}
                                     {% for schedules in agenda_obj.get_friday_schedules %}
-                                    <h4 style="float:right">{{ schedules.start_time }} - {{ schedules.end_time }}</h4>    
+                                    <h7 style="float:right">{{ schedules.start_time }} - {{ schedules.end_time }}</h7>    
                                     {% endfor %}
                                 {% else %}
-                                    <h4>unavailable</h4>
+                                    <h7 style="float:right">unavailable</h7>
                                 {% endif %}
                             </div>                    
                         </div>
@@ -165,15 +165,15 @@
                         <div class="agenda-detail-weekly-squedules-form">
                             <div></div>
                             <div>
-                                <h4>Sat</h4>
+                                <h5>Sat</h5>
                             </div>
                             <div>
                                 {% if saturday %}
                                     {% for schedules in agenda_obj.get_saturday_schedules %}
-                                    <h4 style="float:right">{{ schedules.start_time }} - {{ schedules.end_time }}</h4>    
+                                    <h7 style="float:right">{{ schedules.start_time }} - {{ schedules.end_time }}</h7>    
                                     {% endfor %}
                                 {% else %}
-                                    <h4>unavailable</h4>
+                                    <h7 style="float:right">unavailable</h7>
                                 {% endif %}
                             </div>                    
                         </div>

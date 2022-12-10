@@ -8,19 +8,27 @@
       grid-template-columns: 1fr 1fr 1fr;
   
     }
-  </style>
+</style>
+
+{% load crispy_forms_tags %}
 
 {% if page == 'login' %}
 <div class="login-container">
-    <div>
-
-    </div>
+    <div></div>
 
     <div>
+        {% if messages %}
+        <ul class="messages">
+          {% for message in messages %}
+          <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+          {% endfor %}
+        </ul>
+        {% endif %}
+        
         <form method="POST" action="">
             {% csrf_token %}
             <center>
-                <h1>Welcome back</h1>          
+                <h4>Welcome back</h4>          
                 <p>
                     <label>Username</label>
                     <input type="username" name="username" placeholder="enter username"/>
@@ -32,24 +40,21 @@
 
                 <input type="submit" value="Login" />
 
-                </form>
-                <p>Havent signed up yet?</p>
-                <a href="{% url 'register' %}">Sign up</a>
+                
+                <p>Forgot your password?</p>
+                <a href="{% url 'password_reset' %}">Reset here</a>
             </center>         
-
+        </form>
     </div>
 
-    <div>
-
-    </div>
+    <div></div>
 </div>
 
 {% else %}
 
 <div class="login-container">
-    <div>
+    <div></div>
 
-    </div>
     <div>
         <form method="POST" action="">
             {% csrf_token %}
@@ -59,23 +64,16 @@
             {{form.as_p}}
 
             <input type="submit" value="Register" />
-
         </form>
         <center>
             <p>Already signed up?</p>
             <a href="{% url 'login' %}">Login</a>            
         </center>
-        
     </div>
-    <div>
-
-    </div>
+    <div></div>
 
 </div>
 
-
-
 {% endif %}
-
 
 {% endblock %}
