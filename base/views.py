@@ -9,11 +9,6 @@ from .forms import *
 from django.http import Http404, HttpResponse
 from django.urls import reverse
 
-# from django.contrib import messages
-# from django.contrib.auth import authenticate, login, logout
-# from django.contrib.auth.forms import UserCreationForm
-# from django.forms.models import modelformset_factory
-
 """ ACCOUNT """
 
 @login_required

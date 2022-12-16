@@ -88,7 +88,10 @@ def loginPage(request):
 
         if user is not None:
             login(request, user)
-            return redirect('home')
+            agenda_object = Agenda.objects.get(user=user, name='Main')
+            id = agenda_object.id
+            home = reverse("agenda-detail", kwargs={"id": id})
+            return redirect(home)
         else:
             messages.error(request, 'username OR password does not exist')
 
@@ -108,7 +111,10 @@ def registerPage(request):
             user.username = user.username
             user.save()
             login(request, user)
-            return redirect('home')
+            agenda_object = Agenda.objects.get(user=user, name='Main')
+            id = agenda_object.id
+            home = reverse("agenda-detail", kwargs={"id": id})
+            return redirect(home)
         else:
             messages.error(request, 'An error occurred during registration')
 

@@ -1,46 +1,86 @@
 <style>
-  .navbar-container{
-    display: grid;
-    grid-template-columns: 1fr 1fr 5fr 1fr;
-    
-  }
+  #topheader .navbar-nav li > a {
+	text-transform: capitalize;
+	/* color: white; */
+	transition: background-color .2s, color .2s;
+  
+}
+.navbar-nav li > a:hover {
+  background-color: #383B3F;
+	color: white;
+}
+
+#topheader .navbar-nav li.active > a {
+	background-color: #383B3F;
+	color: white;
+  border-bottom-style: solid;
+  border-bottom-width: 4px;
+  border-bottom-color: #0D6EFD;
+  border-bottom-left-radius: 5px;
+  border-bottom-right-radius: 5px;
+}
   
 </style>
 
 {% if request.user.is_authenticated %}
 
-<div class="navbar-container">
+<div id="topheader">
+  <nav class="navbar navbar-expand-lg navbar-dark mb-4" style="background-color: #383B3F;">
+    <div class="container-fluid">
+      {% for object in agenda_objects %} 
+      {% if forloop.first %}
 
-  <div></div>
+        <a class="navbar-brand" href="#">Calendrive</a>  
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+      
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
 
-  <div> 
-    <a href="/"><h1>CalenDrive</h1></a>
-  </div>
+          <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+            <li class="active"><a class="nav-link" aria-current="page" href="{{ object.get_agenda_detail_url }}">Agenda</a><span class="sr-only">(current)</span></li>
+            <li><a class="nav-link" href="#">Conect Calendar</a></li>
+          </ul>
 
-  <div>
-    {% for object in agenda_objects %} 
-    {% if forloop.first %} 
-    <p style="text-align:right"> <a href="{{ object.get_agenda_detail_url }}">Agenda</a> | <a href="">Conect Telegram</a> | <a href="{% url 'user-profile' user.id %}">Account</a> </p>
-    {% endif %}
-    {% endfor %}
-  </div>
+          <div class="navbar-nav">
+            <button class="btn btn-primary" type="submit">Conect Telegram</button>
+          </div>
 
-  <div></div>
+          <div class="btn-group ms-2">
+            <button type="button" class="btn btn-secondary dropdown-toggle" style="background-color: #383B3F;" data-bs-toggle="dropdown" data-bs-display="static" aria-expanded="false">
+              Account
+            </button>
+            <ul class="dropdown-menu dropdown-menu-lg-end">
+              <li><a class="dropdown-item" href="{% url 'user-profile' user.id %}">Login</a></li>
+              <li><hr class="dropdown-divider"></li>
+              <li><a class="dropdown-item" href="{% url 'logout' %}">Logout</a></li>
+            </ul>
+          </div>
+          
+        </div>    
 
+      {% endif %}
+      {% endfor %}
+    </div>
+    
+  </nav>
 </div>
-<hr>
 
 {% else %}
-<div>
-  <center>
-    
-    <h1>Calendrive</h1><hr>
-    
-  </center>  
-</div>
-{% endif %}
-  
+<nav class="navbar navbar-expand-lg navbar-dark mb-4" style="background-color: #383B3F;">
+  <div class="container-fluid">
+    <span class="navbar-brand ms-auto me-auto mb-0 h1">Calendrive</span>
+  </div>
+</nav>
 
+{% endif %}
+
+<script>
+  $( '#topheader .navbar-nav a' ).on( 'click', function () {
+	  $( '#topheader .navbar-nav' ).find( 'li.active' ).removeClass( 'active' );
+	  $( this ).parent( 'li' ).addClass( 'active' );
+  });
+</script>
 
   
 

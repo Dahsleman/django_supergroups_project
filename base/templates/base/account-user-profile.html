@@ -1,114 +1,41 @@
 {% extends 'main.html' %}
-
-
-
 {% block content %}
 
-<style>
-  
-  .telegram-settings-container{
-    display: grid;
-    grid-template-columns: 1fr 6fr 1fr;
-
-  }
-  .telegram-settings-container2{
-    display: grid;
-    grid-template-columns: 6fr;
-
-  }
-  .telegram-settings-container3{
-    display: grid;
-    grid-template-columns: 1fr 5fr;
-
-  }
-  .telegram-settings-container4{
-    display: grid;
-    grid-template-columns: 4fr 1fr;
-
-  }
-  
-</style>
-
-<div class="telegram-settings-container">
-
-  <div></div>
-
-  <div>
-  
-    <div class="telegram-settings-container2">
-      <div>
-        <spam style="float:left">
-          <h1>Account</h1>
-        </spam>
-      </div>
-    </div> 
+<div class="row">
+  <div class="col-6 mx-auto">       
+    <div class=" col-6 mx-auto">
+      <h1 class="text-center">
+        Login
+      </h1>
+    </div>
+    <div class="col-6 mx-auto">
+      <h6 class="text-center">
+        Use this link to change your password. 
+        <a class="link-primary" href="{% url 'password-change' %}">Change</a>
+      </h6>
+    </div>
     <hr>
 
-    <div class="telegram-settings-container3">
-        
-      <div>    
-        <h3>Access</h3>
-        <!-- <h3><a href="{% url 'telegram' %}">Telegram Auth</a></h3> -->
-        <h3><a href="">Calendar conections</a></h3>
-        <h3><a href="{% url 'logout' %}">Logout</a></h3>
+    {% if messages %}
+    <ul class="messages">
+      {% for message in messages %}
+      <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+      {% endfor %}
+    </ul>
+    {% endif %}
+
+    <div class="container">
+      <div class="position-relative">
+        <h3 class="position-absolute top-0 start-0 pe-1">
+          Username: 
+        </h3>
+        <h4 class="text-end">
+          {{ users }}
+        </h4>      
       </div>
-    
-      <div>
-        <div class="telegram-settings-container4">
-          <div>
-            <h1>Access</h1>
-          </div>
-          <div>
-            
-          </div>
-        </div>
-        <hr>            
-        <div class="telegram-settings-container4">
-            <div>
-              <h3>Login</h3>
-            </div>
-            <div>
-              <h3 style="float:right">{{ users }}</h3>
-            </div>                    
-        </div>
-        <hr>
-        <!-- <div class="telegram-settings-container4">
-          <div>
-            <h3>E-mail</h3>
-          </div>
-          <div>
-            <h3 style="float:right">{{ email }}</h3>
-          </div>                    
-        </div>
-        <hr> -->
-        {% if messages %}
-        <ul class="messages">
-          {% for message in messages %}
-          <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
-          {% endfor %}
-        </ul>
-        {% endif %}
-        <div class="telegram-settings-container4">
-          <div>
-            <h3>Password</h3>
-          </div>
-          <div>
-            <h3 style="float:right"><a href="{% url 'password-change' %}">Change</a></h3>
-          </div>                    
-        </div>
-        <hr>
-      </div>  
-    
     </div>
-
-  </div>
-  
-
-  <div></div>
-        
+    <hr> 
+  </div>     
 </div>
-
-
-
 
 {% endblock content %}
