@@ -1034,6 +1034,12 @@ def sundayDelete(request, parent_id=None, id=None):
     success_url = reverse('agenda-update', kwargs={'id':parent_id})
     return redirect(success_url)
 
+""" CALENDAR"""
+
+@login_required
+def dateOverlays(request):
+    context={}
+    return render(request, 'base/calendar.html', context)
 
 
 

@@ -1,371 +1,449 @@
+<div class="agenda-detail-container">
 
-<form action="." method="POST" hx-post="." hx-swap="outerHTML" id="myform">
+  <div></div>
 
-  {% csrf_token %}
+  <div>
+    <form action="." method="POST" hx-post="." hx-swap="outerHTML" id="myform">
 
-  {% if agenda_obj.name == 'Main' %}
-  
-  <h4>Set your agenda name</h4>
-  <p>Main</p>
-
-  <h4>Set Time limit for scheduling before the start</h4>
-  <p>{{ form.increments }}</p>
-  
-  <h4>Set your agenda time zone</h4>
-  <p>{{ form.timezone }}</p>
-  
-  {% else %}
-
-  <h4>Set your agenda name</h4>
-  {% if error_name %}
-    <p>{{ error_name }}</p>  
-  {% endif %}
-  <p>{{ form.name }}</p>
-
-  <h4>Set Time limit for scheduling before the start</h4>
-  <p>{{ form.increments }}</p>
-
-  <h4>Set your agenda time zone</h4>
-  <p>{{ form.timezone }}</p>
-
-  {% endif %}
-
-  <h3>Set your weekly schedules</h3>
-
-  <div id="checkbox-container">
-
-    {% if error_sunday %}
-      <p>{{ error_sunday }}</p>  
-    {% endif %}
-    <div class="weekday-container">
-
-      <div>
-        <span style="float:left">
-          <h4>
-            {% if sunday %}
-              <input type="checkbox" name="sunday-type" value="sundaybox" id="sunday-checkbox" checked></input>
-            {% else %}
-              <input type="checkbox" name="sunday-type" value="sundaybox" id="sunday-checkbox"></input>
-            {% endif %}
-            <label>Sun</label> 
-          </h4>          
-        </span>
-      </div>
-
-      <div>  
-        {% for obj in agenda_obj.get_sunday_schedules %}
-          {% include 'base/partials/sunday-detail.html' with object=obj %}
-        {% endfor %}
-          
-        {% if new_sunday_url %}
-          <div id="sunday-create"></div>    
-        {% endif %}
-
-        <h4 id="sunday-text" style="display:none">unavailable</h4>
-      </div>
-
-      <div>
-        <span style="float:left">
-          <h4><button id="sunday-add_btn" style="display:block" hx-get="{{ new_sunday_url }}" hx-trigger="click" hx-target="#sunday-create" hx-swap="beforeend">+</button></h4>
-        </span>
-      </div>
-      <div></div>
-            
-    </div>
-
-    <div class="hr-container">
-      <div>
-        <hr>
-      </div>
-      <div></div>
-    </div>
-
-    {% if error_monday %}
-      <p>{{ error_monday }}</p>  
-    {% endif %}
-    <div class="weekday-container">
-
-      <div>
-        <span style="float:left">
-          <h4>
-            {% if monday %}
-              <input type="checkbox" name="monday-type" value="mondaybox" id="monday-checkbox" checked></input>
-            {% else %}
-              <input type="checkbox" name="monday-type" value="mondaybox" id="monday-checkbox"></input>
-            {% endif %}
-            <label>Mon</label> 
-          </h4>          
-        </span>
-      </div>
-
-      <div>  
-        {% for obj in agenda_obj.get_monday_schedules %}
-          {% include 'base/partials/monday-detail.html' with object=obj %}
-        {% endfor %}
-          
-        {% if new_monday_url %}
-          <div id="monday-create"></div>    
-        {% endif %}
-
-        <h4 id="monday-text" style="display:none">unavailable</h4>
-      </div>
-
-      <div>
-        <span style="float:left">
-          <h4><button id="monday-add_btn" style="display:block" hx-get="{{ new_monday_url }}" hx-trigger="click" hx-target="#monday-create" hx-swap="beforeend">+</button></h4>
-        </span>
-      </div>
-      <div></div>
-              
-    </div>
-
-    <div class="hr-container">
-      <div>
-        <hr>
-      </div>
-      <div></div>
-    </div>
-
-    {% if error_tuesday %}
-      <p>{{ error_tuesday }}</p>  
-    {% endif %}
-    <div class="weekday-container">
-
-      <div>
-        <span style="float:left">
-          <h4>
-            {% if tuesday %}
-              <input type="checkbox" name="tuesday-type" value="tuesdaybox" id="tuesday-checkbox" checked></input>
-            {% else %}
-              <input type="checkbox" name="tuesday-type" value="tuesdaybox" id="tuesday-checkbox"></input>
-            {% endif %}
-              <label>Tue</label> 
-          </h4>          
-        </span>
-      </div>
-
-      <div>  
-        {% for obj in agenda_obj.get_tuesday_schedules %}
-          {% include 'base/partials/tuesday-detail.html' with object=obj %}
-        {% endfor %}
-          
-        {% if new_tuesday_url %}
-          <div id="tuesday-create"></div>    
-        {% endif %}
-
-        <h4 id="tuesday-text" style="display:none">unavailable</h4>
-      </div>
-
-      <div>
-        <span style="float:left">
-          <h4><button id="tuesday-add_btn" style="display:block" hx-get="{{ new_tuesday_url }}" hx-trigger="click" hx-target="#tuesday-create" hx-swap="beforeend">+</button></h4>
-        </span>
-      </div>
-      <div></div>
-            
-    </div>
-
-    <div class="hr-container">
-      <div>
-        <hr>
-      </div>
-      <div></div>
-    </div>
-
-    {% if error_wednesday %}
-      <p>{{ error_wednesday }}</p>  
-    {% endif %}
-    <div class="weekday-container">
-
-      <div>
-        <span style="float:left">
-          <h4>
-            {% if wednesday %}
-              <input type="checkbox" name="wednesday-type" value="wednesdaybox" id="wednesday-checkbox" checked></input>
-            {% else %}
-              <input type="checkbox" name="wednesday-type" value="wednesdaybox" id="wednesday-checkbox"></input>
-            {% endif %}
-              <label>Wed</label> 
-          </h4>          
-        </span>
-      </div>
-
-      <div>  
-        {% for obj in agenda_obj.get_wednesday_schedules %}
-          {% include 'base/partials/wednesday-detail.html' with object=obj %}
-        {% endfor %}
-          
-        {% if new_wednesday_url %}
-          <div id="wednesday-create"></div>    
-        {% endif %}
-
-        <h4 id="wednesday-text" style="display:none">unavailable</h4>
-      </div>
-
-      <div>
-        <span style="float:left">
-          <h4><button id="wednesday-add_btn" style="display:block" hx-get="{{ new_wednesday_url }}" hx-trigger="click" hx-target="#wednesday-create" hx-swap="beforeend">+</button></h4>
-        </span>
-      </div>
-      <div></div>
-            
-    </div>
-
-    <div class="hr-container">
-      <div>
-        <hr>
-      </div>
-      <div></div>
-    </div>
-
-    {% if error_thursday %}
-      <p>{{ error_thursday }}</p>  
-    {% endif %}
-    <div class="weekday-container">
-
-      <div>
-        <span style="float:left">
-          <h4>
-            {% if thursday %}
-              <input type="checkbox" name="thursday-type" value="thursdaybox" id="thursday-checkbox" checked></input>
-            {% else %}
-              <input type="checkbox" name="thursday-type" value="thursdaybox" id="thursday-checkbox"></input>
-            {% endif %}
-            <label>Thu</label> 
-          </h4>          
-        </span>
-      </div>
-
-      <div>  
-        {% for obj in agenda_obj.get_thursday_schedules %}
-          {% include 'base/partials/thursday-detail.html' with object=obj %}
-        {% endfor %}
-          
-        {% if new_thursday_url %}
-          <div id="thursday-create"></div>    
-        {% endif %}
-
-        <h4 id="thursday-text" style="display:none">unavailable</h4>
-      </div>
-
-      <div>
-        <span style="float:left">
-          <h4><button id="thursday-add_btn" style="display:block" hx-get="{{ new_thursday_url }}" hx-trigger="click" hx-target="#thursday-create" hx-swap="beforeend">+</button></h4>
-        </span>
-      </div>
-      <div></div>
-            
-    </div>
-
-    <div class="hr-container">
-      <div>
-        <hr>
-      </div>
-      <div></div>
-    </div>
-
-
-    {% if error_friday %}
-      <p>{{ error_friday }}</p>  
-    {% endif %}
-    <div class="weekday-container">
-
-      <div>
-        <span style="float:left">
-          <h4>
-            {% if friday %}
-              <input type="checkbox" name="friday-type" value="fridaybox" id="friday-checkbox" checked></input>
-            {% else %}
-              <input type="checkbox" name="friday-type" value="fridaybox" id="friday-checkbox"></input>
-            {% endif %}
-              <label>Fri</label> 
-          </h4>          
-        </span>
-      </div>
-
-      <div>  
-        {% for obj in agenda_obj.get_friday_schedules %}
-          {% include 'base/partials/friday-detail.html' with object=obj %}
-        {% endfor %}
-          
-        {% if new_friday_url %}
-          <div id="friday-create"></div>    
-        {% endif %}
-
-        <h4 id="friday-text" style="display:none">unavailable</h4>
-      </div>
-
-      <div>
-        <span style="float:left">
-          <h4><button id="friday-add_btn" style="display:block" hx-get="{{ new_friday_url }}" hx-trigger="click" hx-target="#friday-create" hx-swap="beforeend">+</button></h4>
-        </span>
-      </div>
-      <div></div>
-            
-    </div>
-
-    <div class="hr-container">
-      <div>
-        <hr>
-      </div>
-      <div></div>
-    </div>
-
-    {% if error_saturday %}
-      <p>{{ error_saturday }}</p>  
-    {% endif %}
-    <div class="weekday-container">
-      <div>
-        <span style="float:left">
-          <h4>
-            {% if saturday %}
-              <input type="checkbox" name="saturday-type" value="saturdaybox" id="saturday-checkbox" checked></input>
-            {% else %}
-              <input type="checkbox" name="saturday-type" value="saturdaybox" id="saturday-checkbox"></input>
-            {% endif %}
-              <label>Sat</label> 
-          </h4>          
-        </span>
-      </div>
-
-      <div>  
-        {% for obj in agenda_obj.get_saturday_schedules %}
-          {% include 'base/partials/saturday-detail.html' with object=obj %}
-        {% endfor %}
-          
-        {% if new_saturday_url %}
-          <div id="saturday-create"></div>    
-        {% endif %}
-
-        <h4 id="saturday-text" style="display:none">unavailable</h4>
-      </div>
-
-      <div>
-        <span style="float:left">
-          <h4><button id="saturday-add_btn" style="display:block" hx-get="{{ new_saturday_url }}" hx-trigger="click" hx-target="#saturday-create" hx-swap="beforeend">+</button></h4>
-        </span>
-      </div>
-      <div></div>
-            
-    </div>
-
-    <div class="hr-container">
-      <div>
-        <hr>
-      </div>
-      <div></div>
-    </div>
-
-    <p>
-      <div class="htmx-indicator">Loading...</div>
-      <button class="htmx-inverted-indicator" type="submit" id="save_btn" name="emptylayerbtn">Save and return</button>
-    </p>
+      {% csrf_token %}
     
+      {% if agenda_obj.name == 'Main' %}
+      <div class="agenda-detail-form">
+        <div> 
+          <h5>
+            Set your agenda name
+          </h5>
+        </div>
+        <div>
+          <h7>
+            Main
+          </h7>
+        </div>
+      </div>
+      <hr>
+
+      {% else %}
+      <div class="agenda-detail-form">
+        <div>
+          <h5>Set your agenda name</h5>
+        </div>
+        <div>
+          {% if error_name %}
+            <p>{{ error_name }}</p>  
+          {% endif %}
+          <h7>{{ form.name }}</h7>
+          
+        </div>
+      </div>
+      <hr>
+      {% endif %}
+
+      <div class="agenda-detail-form">
+        <div>
+          <h5>Set Time limit for scheduling before the start</h5>
+        </div>
+        <div>
+          <h7>{{ form.increments }}</h7>
+        </div>
+      </div>
+      <hr>
+    
+      <div class="agenda-detail-form">
+        <div>
+          <h5>Set your agenda time zone</h5>
+        </div>
+        <div>
+          <h7>{{ form.timezone }}</h7>
+        </div>
+      </div>
+      <hr>
+    
+      <div class="agenda-detail-weekly-squedules">
+
+        <div></div>
+        
+        <div>
+          <p>
+            <h5>Set your weekly schedules</h5>
+          </p>
+        
+          <div id="checkbox-container">
+        
+            {% if error_sunday %}
+              <p>{{ error_sunday }}</p>  
+            {% endif %}
+            <div class="weekday-container">
+        
+              <div>
+                <span style="float:left">
+                  <h5>
+                    {% if sunday %}
+                      <input type="checkbox" name="sunday-type" value="sundaybox" id="sunday-checkbox" checked></input>
+                    {% else %}
+                      <input type="checkbox" name="sunday-type" value="sundaybox" id="sunday-checkbox"></input>
+                    {% endif %}
+                    <label>Sun</label> 
+                  </h5>          
+                </span>
+              </div>
+        
+              <div>  
+                {% for obj in agenda_obj.get_sunday_schedules %}
+                  {% include 'base/partials/sunday-detail.html' with object=obj %}
+                {% endfor %}
+                  
+                {% if new_sunday_url %}
+                  <div id="sunday-create"></div>    
+                {% endif %}
+        
+                <h7 id="sunday-text" style="display:none">unavailable</h7>
+              </div>
+        
+              <div>
+                <span style="float:left">
+                  <h7><button id="sunday-add_btn" style="display:block" hx-get="{{ new_sunday_url }}" hx-trigger="click" hx-target="#sunday-create" hx-swap="beforeend">+</button></h7>
+                </span>
+              </div>
+              <div></div>
+                    
+            </div>
+        
+            <div class="hr-container">
+              <div>
+                <hr>
+              </div>
+              <div></div>
+            </div>
+        
+            {% if error_monday %}
+              <p>{{ error_monday }}</p>  
+            {% endif %}
+            <div class="weekday-container">
+        
+              <div>
+                <span style="float:left">
+                  <h5>
+                    {% if monday %}
+                      <input type="checkbox" name="monday-type" value="mondaybox" id="monday-checkbox" checked></input>
+                    {% else %}
+                      <input type="checkbox" name="monday-type" value="mondaybox" id="monday-checkbox"></input>
+                    {% endif %}
+                    <label>Mon</label> 
+                  </h5>          
+                </span>
+              </div>
+        
+              <div>  
+                {% for obj in agenda_obj.get_monday_schedules %}
+                  {% include 'base/partials/monday-detail.html' with object=obj %}
+                {% endfor %}
+                  
+                {% if new_monday_url %}
+                  <div id="monday-create"></div>    
+                {% endif %}
+        
+                <h7 id="monday-text" style="display:none">unavailable</h7>
+              </div>
+        
+              <div>
+                <span style="float:left">
+                  <h7><button id="monday-add_btn" style="display:block" hx-get="{{ new_monday_url }}" hx-trigger="click" hx-target="#monday-create" hx-swap="beforeend">+</button></h7>
+                </span>
+              </div>
+              <div></div>
+                      
+            </div>
+        
+            <div class="hr-container">
+              <div>
+                <hr>
+              </div>
+              <div></div>
+            </div>
+        
+            {% if error_tuesday %}
+              <p>{{ error_tuesday }}</p>  
+            {% endif %}
+            <div class="weekday-container">
+        
+              <div>
+                <span style="float:left">
+                  <h5>
+                    {% if tuesday %}
+                      <input type="checkbox" name="tuesday-type" value="tuesdaybox" id="tuesday-checkbox" checked></input>
+                    {% else %}
+                      <input type="checkbox" name="tuesday-type" value="tuesdaybox" id="tuesday-checkbox"></input>
+                    {% endif %}
+                      <label>Tue</label> 
+                  </h5>          
+                </span>
+              </div>
+        
+              <div>  
+                {% for obj in agenda_obj.get_tuesday_schedules %}
+                  {% include 'base/partials/tuesday-detail.html' with object=obj %}
+                {% endfor %}
+                  
+                {% if new_tuesday_url %}
+                  <div id="tuesday-create"></div>    
+                {% endif %}
+        
+                <h7 id="tuesday-text" style="display:none">unavailable</h7>
+              </div>
+        
+              <div>
+                <span style="float:left">
+                  <h7><button id="tuesday-add_btn" style="display:block" hx-get="{{ new_tuesday_url }}" hx-trigger="click" hx-target="#tuesday-create" hx-swap="beforeend">+</button></h7>
+                </span>
+              </div>
+              <div></div>
+                    
+            </div>
+        
+            <div class="hr-container">
+              <div>
+                <hr>
+              </div>
+              <div></div>
+            </div>
+        
+            {% if error_wednesday %}
+              <p>{{ error_wednesday }}</p>  
+            {% endif %}
+            <div class="weekday-container">
+        
+              <div>
+                <span style="float:left">
+                  <h5>
+                    {% if wednesday %}
+                      <input type="checkbox" name="wednesday-type" value="wednesdaybox" id="wednesday-checkbox" checked></input>
+                    {% else %}
+                      <input type="checkbox" name="wednesday-type" value="wednesdaybox" id="wednesday-checkbox"></input>
+                    {% endif %}
+                      <label>Wed</label> 
+                  </h5>          
+                </span>
+              </div>
+        
+              <div>  
+                {% for obj in agenda_obj.get_wednesday_schedules %}
+                  {% include 'base/partials/wednesday-detail.html' with object=obj %}
+                {% endfor %}
+                  
+                {% if new_wednesday_url %}
+                  <div id="wednesday-create"></div>    
+                {% endif %}
+        
+                <h7 id="wednesday-text" style="display:none">unavailable</h7>
+              </div>
+        
+              <div>
+                <span style="float:left">
+                  <h7><button id="wednesday-add_btn" style="display:block" hx-get="{{ new_wednesday_url }}" hx-trigger="click" hx-target="#wednesday-create" hx-swap="beforeend">+</button></h7>
+                </span>
+              </div>
+              <div></div>
+                    
+            </div>
+        
+            <div class="hr-container">
+              <div>
+                <hr>
+              </div>
+              <div></div>
+            </div>
+        
+            {% if error_thursday %}
+              <p>{{ error_thursday }}</p>  
+            {% endif %}
+            <div class="weekday-container">
+        
+              <div>
+                <span style="float:left">
+                  <h5>
+                    {% if thursday %}
+                      <input type="checkbox" name="thursday-type" value="thursdaybox" id="thursday-checkbox" checked></input>
+                    {% else %}
+                      <input type="checkbox" name="thursday-type" value="thursdaybox" id="thursday-checkbox"></input>
+                    {% endif %}
+                    <label>Thu</label> 
+                  </h5>          
+                </span>
+              </div>
+        
+              <div>  
+                {% for obj in agenda_obj.get_thursday_schedules %}
+                  {% include 'base/partials/thursday-detail.html' with object=obj %}
+                {% endfor %}
+                  
+                {% if new_thursday_url %}
+                  <div id="thursday-create"></div>    
+                {% endif %}
+        
+                <h7 id="thursday-text" style="display:none">unavailable</h7>
+              </div>
+        
+              <div>
+                <span style="float:left">
+                  <h7><button id="thursday-add_btn" style="display:block" hx-get="{{ new_thursday_url }}" hx-trigger="click" hx-target="#thursday-create" hx-swap="beforeend">+</button></h7>
+                </span>
+              </div>
+              <div></div>
+                    
+            </div>
+        
+            <div class="hr-container">
+              <div>
+                <hr>
+              </div>
+              <div></div>
+            </div>
+        
+        
+            {% if error_friday %}
+              <p>{{ error_friday }}</p>  
+            {% endif %}
+            <div class="weekday-container">
+        
+              <div>
+                <span style="float:left">
+                  <h5>
+                    {% if friday %}
+                      <input type="checkbox" name="friday-type" value="fridaybox" id="friday-checkbox" checked></input>
+                    {% else %}
+                      <input type="checkbox" name="friday-type" value="fridaybox" id="friday-checkbox"></input>
+                    {% endif %}
+                      <label>Fri</label> 
+                  </h5>          
+                </span>
+              </div>
+        
+              <div>  
+                {% for obj in agenda_obj.get_friday_schedules %}
+                  {% include 'base/partials/friday-detail.html' with object=obj %}
+                {% endfor %}
+                  
+                {% if new_friday_url %}
+                  <div id="friday-create"></div>    
+                {% endif %}
+        
+                <h7 id="friday-text" style="display:none">unavailable</h7>
+              </div>
+        
+              <div>
+                <span style="float:left">
+                  <h7><button id="friday-add_btn" style="display:block" hx-get="{{ new_friday_url }}" hx-trigger="click" hx-target="#friday-create" hx-swap="beforeend">+</button></h7>
+                </span>
+              </div>
+              <div></div>
+                    
+            </div>
+        
+            <div class="hr-container">
+              <div>
+                <hr>
+              </div>
+              <div></div>
+            </div>
+        
+            {% if error_saturday %}
+              <p>{{ error_saturday }}</p>  
+            {% endif %}
+            <div class="weekday-container">
+              <div>
+                <span style="float:left">
+                  <h5>
+                    {% if saturday %}
+                      <input type="checkbox" name="saturday-type" value="saturdaybox" id="saturday-checkbox" checked></input>
+                    {% else %}
+                      <input type="checkbox" name="saturday-type" value="saturdaybox" id="saturday-checkbox"></input>
+                    {% endif %}
+                      <label>Sat</label> 
+                  </h5>          
+                </span>
+              </div>
+        
+              <div>  
+                {% for obj in agenda_obj.get_saturday_schedules %}
+                  {% include 'base/partials/saturday-detail.html' with object=obj %}
+                {% endfor %}
+                  
+                {% if new_saturday_url %}
+                  <div id="saturday-create"></div>    
+                {% endif %}
+        
+                <h7 id="saturday-text" style="display:none">unavailable</h7>
+              </div>
+        
+              <div>
+                <span style="float:left">
+                  <h7><button id="saturday-add_btn" style="display:block" hx-get="{{ new_saturday_url }}" hx-trigger="click" hx-target="#saturday-create" hx-swap="beforeend">+</button></h7>
+                </span>
+              </div>
+              <div></div>
+                    
+            </div>
+        
+            <div class="hr-container">
+              <div>
+                <hr>
+              </div>
+              <div></div>
+            </div>
+            
+          </div>
+
+        </div>
+          
+        <div>
+          <p>
+            <span style="float:left">
+              <h5>Date Overlays</h5>
+            </span>
+            <a href="{% url 'calendar' %}">+</a>
+            
+            <!-- Button trigger modal -->
+            <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#staticBackdrop">
+              Add date overlays
+            </button>
+
+            <!-- Modal -->
+            <div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+              <div class="modal-dialog">
+                <div class="modal-content">
+                  <div class="modal-header">
+                    <h1 class="modal-title fs-5" id="staticBackdropLabel">Calendar</h1>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                  </div>
+                  <div class="modal-body">
+                    <input type="text" class="form-control date"/>
+                    <!-- <input id="datepicker" width="276" /> -->
+                  </div>
+                  <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-primary">Submit</button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </p>
+          
+        </div>
+
+        <div></div>
+      
+      </div>
+
+      <p>
+        <div class="htmx-indicator">Loading...</div>
+        <button class="htmx-inverted-indicator" type="submit" id="save_btn" name="emptylayerbtn">Save and return</button>
+      </p> 
+    </form>
   </div>
-</form>
 
-
-
+  <div></div>
+  
+</div>
 
 {% block javascript %}
 
@@ -523,6 +601,23 @@
   //     $("#" + key).prop('checked', value);
   // });
 
+</script>
+
+<script>
+  // $('#datetimepicker14').datetimepicker({
+  //     allowMultidate: true,
+  //     multidateSeparator: ','
+  // });
+  
+  // $('#datepicker').datepicker({
+  //     uiLibrary: 'bootstrap5'
+  // });
+
+  $('.date').datepicker({
+    multidate: true
+});
+
+  
 </script>
 
 {% endblock javascript %}

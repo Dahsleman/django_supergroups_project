@@ -39,6 +39,7 @@ INSTALLED_APPS = [
     'base.apps.BaseConfig',
     'django.contrib.admin',
     'crispy_forms',
+    'tempus_dominus',
 ]
 
 CRISPY_TEMPLATE_PACK = 'bootstrap4'

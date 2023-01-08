@@ -41,6 +41,11 @@ urlpatterns = [
     path('hx/agenda-update/<int:parent_id>/sunday/<int:id>/', views.sundayCreateUpdate_HX, name="hx-sunday-update"),
     path('sunday-delete/<int:parent_id>/sunday/<int:id>/', views.sundayDelete, name="sunday-delete"),
 
+    
+    path('calendar/', views.dateOverlays, name="calendar"),
+    
+    
+    
     path('', views.home, name="home"),
 
 
